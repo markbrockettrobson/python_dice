@@ -1,0 +1,13 @@
+FROM python:3
+
+RUN mkdir /usr/splendor
+WORKDIR /usr/splendor
+
+COPY requirements.txt ./
+
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY pylintrc ./
+COPY pydice ./pydice
+
+RUN python -m pytest --black --isort --pylint --cov pydice
