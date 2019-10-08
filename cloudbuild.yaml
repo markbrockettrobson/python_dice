@@ -1,0 +1,9 @@
+steps:
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '-t',
+         'gcr.io/my-project/my-image',
+         '.',
+         '-f',
+         'continuous_integration/DockerPytestCI.docker']
+  timeout: 600s
