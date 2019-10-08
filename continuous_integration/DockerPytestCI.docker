@@ -1,17 +1,17 @@
 FROM python:3
 
+RUN mkdir /usr/pydice
+WORKDIR /usr/pydice
+
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
-
-RUN mkdir localrepo
-WORKDIR localrepo
-RUN ls -l -R
-
 RUN git clone https://github.com/markbrockettrobson/pydice.git
 
-RUN rm -rf ./pydice
-COPY . ./pydice
+RUN rm -rf
+COPY .coveragerc ./
+COPY pylintrc ./
+COPY python_dice ./python_dice
 
 RUN ls -l -R
 RUN python -m pytest --black --isort --pylint --cov pydice

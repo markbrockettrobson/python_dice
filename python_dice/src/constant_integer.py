@@ -1,4 +1,4 @@
-import interface.i_dice_statement as i_dice_statement
+import python_dice.interface.i_dice_statement as i_dice_statement
 
 
 class ConstantInteger(i_dice_statement.IDiceStatement):

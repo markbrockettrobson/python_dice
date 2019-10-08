@@ -1,6 +1,6 @@
 import unittest
 
-import src.constant_integer as constant_integer
+import python_dice.src.constant_integer as constant_integer
 
 
 class TestConstantInteger(unittest.TestCase):
