@@ -5,5 +5,5 @@ steps:
          'gcr.io/my-project/my-image',
          '.',
          '-f',
-         'pydice/continuous_integration/DockerPytestCI.docker']
+         'continuous_integration/DockerPytestCI.docker']
   timeout: 600s
