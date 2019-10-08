@@ -1,7 +1,7 @@
 FROM python:3
 
-RUN mkdir /usr/splendor
-WORKDIR /usr/splendor
+RUN mkdir /usr/pydice
+WORKDIR /usr/pydice
 
 COPY requirements.txt ./
 
