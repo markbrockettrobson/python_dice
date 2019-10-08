@@ -13,5 +13,5 @@ COPY .coveragerc ./
 COPY pylintrc ./
 COPY python_dice ./python_dice
 
-RUN python -m pytest --black --isort --pylint --cov pydice
+RUN python -m pytest --black --isort --pylint --cov python_dice
 #RUN python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
