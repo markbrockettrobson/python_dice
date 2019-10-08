@@ -10,4 +10,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY pylintrc ./
 COPY pydice ./pydice
 
-RUN python -m pytest --black --isort --pylint --cov pydice
+RUN python -m pytest --black --isort --pylint --cov ./pydice
