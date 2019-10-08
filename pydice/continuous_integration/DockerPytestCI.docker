@@ -1,13 +1,12 @@
 FROM python:3
 
-RUN mkdir /usr/pydice
-WORKDIR /usr/pydice
-
 COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
-COPY pylintrc ./
+RUN git clone https://github.com/markbrockettrobson/pydice.git
+
+COPY pylintrc ./pydice
 COPY pydice ./pydice
 
 RUN python -m pytest --black --isort --pylint --cov pydice
