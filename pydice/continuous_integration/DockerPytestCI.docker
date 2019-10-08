@@ -4,13 +4,16 @@ COPY requirements.txt ./
 
 RUN pip install --no-cache-dir -r requirements.txt
 
+RUN mkdir localrepo
+WORKDIR localrepo
+RUN ls -l -R
+
 RUN git clone https://github.com/markbrockettrobson/pydice.git
 
 COPY pylintrc ./pydice
 RUN rm -rf ./pydice
 COPY pydice ./pydice
 
-WORKDIR ./pydice
 RUN ls -l -R
 RUN python -m pytest --black --isort --pylint --cov pydice
 RUN python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
