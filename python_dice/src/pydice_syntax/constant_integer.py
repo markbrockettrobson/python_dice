@@ -15,10 +15,10 @@ class ConstantInteger(i_dice_statement.IDiceSyntax):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(ConstantInteger.TOKEN_RULE)
-        def number(tokens) -> i_dice_statement.IDiceSyntax:
+        def constant_integer(tokens) -> i_dice_statement.IDiceSyntax:
             return ConstantInteger(tokens[0].value)
 
-        return number
+        return constant_integer
 
     @staticmethod
     def get_token_name() -> str:
