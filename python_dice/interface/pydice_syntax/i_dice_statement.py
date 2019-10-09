@@ -1,7 +1,17 @@
 import abc
 
+import rply
 
-class IDiceSyntax(abc.ABC):
+
+class IDiceSyntax(abc.ABC, rply.token.BaseBox):
+    @staticmethod
+    @abc.abstractmethod
+    def add_production_function(parser_generator: rply.ParserGenerator) -> None:
+        """
+
+        add a production rule to the parser generator
+        """
+
     @staticmethod
     @abc.abstractmethod
     def get_token_name() -> str:
