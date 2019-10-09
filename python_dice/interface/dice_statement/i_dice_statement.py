@@ -1,7 +1,25 @@
 import abc
 
 
-class IDiceStatement(abc.ABC):
+class IDiceSyntax(abc.ABC):
+    @staticmethod
+    @abc.abstractmethod
+    def get_token_name() -> str:
+        """
+
+        :return: the token name for this syntax
+                 <str>
+        """
+
+    @staticmethod
+    @abc.abstractmethod
+    def get_token_regex() -> str:
+        """
+
+        :return: the token regex for this syntax
+                 <str>
+        """
+
     @abc.abstractmethod
     def roll(self) -> int:
         """
