@@ -1,12 +1,22 @@
 import re
 import unittest
+import unittest.mock as mock
 
-import python_dice.src.dice_statement.constant_integer as constant_integer
+import rply
+
+import python_dice.src.pydice_syntax.constant_integer as constant_integer
 
 
 class TestConstantInteger(unittest.TestCase):
     def setUp(self):
-        self._test_constant_integers = constant_integer.ConstantInteger(14)
+        self._test_constant_integers = constant_integer.ConstantInteger("14")
+        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+
+    def test_constant_integers_add_production_function(self):
+        constant_integer.ConstantInteger.add_production_function(self._mock_parser_gen)
+        self._mock_parser_gen.production.assert_called_once_with(
+            """expression : CONSTANT_INTEGER"""
+        )
 
     def test_constant_integers_get_token_name(self):
         self.assertEqual(
