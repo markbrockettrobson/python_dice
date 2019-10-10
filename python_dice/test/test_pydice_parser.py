@@ -32,3 +32,18 @@ class TestPyDiceParser(unittest.TestCase):
         self.assertEqual(-17, token.roll())
         self.assertEqual(-17, token.max())
         self.assertEqual(-17, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_subtract(self):
+        token = self._test_parser.parse("3 - -20")
+        self.assertEqual("SUBTRACT", token.get_token_name())
+        self.assertEqual(23, token.roll())
+        self.assertEqual(23, token.max())
+        self.assertEqual(23, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_add_and_subtract(self):
+        token = self._test_parser.parse("3 - -20 + 2")
+        self.assertEqual(25, token.roll())
+        self.assertEqual(25, token.max())
+        self.assertEqual(25, token.min())

@@ -25,34 +25,34 @@ class TestAdd(unittest.TestCase):
         self._test_add = add.Add(self._mock_syntax[0], self._mock_syntax[1])
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
-    def test_constant_integers_add_production_function(self):
+    def test_add_add_production_function(self):
         add.Add.add_production_function(self._mock_parser_gen)
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : expression ADD expression"""
         )
 
-    def test_constant_integers_get_token_name(self):
+    def test_add_get_token_name(self):
         self.assertEqual("ADD", self._test_add.get_token_name())
         self.assertEqual("ADD", add.Add.get_token_name())
 
-    def test_constant_integers_get_token_regex(self):
+    def test_add_get_token_regex(self):
         self.assertEqual(r"\+", self._test_add.get_token_regex())
         self.assertEqual(r"\+", add.Add.get_token_regex())
 
-    def test_constant_integers_roll(self):
+    def test_add_roll(self):
         for _ in range(100):
             self.assertEqual(14, self._test_add.roll())
 
-    def test_constant_integers_max(self):
+    def test_add_max(self):
         self.assertEqual(14, self._test_add.max())
 
-    def test_constant_integers_min(self):
+    def test_add_min(self):
         self.assertEqual(14, self._test_add.min())
 
-    def test_constant_integers_str(self):
+    def test_add_str(self):
         self.assertEqual("7 + 2", str(self._test_add))
 
-    def test_constant_integer_regex_will_match(self):
+    def test_add_regex_will_match(self):
         test_cases = ["+"]
         for test_case in test_cases:
             self.assertTrue(
@@ -60,7 +60,7 @@ class TestAdd(unittest.TestCase):
                 "did not match on case test_case %s" % test_case,
             )
 
-    def test_constant_integer_regex_will_not_match(self):
+    def test_add_regex_will_not_match(self):
         test_cases = ["a", "just a string", "", "1", " ", "-", "*", "("]
         for test_case in test_cases:
             self.assertIsNone(
