@@ -35,3 +35,23 @@ class TestPyDiceLexer(unittest.TestCase):
             ["1", "+", "4", "+", "-10", "+", "-10000000"],
             [token.value for token in tokens],
         )
+
+    def test_lex_subtract(self):
+        tokens = self._test_lexer.lex("1 - 4 - -10 - -10000000")
+
+        self.assertEqual(
+            [
+                "CONSTANT_INTEGER",
+                "SUBTRACT",
+                "CONSTANT_INTEGER",
+                "SUBTRACT",
+                "CONSTANT_INTEGER",
+                "SUBTRACT",
+                "CONSTANT_INTEGER",
+            ],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["1", "-", "4", "-", "-10", "-", "-10000000"],
+            [token.value for token in tokens],
+        )
