@@ -16,7 +16,7 @@ class Add(i_dice_statement.IDiceSyntax):
     ) -> typing.Callable:
         @parser_generator.production(Add.TOKEN_RULE)
         def add(tokens) -> i_dice_statement.IDiceSyntax:
-            return Add(tokens[0].value, tokens[2].value)
+            return Add(tokens[0], tokens[2])
 
         return add
 
@@ -46,4 +46,4 @@ class Add(i_dice_statement.IDiceSyntax):
         return self._expression_one.min() + self._expression_two.min()
 
     def __str__(self) -> str:
-        return "%s + %s" % (str(self._expression_one), str(self._expression_two.min()))
+        return f"{str(self._expression_one)} + {str(self._expression_two)}"

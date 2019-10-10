@@ -14,7 +14,8 @@ class PyDiceParser(i_pydice_parser.IPyDiceParser):
 
         self._lexer = lexer
         parser_generator = rply.ParserGenerator(
-            [syntax.get_token_name() for syntax in pydice_syntax_objects.LEXER_SYNTAX]
+            [syntax.get_token_name() for syntax in pydice_syntax_objects.LEXER_SYNTAX],
+            precedence=pydice_syntax_objects.PRECEDENCE,
         )
 
         for syntax in pydice_syntax_objects.LEXER_SYNTAX:
