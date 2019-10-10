@@ -24,3 +24,11 @@ class TestPyDiceParser(unittest.TestCase):
         self.assertEqual(215678284, token.roll())
         self.assertEqual(215678284, token.max())
         self.assertEqual(215678284, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_add(self):
+        token = self._test_parser.parse("3 + -20")
+        self.assertEqual("ADD", token.get_token_name())
+        self.assertEqual(-17, token.roll())
+        self.assertEqual(-17, token.max())
+        self.assertEqual(-17, token.min())
