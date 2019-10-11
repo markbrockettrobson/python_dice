@@ -47,3 +47,17 @@ class TestPyDiceParser(unittest.TestCase):
         self.assertEqual(25, token.roll())
         self.assertEqual(25, token.max())
         self.assertEqual(25, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_multiply(self):
+        token = self._test_parser.parse("3 * -20 + 2")
+        self.assertEqual(-58, token.roll())
+        self.assertEqual(-58, token.max())
+        self.assertEqual(-58, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_multiply_order_of_operation(self):
+        token = self._test_parser.parse("2 - 3 * -20")
+        self.assertEqual(62, token.roll())
+        self.assertEqual(62, token.max())
+        self.assertEqual(62, token.min())
