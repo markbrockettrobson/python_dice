@@ -1,16 +1,16 @@
 import rply
 
-import python_dice.interface.i_pydice_lexer as i_pydice_lexer
-import python_dice.interface.i_pydice_parser as i_pydice_parser
-import python_dice.interface.pydice_syntax.i_dice_statement as i_dice_statement
-import python_dice.src.pydice_lexer as pydice_lexer
-import python_dice.src.pydice_syntax_objects as pydice_syntax_objects
+import python_dice.interface.i_python_dice_lexer as i_pydice_lexer
+import python_dice.interface.i_python_dice_parser as i_pydice_parser
+import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.python_dice_lexer as pydice_lexer
+import python_dice.src.python_dice_syntax_objects as pydice_syntax_objects
 
 
-class PyDiceParser(i_pydice_parser.IPyDiceParser):
-    def __init__(self, lexer: i_pydice_lexer.IPyDiceLexer = None):
+class PythonDiceParser(i_pydice_parser.IPythonDiceParser):
+    def __init__(self, lexer: i_pydice_lexer.IPythonDiceLexer = None):
         if lexer is None:
-            lexer = pydice_lexer.PyDiceLexer()
+            lexer = pydice_lexer.PythonDiceLexer()
 
         self._lexer = lexer
         parser_generator = rply.ParserGenerator(

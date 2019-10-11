@@ -1,19 +1,19 @@
 import unittest
 import unittest.mock as mock
 
-import python_dice.src.pydice_lexer as pydice_lexer
-import python_dice.src.pydice_parser as pydice_parser
+import python_dice.src.python_dice_lexer as pydice_lexer
+import python_dice.src.python_dice_parser as pydice_parser
 
 
-class TestPyDiceParser(unittest.TestCase):
+class TestPythonDiceParser(unittest.TestCase):
     def setUp(self):
-        self._test_parser = pydice_parser.PyDiceParser()
-        self._mock_pydice_lexer = mock.create_autospec(pydice_lexer.PyDiceLexer)
-        self._mock_token_iter = iter(pydice_lexer.PyDiceLexer().lex("3"))
+        self._test_parser = pydice_parser.PythonDiceParser()
+        self._mock_pydice_lexer = mock.create_autospec(pydice_lexer.PythonDiceLexer)
+        self._mock_token_iter = iter(pydice_lexer.PythonDiceLexer().lex("3"))
         self._mock_pydice_lexer.lex.return_value = self._mock_token_iter
 
     def test_use_injected_lexer(self):
-        self._test_parser = pydice_parser.PyDiceParser(self._mock_pydice_lexer)
+        self._test_parser = pydice_parser.PythonDiceParser(self._mock_pydice_lexer)
         self._test_parser.parse("215678284")
         self._mock_pydice_lexer.lex.assert_called_once_with("215678284")
 
@@ -61,3 +61,24 @@ class TestPyDiceParser(unittest.TestCase):
         self.assertEqual(62, token.roll())
         self.assertEqual(62, token.max())
         self.assertEqual(62, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_integer_division(self):
+        token = self._test_parser.parse("37 // 4 + 2")
+        self.assertEqual(11, token.roll())
+        self.assertEqual(11, token.max())
+        self.assertEqual(11, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_integer_division_order_of_operation(self):
+        token = self._test_parser.parse("62 // 3 * 2")
+        self.assertEqual(40, token.roll())
+        self.assertEqual(40, token.max())
+        self.assertEqual(40, token.min())
+
+    # pylint: disable=maybe-no-member
+    def test_parser_integer_division_order_of_operation_two(self):
+        token = self._test_parser.parse("2 * 62 // 3")
+        self.assertEqual(41, token.roll())
+        self.assertEqual(41, token.max())
+        self.assertEqual(41, token.min())

@@ -1,11 +1,11 @@
 import unittest
 
-import python_dice.src.pydice_lexer as pydice_lexer
+import python_dice.src.python_dice_lexer as pydice_lexer
 
 
-class TestPyDiceLexer(unittest.TestCase):
+class TestPythonDiceLexer(unittest.TestCase):
     def setUp(self):
-        self._test_lexer = pydice_lexer.PyDiceLexer()
+        self._test_lexer = pydice_lexer.PythonDiceLexer()
 
     def test_lex_constant_integer(self):
         tokens = self._test_lexer.lex("1 3 4 5 -10 0 -10000000")

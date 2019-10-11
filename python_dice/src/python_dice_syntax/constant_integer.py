@@ -2,7 +2,7 @@ import typing
 
 import rply
 
-import python_dice.interface.pydice_syntax.i_dice_statement as i_dice_statement
+import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
 
 
 class ConstantInteger(i_dice_statement.IDiceSyntax):
