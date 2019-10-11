@@ -4,8 +4,8 @@ import unittest.mock as mock
 
 import rply
 
-import python_dice.interface.pydice_syntax.i_dice_statement as i_dice_statement
-import python_dice.src.pydice_syntax.add as add
+import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.python_dice_syntax.add as add
 
 
 class TestAdd(unittest.TestCase):

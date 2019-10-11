@@ -1,7 +1,7 @@
 import abc
 
 
-class IPyDiceLexer(abc.ABC):
+class IPythonDiceLexer(abc.ABC):
     @abc.abstractmethod
     def lex(self, input_text: str):
         """

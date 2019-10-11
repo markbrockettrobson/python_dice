@@ -1,7 +1,7 @@
 import abc
 
 
-class IPyDiceParser(abc.ABC):
+class IPythonDiceParser(abc.ABC):
     @abc.abstractmethod
     def parse(self, input_text: str):
         """

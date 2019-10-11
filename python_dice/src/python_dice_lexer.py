@@ -2,11 +2,11 @@ import typing
 
 import rply
 
-import python_dice.interface.i_pydice_lexer as i_pydice_lexer
-import python_dice.src.pydice_syntax_objects as pydice_syntax_objects
+import python_dice.interface.i_python_dice_lexer as i_pydice_lexer
+import python_dice.src.python_dice_syntax_objects as pydice_syntax_objects
 
 
-class PyDiceLexer(i_pydice_lexer.IPyDiceLexer):
+class PythonDiceLexer(i_pydice_lexer.IPythonDiceLexer):
     def __init__(self):
         partial_lexer = rply.LexerGenerator()
         for syntax in pydice_syntax_objects.LEXER_SYNTAX:

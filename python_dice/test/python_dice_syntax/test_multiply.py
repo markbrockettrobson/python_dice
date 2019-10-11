@@ -4,11 +4,11 @@ import unittest.mock as mock
 
 import rply
 
-import python_dice.interface.pydice_syntax.i_dice_statement as i_dice_statement
-import python_dice.src.pydice_syntax.multiply as multiply
+import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.python_dice_syntax.multiply as multiply
 
 
-class TestAdd(unittest.TestCase):
+class TestMultiply(unittest.TestCase):
     def setUp(self):
         self._mock_syntax = [
             mock.create_autospec(i_dice_statement.IDiceSyntax) for _ in range(2)
@@ -22,7 +22,9 @@ class TestAdd(unittest.TestCase):
         self._mock_syntax[0].__str__.return_value = "7"
         self._mock_syntax[1].__str__.return_value = "2"
 
-        self._test_add = multiply.Multiply(self._mock_syntax[0], self._mock_syntax[1])
+        self._test_multiply = multiply.Multiply(
+            self._mock_syntax[0], self._mock_syntax[1]
+        )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_multiply_add_production_function(self):
@@ -32,25 +34,25 @@ class TestAdd(unittest.TestCase):
         )
 
     def test_multiply_get_token_name(self):
-        self.assertEqual("MULTIPLY", self._test_add.get_token_name())
+        self.assertEqual("MULTIPLY", self._test_multiply.get_token_name())
         self.assertEqual("MULTIPLY", multiply.Multiply.get_token_name())
 
     def test_multiply_get_token_regex(self):
-        self.assertEqual(r"\*", self._test_add.get_token_regex())
+        self.assertEqual(r"\*", self._test_multiply.get_token_regex())
         self.assertEqual(r"\*", multiply.Multiply.get_token_regex())
 
     def test_multiply_roll(self):
         for _ in range(100):
-            self.assertEqual(40, self._test_add.roll())
+            self.assertEqual(40, self._test_multiply.roll())
 
     def test_multiply_max(self):
-        self.assertEqual(48, self._test_add.max())
+        self.assertEqual(48, self._test_multiply.max())
 
     def test_multiply_min(self):
-        self.assertEqual(16, self._test_add.min())
+        self.assertEqual(16, self._test_multiply.min())
 
     def test_multiply_str(self):
-        self.assertEqual("7 * 2", str(self._test_add))
+        self.assertEqual("7 * 2", str(self._test_multiply))
 
     def test_multiply_regex_will_match(self):
         test_cases = ["*"]

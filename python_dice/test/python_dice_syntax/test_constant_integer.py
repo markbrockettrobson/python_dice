@@ -4,7 +4,7 @@ import unittest.mock as mock
 
 import rply
 
-import python_dice.src.pydice_syntax.constant_integer as constant_integer
+import python_dice.src.python_dice_syntax.constant_integer as constant_integer
 
 
 class TestConstantInteger(unittest.TestCase):
