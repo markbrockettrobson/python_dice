@@ -3,6 +3,7 @@ import typing
 import rply
 
 import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.probability_distribution as probability_distribution
 
 
 class ConstantInteger(i_dice_statement.IDiceSyntax):
@@ -42,3 +43,8 @@ class ConstantInteger(i_dice_statement.IDiceSyntax):
 
     def __str__(self) -> str:
         return self._number
+
+    def get_probability_distribution(
+        self
+    ) -> probability_distribution.ProbabilityDistribution:
+        return probability_distribution.ProbabilityDistribution({int(self._number): 1})
