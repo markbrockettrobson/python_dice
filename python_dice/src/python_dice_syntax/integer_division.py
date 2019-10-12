@@ -3,6 +3,7 @@ import typing
 import rply
 
 import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.probability_distribution as probability_distribution
 
 
 class IntegerDivision(i_dice_statement.IDiceSyntax):
@@ -37,13 +38,30 @@ class IntegerDivision(i_dice_statement.IDiceSyntax):
         self._expression_two = expression_two
 
     def roll(self) -> int:
-        return self._expression_one.roll() // self._expression_two.roll()
+        divisor = self._expression_two.roll()
+        if divisor == 0:
+            raise ZeroDivisionError()
+        return self._expression_one.roll() // divisor
 
     def max(self) -> int:
-        return self._expression_one.max() // self._expression_two.max()
+        divisor = self._expression_two.get_probability_distribution()
+        if divisor.contains_zero():
+            raise ZeroDivisionError(f"{str(self)}, divisor could be zero")
+        return self.get_probability_distribution().max()
 
     def min(self) -> int:
-        return self._expression_one.min() // self._expression_two.min()
+        divisor = self._expression_two.get_probability_distribution()
+        if divisor.contains_zero():
+            raise ZeroDivisionError(f"{str(self)}, divisor could be zero")
+        return self.get_probability_distribution().min()
 
     def __str__(self) -> str:
         return f"{str(self._expression_one)} // {str(self._expression_two)}"
+
+    def get_probability_distribution(
+        self
+    ) -> probability_distribution.ProbabilityDistribution:
+        return (
+            self._expression_one.get_probability_distribution()
+            // self._expression_two.get_probability_distribution()
+        )

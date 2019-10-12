@@ -1,6 +1,8 @@
 import abc
 import typing
 
+import matplotlib.pyplot as pyplot
+
 
 class IProbabilityDistribution(abc.ABC):
     @abc.abstractmethod
@@ -20,10 +22,36 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
-    def show_histogram(self) -> None:
+    def show_histogram(self) -> pyplot.Figure:
         """
 
         prints a plot of the distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <pyplot.Figure>
+        """
+
+    @abc.abstractmethod
+    def max(self) -> int:
+        """
+
+        :returns: the max roll that could be made
+                  <int>
+        """
+
+    @abc.abstractmethod
+    def min(self) -> int:
+        """
+
+        :returns: the min roll that could be made
+                  <int>
+        """
+
+    @abc.abstractmethod
+    def contains_zero(self) -> bool:
+        """
+
+        :returns: returns true if the distribution contains zero
+                  <bool>
         """
 
     @abc.abstractmethod

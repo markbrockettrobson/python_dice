@@ -71,3 +71,9 @@ class TestConstantInteger(unittest.TestCase):
                 re.match(constant_integer.ConstantInteger.get_token_regex(), test_case),
                 "matched on case test_case %s" % test_case,
             )
+
+    def test_subtract_get_probability_distribution(self):
+        self.assertEqual(
+            {14: 1},
+            self._test_constant_integers.get_probability_distribution().get_result_map(),
+        )

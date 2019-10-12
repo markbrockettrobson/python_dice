@@ -5,6 +5,7 @@ import unittest.mock as mock
 import rply
 
 import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.src.probability_distribution as probability_distribution
 import python_dice.src.python_dice_syntax.subtract as subtract
 
 
@@ -14,13 +15,24 @@ class TestSubtract(unittest.TestCase):
             mock.create_autospec(i_dice_statement.IDiceSyntax) for _ in range(2)
         ]
         self._mock_syntax[0].roll.return_value = 10
-        self._mock_syntax[1].roll.return_value = 4
         self._mock_syntax[0].max.return_value = 8
-        self._mock_syntax[1].max.return_value = 6
         self._mock_syntax[0].min.return_value = 6
-        self._mock_syntax[1].min.return_value = 8
         self._mock_syntax[0].__str__.return_value = "7"
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-2: 1, 4: 1}
+        )
+
+        self._mock_syntax[1].roll.return_value = 4
+        self._mock_syntax[1].max.return_value = 6
+        self._mock_syntax[1].min.return_value = 8
         self._mock_syntax[1].__str__.return_value = "2"
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {8: 1, -3: 2}
+        )
 
         self._test_subtract = subtract.Subtract(
             self._mock_syntax[0], self._mock_syntax[1]
@@ -46,10 +58,10 @@ class TestSubtract(unittest.TestCase):
             self.assertEqual(6, self._test_subtract.roll())
 
     def test_subtract_max(self):
-        self.assertEqual(2, self._test_subtract.max())
+        self.assertEqual(7, self._test_subtract.max())
 
     def test_subtract_min(self):
-        self.assertEqual(-2, self._test_subtract.min())
+        self.assertEqual(-10, self._test_subtract.min())
 
     def test_subtract_str(self):
         self.assertEqual("7 - 2", str(self._test_subtract))
@@ -69,3 +81,19 @@ class TestSubtract(unittest.TestCase):
                 re.match(subtract.Subtract.get_token_regex(), test_case),
                 "matched on case test_case %s" % test_case,
             )
+
+    def test_subtract_get_probability_distribution(self):
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {10: 1, -12: 2, 0: 1}
+        )
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {2: 1, 3: 2}
+        )
+        self.assertEqual(
+            {8: 1, -14: 2, -2: 1, 7: 2, -15: 4, -3: 2},
+            self._test_subtract.get_probability_distribution().get_result_map(),
+        )

@@ -2,6 +2,8 @@ import abc
 
 import rply
 
+import python_dice.src.probability_distribution as probability_distribution
+
 
 class IDiceSyntax(abc.ABC, rply.token.BaseBox):
     @staticmethod
@@ -52,4 +54,13 @@ class IDiceSyntax(abc.ABC, rply.token.BaseBox):
 
         :return: returns a smallest possible result of a roll of the dice
                  <int>
+        """
+
+    @abc.abstractmethod
+    def get_probability_distribution(
+        self
+    ) -> probability_distribution.ProbabilityDistribution:
+        """
+
+        :return: the probability of the statement
         """

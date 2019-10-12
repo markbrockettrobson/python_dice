@@ -1,24 +1,21 @@
-import typing
 import operator
+import typing
+
 import matplotlib.pyplot as pyplot
 
 import python_dice.interface.i_probability_distribution as i_probability_distribution
 
 
 class ProbabilityDistribution(i_probability_distribution.IProbabilityDistribution):
-    def __init__(self):
+    def __init__(self, result_map: typing.Optional[typing.Dict[int, int]] = None):
         self._outcome_count = 0
-        self._result_map: typing.Dict[int, int] = {}
+        self._result_map: typing.Dict[
+            int, int
+        ] = {} if result_map is None else result_map
+        for value in self._result_map.values():
+            self._outcome_count += value
 
-    @classmethod
-    def build_form_result_map(cls, result_map: typing.Dict[int, int]):
-        distribution = ProbabilityDistribution()
-        for key, value in result_map.items():
-            distribution._result_map[key] = value
-            distribution._outcome_count += value
-        return distribution
-
-    def show_histogram(self) -> None:
+    def show_histogram(self) -> pyplot.Figure:
         item_list = [item for item in self._get_show_histogram_form().items()]
         item_list.sort(key=lambda tup: tup[0])
         y_values = [value for _, value in item_list]
@@ -30,6 +27,16 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         axis.hist(x_values, weights=y_values, bins=bins)
         axis.grid(True, linestyle="-.")
         figure.show()
+        return figure
+
+    def max(self) -> int:
+        return max(self._result_map.keys())
+
+    def min(self) -> int:
+        return min(self._result_map.keys())
+
+    def contains_zero(self) -> bool:
+        return 0 in self._result_map and self._result_map[0] != 0
 
     def get_result_map(self) -> typing.Dict[int, int]:
         return self._result_map
@@ -71,22 +78,22 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(operator.add, other)
-        return ProbabilityDistribution.build_form_result_map(new_result_map)
+        return ProbabilityDistribution(new_result_map)
 
     def __sub__(
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(operator.sub, other)
-        return ProbabilityDistribution.build_form_result_map(new_result_map)
+        return ProbabilityDistribution(new_result_map)
 
     def __mul__(
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(operator.mul, other)
-        return ProbabilityDistribution.build_form_result_map(new_result_map)
+        return ProbabilityDistribution(new_result_map)
 
     def __floordiv__(
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(operator.floordiv, other)
-        return ProbabilityDistribution.build_form_result_map(new_result_map)
+        return ProbabilityDistribution(new_result_map)
