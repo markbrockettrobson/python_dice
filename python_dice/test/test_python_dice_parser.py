@@ -24,7 +24,9 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assertEqual(215678284, token.roll())
         self.assertEqual(215678284, token.max())
         self.assertEqual(215678284, token.min())
-        self.assertEqual({215678284: 1}, token.get_probability_distribution().get_result_map())
+        self.assertEqual(
+            {215678284: 1}, token.get_probability_distribution().get_result_map()
+        )
 
     # pylint: disable=maybe-no-member
     def test_parser_add(self):
@@ -33,7 +35,9 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assertEqual(-17, token.roll())
         self.assertEqual(-17, token.max())
         self.assertEqual(-17, token.min())
-        self.assertEqual({-17: 1}, token.get_probability_distribution().get_result_map())
+        self.assertEqual(
+            {-17: 1}, token.get_probability_distribution().get_result_map()
+        )
 
     # pylint: disable=maybe-no-member
     def test_parser_subtract(self):
@@ -58,7 +62,9 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assertEqual(-58, token.roll())
         self.assertEqual(-58, token.max())
         self.assertEqual(-58, token.min())
-        self.assertEqual({-58: 1}, token.get_probability_distribution().get_result_map())
+        self.assertEqual(
+            {-58: 1}, token.get_probability_distribution().get_result_map()
+        )
 
     # pylint: disable=maybe-no-member
     def test_parser_multiply_order_of_operation(self):
