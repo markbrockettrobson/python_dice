@@ -5,6 +5,7 @@ cover_pylib = False
 omit =
     */test/*
     */interfaces/*
+    */interface/*
 [report]
 # Regexes for lines to exclude from consideration
 exclude_lines =
