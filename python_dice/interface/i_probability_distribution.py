@@ -97,5 +97,13 @@ class IProbabilityDistribution(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def __and__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __or__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
     def not_operator(self) -> "IProbabilityDistribution":
         pass
