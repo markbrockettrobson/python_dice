@@ -13,7 +13,7 @@ class TestConstantIntegerExpression(unittest.TestCase):
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
-    def test_constant_integers_add_production_function(self):
+    def test_constant_integer_add_production_function(self):
         constant_integer_expression.ConstantIntegerExpression.add_production_function(
             self._mock_parser_gen
         )
@@ -21,20 +21,20 @@ class TestConstantIntegerExpression(unittest.TestCase):
             """expression : CONSTANT_INTEGER"""
         )
 
-    def test_constant_integers_roll(self):
+    def test_constant_integer_roll(self):
         for _ in range(100):
             self.assertEqual(14, self._test_constant_integers.roll())
 
-    def test_constant_integers_max(self):
+    def test_constant_integer_max(self):
         self.assertEqual(14, self._test_constant_integers.max())
 
-    def test_constant_integers_min(self):
+    def test_constant_integer_min(self):
         self.assertEqual(14, self._test_constant_integers.min())
 
-    def test_constant_integers_str(self):
+    def test_constant_integer_str(self):
         self.assertEqual("14", str(self._test_constant_integers))
 
-    def test_subtract_get_probability_distribution(self):
+    def test_constant_integer_probability_distribution(self):
         self.assertEqual(
             {14: 1},
             self._test_constant_integers.get_probability_distribution().get_result_map(),

@@ -111,3 +111,27 @@ class TestPythonDiceLexer(unittest.TestCase):
             ["(", "(", "1d4", "*", "4d6", ")", "+", "10d1", ")", "-", "-10000000"],
             [token.value for token in tokens],
         )
+
+    def test_lex_constant_binary(self):
+        tokens = self._test_lexer.lex("((1d4 * True) + 10d1) - False")
+
+        self.assertEqual(
+            [
+                "OPEN_PARENTHESIS",
+                "OPEN_PARENTHESIS",
+                "DICE",
+                "MULTIPLY",
+                "CONSTANT_BINARY",
+                "CLOSE_PARENTHESIS",
+                "ADD",
+                "DICE",
+                "CLOSE_PARENTHESIS",
+                "SUBTRACT",
+                "CONSTANT_BINARY",
+            ],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["(", "(", "1d4", "*", "True", ")", "+", "10d1", ")", "-", "False"],
+            [token.value for token in tokens],
+        )
