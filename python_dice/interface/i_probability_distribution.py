@@ -71,3 +71,31 @@ class IProbabilityDistribution(abc.ABC):
         self, other: "IProbabilityDistribution"
     ) -> "IProbabilityDistribution":
         pass
+
+    @abc.abstractmethod
+    def __eq__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __ne__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __lt__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __le__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __gt__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __ge__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def not_operator(self) -> "IProbabilityDistribution":
+        pass

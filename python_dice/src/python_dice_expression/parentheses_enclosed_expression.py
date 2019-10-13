@@ -32,7 +32,7 @@ class ParenthesisEnclosedExpression(i_dice_expression.IDiceExpression):
         return self._expression.min()
 
     def __str__(self) -> str:
-        return f"( {str(self._expression)} )"
+        return f"({str(self._expression)})"
 
     def get_probability_distribution(
         self

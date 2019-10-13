@@ -97,3 +97,66 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(operator.floordiv, other)
         return ProbabilityDistribution(new_result_map)
+
+    def __eq__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.eq(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __ne__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.ne(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __lt__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.lt(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __le__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.le(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __gt__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.gt(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __ge__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.ge(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def not_operator(self) -> "ProbabilityDistribution":
+        new_result_map = {}
+
+        def safe_add(key, value):
+            if key not in new_result_map:
+                new_result_map[key] = 0
+            new_result_map[key] += value
+
+        for result_key, result_value in self._result_map.items():
+            if result_key:
+                safe_add(0, result_value)
+            else:
+                safe_add(1, result_value)
+        return ProbabilityDistribution(new_result_map)
