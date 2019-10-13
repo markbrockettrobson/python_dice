@@ -4,8 +4,6 @@ import unittest.mock as mock
 
 import rply
 
-import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
-import python_dice.src.probability_distribution as probability_distribution
 import python_dice.src.python_dice_syntax.dice as dice
 
 

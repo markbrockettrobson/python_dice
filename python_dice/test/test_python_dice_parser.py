@@ -160,30 +160,6 @@ class TestPythonDiceParser(unittest.TestCase):
         )
 
     # pylint: disable=maybe-no-member
-    def test_parser_dice_multiply(self):
-        token = self._test_parser.parse("2d4 * 1d2")
-        expected_outcome = {
-            2: 1,
-            4: 4,
-            3: 2,
-            6: 5,
-            8: 4,
-            5: 4,
-            10: 4,
-            12: 3,
-            7: 2,
-            14: 2,
-            16: 1,
-        }
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(16, token.max())
-        self.assertEqual(2, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
-
-    # pylint: disable=maybe-no-member
     def test_parser_dice_division(self):
         token = self._test_parser.parse("2d4 // 1d2")
         expected_outcome = {2: 8, 1: 3, 3: 7, 4: 4, 5: 4, 6: 3, 7: 2, 8: 1}
