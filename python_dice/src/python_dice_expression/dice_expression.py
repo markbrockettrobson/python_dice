@@ -3,11 +3,11 @@ import typing
 import numpy
 import rply
 
-import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
 import python_dice.src.probability_distribution as probability_distribution
 
 
-class Dice(i_dice_statement.IDiceSyntax):
+class DiceExpression(i_dice_expression.IDiceExpression):
     TOKEN_NAME = "DICE"
     TOKEN_REGEX = r"\d+d\d+"
     TOKEN_RULE = """expression : DICE"""
@@ -16,19 +16,11 @@ class Dice(i_dice_statement.IDiceSyntax):
     def add_production_function(
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
-        @parser_generator.production(Dice.TOKEN_RULE)
-        def dice(tokens) -> i_dice_statement.IDiceSyntax:
-            return Dice(tokens[0].value)
+        @parser_generator.production(DiceExpression.TOKEN_RULE)
+        def dice(tokens) -> i_dice_expression.IDiceExpression:
+            return DiceExpression(tokens[0].value)
 
         return dice
-
-    @staticmethod
-    def get_token_name() -> str:
-        return Dice.TOKEN_NAME
-
-    @staticmethod
-    def get_token_regex() -> str:
-        return Dice.TOKEN_REGEX
 
     def __init__(self, string_form: str):
         self._string_form = string_form

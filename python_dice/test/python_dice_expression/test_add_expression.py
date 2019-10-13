@@ -1,18 +1,17 @@
-import re
 import unittest
 import unittest.mock as mock
 
 import rply
 
-import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
 import python_dice.src.probability_distribution as probability_distribution
-import python_dice.src.python_dice_syntax.add as add
+import python_dice.src.python_dice_expression.add_expression as add_expression
 
 
-class TestAdd(unittest.TestCase):
+class TestAddExpression(unittest.TestCase):
     def setUp(self):
         self._mock_syntax = [
-            mock.create_autospec(i_dice_statement.IDiceSyntax) for _ in range(2)
+            mock.create_autospec(i_dice_expression.IDiceExpression) for _ in range(2)
         ]
         self._mock_syntax[0].roll.return_value = 10
         self._mock_syntax[0].max.return_value = 8
@@ -34,22 +33,16 @@ class TestAdd(unittest.TestCase):
             {8: 1, -3: 2}
         )
 
-        self._test_add = add.Add(self._mock_syntax[0], self._mock_syntax[1])
+        self._test_add = add_expression.AddExpression(
+            self._mock_syntax[0], self._mock_syntax[1]
+        )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_add_add_production_function(self):
-        add.Add.add_production_function(self._mock_parser_gen)
+        add_expression.AddExpression.add_production_function(self._mock_parser_gen)
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : expression ADD expression"""
         )
-
-    def test_add_get_token_name(self):
-        self.assertEqual("ADD", self._test_add.get_token_name())
-        self.assertEqual("ADD", add.Add.get_token_name())
-
-    def test_add_get_token_regex(self):
-        self.assertEqual(r"\+", self._test_add.get_token_regex())
-        self.assertEqual(r"\+", add.Add.get_token_regex())
 
     def test_add_roll(self):
         for _ in range(100):
@@ -63,22 +56,6 @@ class TestAdd(unittest.TestCase):
 
     def test_add_str(self):
         self.assertEqual("7 + 2", str(self._test_add))
-
-    def test_add_regex_will_match(self):
-        test_cases = ["+"]
-        for test_case in test_cases:
-            self.assertTrue(
-                re.match(add.Add.get_token_regex(), test_case),
-                "did not match on case test_case %s" % test_case,
-            )
-
-    def test_add_regex_will_not_match(self):
-        test_cases = ["a", "just a string", "", "1", " ", "-", "*", "("]
-        for test_case in test_cases:
-            self.assertIsNone(
-                re.match(add.Add.get_token_regex(), test_case),
-                "matched on case test_case %s" % test_case,
-            )
 
     def test_add_get_probability_distribution(self):
         self._mock_syntax[

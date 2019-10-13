@@ -1,18 +1,17 @@
-import re
 import unittest
 import unittest.mock as mock
 
 import rply
 
-import python_dice.interface.python_dice_syntax.i_dice_statement as i_dice_statement
+import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
 import python_dice.src.probability_distribution as probability_distribution
-import python_dice.src.python_dice_syntax.multiply as multiply
+import python_dice.src.python_dice_expression.multiply_expression as multiply_expression
 
 
-class TestMultiply(unittest.TestCase):
+class TestMultiplyExpression(unittest.TestCase):
     def setUp(self):
         self._mock_syntax = [
-            mock.create_autospec(i_dice_statement.IDiceSyntax) for _ in range(2)
+            mock.create_autospec(i_dice_expression.IDiceExpression) for _ in range(2)
         ]
         self._mock_syntax[0].roll.return_value = 10
         self._mock_syntax[0].max.return_value = 8
@@ -34,24 +33,18 @@ class TestMultiply(unittest.TestCase):
             {8: 1, -3: 2}
         )
 
-        self._test_multiply = multiply.Multiply(
+        self._test_multiply = multiply_expression.MultiplyExpression(
             self._mock_syntax[0], self._mock_syntax[1]
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_multiply_add_production_function(self):
-        multiply.Multiply.add_production_function(self._mock_parser_gen)
+        multiply_expression.MultiplyExpression.add_production_function(
+            self._mock_parser_gen
+        )
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : expression MULTIPLY expression"""
         )
-
-    def test_multiply_get_token_name(self):
-        self.assertEqual("MULTIPLY", self._test_multiply.get_token_name())
-        self.assertEqual("MULTIPLY", multiply.Multiply.get_token_name())
-
-    def test_multiply_get_token_regex(self):
-        self.assertEqual(r"\*", self._test_multiply.get_token_regex())
-        self.assertEqual(r"\*", multiply.Multiply.get_token_regex())
 
     def test_multiply_roll(self):
         for _ in range(100):
@@ -65,22 +58,6 @@ class TestMultiply(unittest.TestCase):
 
     def test_multiply_str(self):
         self.assertEqual("7 * 2", str(self._test_multiply))
-
-    def test_multiply_regex_will_match(self):
-        test_cases = ["*"]
-        for test_case in test_cases:
-            self.assertTrue(
-                re.match(multiply.Multiply.get_token_regex(), test_case),
-                "did not match on case test_case %s" % test_case,
-            )
-
-    def test_multiply_regex_will_not_match(self):
-        test_cases = ["a", "just a string", "", "1", " ", "-", "+", "("]
-        for test_case in test_cases:
-            self.assertIsNone(
-                re.match(multiply.Multiply.get_token_regex(), test_case),
-                "matched on case test_case %s" % test_case,
-            )
 
     def test_multiply_get_probability_distribution(self):
         self._mock_syntax[
