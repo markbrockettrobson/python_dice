@@ -20,7 +20,6 @@ class TestPythonDiceParser(unittest.TestCase):
     # pylint: disable=maybe-no-member
     def test_parser_constant_integer(self):
         token = self._test_parser.parse("215678284")
-        self.assertEqual("CONSTANT_INTEGER", token.get_token_name())
         self.assertEqual(215678284, token.roll())
         self.assertEqual(215678284, token.max())
         self.assertEqual(215678284, token.min())
@@ -31,7 +30,6 @@ class TestPythonDiceParser(unittest.TestCase):
     # pylint: disable=maybe-no-member
     def test_parser_add(self):
         token = self._test_parser.parse("3 + -20")
-        self.assertEqual("ADD", token.get_token_name())
         self.assertEqual(-17, token.roll())
         self.assertEqual(-17, token.max())
         self.assertEqual(-17, token.min())
@@ -42,7 +40,6 @@ class TestPythonDiceParser(unittest.TestCase):
     # pylint: disable=maybe-no-member
     def test_parser_subtract(self):
         token = self._test_parser.parse("3 - -20")
-        self.assertEqual("SUBTRACT", token.get_token_name())
         self.assertEqual(23, token.roll())
         self.assertEqual(23, token.max())
         self.assertEqual(23, token.min())
@@ -150,7 +147,6 @@ class TestPythonDiceParser(unittest.TestCase):
             14: 2,
             16: 1,
         }
-        token.get_probability_distribution().show_histogram()
         for _ in range(1000):
             self.assertIn(token.roll(), expected_outcome.keys())
         self.assertEqual(16, token.max())
