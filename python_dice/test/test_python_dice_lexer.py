@@ -87,3 +87,27 @@ class TestPythonDiceLexer(unittest.TestCase):
             ["1d4", "*", "4d6", "+", "10d1", "-", "-10000000"],
             [token.value for token in tokens],
         )
+
+    def test_lex_parenthesis(self):
+        tokens = self._test_lexer.lex("((1d4 * 4d6) + 10d1) - -10000000")
+
+        self.assertEqual(
+            [
+                "OPEN_PARENTHESIS",
+                "OPEN_PARENTHESIS",
+                "DICE",
+                "MULTIPLY",
+                "DICE",
+                "CLOSE_PARENTHESIS",
+                "ADD",
+                "DICE",
+                "CLOSE_PARENTHESIS",
+                "SUBTRACT",
+                "CONSTANT_INTEGER",
+            ],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["(", "(", "1d4", "*", "4d6", ")", "+", "10d1", ")", "-", "-10000000"],
+            [token.value for token in tokens],
+        )
