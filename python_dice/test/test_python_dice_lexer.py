@@ -75,3 +75,15 @@ class TestPythonDiceLexer(unittest.TestCase):
             ["1", "*", "4", "*", "-10", "*", "-10000000"],
             [token.value for token in tokens],
         )
+
+    def test_lex_dice(self):
+        tokens = self._test_lexer.lex("1d4 * 4d6 + 10d1 - -10000000")
+
+        self.assertEqual(
+            ["DICE", "MULTIPLY", "DICE", "ADD", "DICE", "SUBTRACT", "CONSTANT_INTEGER"],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["1d4", "*", "4d6", "+", "10d1", "-", "-10000000"],
+            [token.value for token in tokens],
+        )

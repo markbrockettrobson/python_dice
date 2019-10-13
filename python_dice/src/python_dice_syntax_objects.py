@@ -1,10 +1,12 @@
 import python_dice.src.python_dice_syntax.add as add
 import python_dice.src.python_dice_syntax.constant_integer as constant_integer
+import python_dice.src.python_dice_syntax.dice as dice
 import python_dice.src.python_dice_syntax.integer_division as integer_division
 import python_dice.src.python_dice_syntax.multiply as multiply
 import python_dice.src.python_dice_syntax.subtract as subtract
 
 LEXER_SYNTAX = [
+    dice.Dice,
     constant_integer.ConstantInteger,
     add.Add,
     subtract.Subtract,
