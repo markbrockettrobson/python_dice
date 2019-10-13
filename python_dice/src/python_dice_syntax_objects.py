@@ -4,9 +4,9 @@ import python_dice.src.python_dice_expression.constant_integer_expression as con
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
 import python_dice.src.python_dice_expression.multiply_expression as multiply_expression
+import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
-import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
 import python_dice.src.python_dice_syntax.binary_operator_syntax as binary_operator_syntax
 import python_dice.src.python_dice_syntax.close_parenthesis_syntax as close_parenthesis_syntax
@@ -46,18 +46,8 @@ PARSER_EXPRESSIONS = [
 ]
 
 PRECEDENCE = [
-    (
-        "left",
-        [
-            open_parenthesis_syntax.OpenParenthesisSyntax.get_token_name()
-        ],
-    ),
-    (
-        "left",
-        [
-            not_syntax.NotSyntax.get_token_name()
-        ],
-    ),
+    ("left", [open_parenthesis_syntax.OpenParenthesisSyntax.get_token_name()]),
+    ("left", [not_syntax.NotSyntax.get_token_name()]),
     (
         "left",
         [
@@ -72,10 +62,5 @@ PRECEDENCE = [
             multiply_syntax.MultiplySyntax.get_token_name(),
         ],
     ),
-    (
-        "left",
-        [
-            binary_operator_syntax.BinaryOperatorSyntax.get_token_name()
-        ],
-    ),
+    ("left", [binary_operator_syntax.BinaryOperatorSyntax.get_token_name()]),
 ]

@@ -20,10 +20,7 @@ class NotExpression(i_dice_expression.IDiceExpression):
 
         return not_operation
 
-    def __init__(
-        self,
-        expression: i_dice_expression.IDiceExpression,
-    ):
+    def __init__(self, expression: i_dice_expression.IDiceExpression):
         self._expression = expression
 
     def roll(self) -> int:
@@ -41,6 +38,4 @@ class NotExpression(i_dice_expression.IDiceExpression):
     def get_probability_distribution(
         self
     ) -> probability_distribution.ProbabilityDistribution:
-        return (
-            self._expression.get_probability_distribution().not_operator()
-        )
+        return self._expression.get_probability_distribution().not_operator()
