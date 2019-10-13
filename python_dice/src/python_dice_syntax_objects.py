@@ -20,7 +20,7 @@ LEXER_SYNTAX = [
     integer_division_syntax.IntegerDivisionSyntax,
 ]
 
-LEXER_Expression = [
+PARSER_EXPRESSIONS = [
     dice_expression.DiceExpression,
     constant_integer_expression.ConstantIntegerExpression,
     add_expression.AddExpression,

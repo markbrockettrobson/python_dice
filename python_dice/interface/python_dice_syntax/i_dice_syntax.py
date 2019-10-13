@@ -2,8 +2,6 @@ import abc
 
 import rply
 
-import python_dice.src.probability_distribution as probability_distribution
-
 
 class IDiceSyntax(abc.ABC, rply.token.BaseBox):
     @staticmethod

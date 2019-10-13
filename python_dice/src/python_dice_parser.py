@@ -18,7 +18,7 @@ class PythonDiceParser(i_pydice_parser.IPythonDiceParser):
             precedence=pydice_syntax_objects.PRECEDENCE,
         )
 
-        for syntax in pydice_syntax_objects.LEXER_Expression:
+        for syntax in pydice_syntax_objects.PARSER_EXPRESSIONS:
             syntax.add_production_function(parser_generator)
 
         self._parser = parser_generator.build()
