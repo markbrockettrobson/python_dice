@@ -3,15 +3,20 @@ import python_dice.src.python_dice_expression.constant_integer_expression as con
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
 import python_dice.src.python_dice_expression.multiply_expression as multiply_expression
+import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
+import python_dice.src.python_dice_syntax.close_parenthesis_syntax as close_parenthesis_syntax
 import python_dice.src.python_dice_syntax.constant_integer_syntax as constant_integer_syntax
 import python_dice.src.python_dice_syntax.dice_syntax as dice_syntax
 import python_dice.src.python_dice_syntax.integer_division_syntax as integer_division_syntax
 import python_dice.src.python_dice_syntax.multiply_syntax as multiply_syntax
+import python_dice.src.python_dice_syntax.open_parenthesis_syntax as open_parenthesis_syntax
 import python_dice.src.python_dice_syntax.subtract_syntax as subtract_syntax
 
 LEXER_SYNTAX = [
+    open_parenthesis_syntax.OpenParenthesisSyntax,
+    close_parenthesis_syntax.CloseParenthesisSyntax,
     dice_syntax.DiceSyntax,
     constant_integer_syntax.ConstantIntegerSyntax,
     add_syntax.AddSyntax,
@@ -21,6 +26,7 @@ LEXER_SYNTAX = [
 ]
 
 PARSER_EXPRESSIONS = [
+    parentheses_enclosed_expression.ParenthesisEnclosedExpression,
     dice_expression.DiceExpression,
     constant_integer_expression.ConstantIntegerExpression,
     add_expression.AddExpression,

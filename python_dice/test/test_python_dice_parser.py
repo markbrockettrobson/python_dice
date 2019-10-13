@@ -229,3 +229,15 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assertEqual(
             expected_outcome, token.get_probability_distribution().get_result_map()
         )
+
+    # pylint: disable=maybe-no-member
+    def test_parser_parenthesis_enclosed_expression(self):
+        token = self._test_parser.parse("(1d4 + 2 )// 1d2")
+        expected_outcome = {1: 1, 2: 2, 3: 2, 4: 1, 5: 1, 6: 1}
+        for _ in range(1000):
+            self.assertIn(token.roll(), expected_outcome.keys())
+        self.assertEqual(6, token.max())
+        self.assertEqual(1, token.min())
+        self.assertEqual(
+            expected_outcome, token.get_probability_distribution().get_result_map()
+        )
