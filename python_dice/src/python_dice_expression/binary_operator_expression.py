@@ -41,8 +41,12 @@ class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
         self._expression_two = expression_two
 
     def roll(self) -> int:
-        return self.OPERATOR_MAP[self._operator](
-            self._expression_one.roll(), self._expression_two.roll()
+        return (
+            1
+            if self.OPERATOR_MAP[self._operator](
+                self._expression_one.roll(), self._expression_two.roll()
+            )
+            else 0
         )
 
     def max(self) -> int:

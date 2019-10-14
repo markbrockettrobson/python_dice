@@ -146,6 +146,22 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         )
         return ProbabilityDistribution(new_result_map)
 
+    def __and__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.and_(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
+    def __or__(
+        self, other: i_probability_distribution.IProbabilityDistribution
+    ) -> "ProbabilityDistribution":
+        new_result_map = self._combine_distributions(
+            lambda a, b: 1 if operator.or_(a, b) else 0, other
+        )
+        return ProbabilityDistribution(new_result_map)
+
     def not_operator(self) -> "ProbabilityDistribution":
         new_result_map = {}
 
