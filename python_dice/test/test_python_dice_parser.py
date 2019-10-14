@@ -18,120 +18,75 @@ class TestPythonDiceParser(unittest.TestCase):
         self._mock_pydice_lexer.lex.assert_called_once_with("215678284")
 
     # pylint: disable=maybe-no-member
+    def assert_distribution(self, token, expected_outcome, min_value, max_value):
+        for _ in range(1000):
+            self.assertIn(token.roll(), expected_outcome.keys())
+        self.assertEqual(max_value, token.max())
+        self.assertEqual(min_value, token.min())
+        self.assertEqual(
+            expected_outcome, token.get_probability_distribution().get_result_map()
+        )
+
     def test_parser_constant_integer(self):
         token = self._test_parser.parse("215678284")
-        self.assertEqual(215678284, token.roll())
-        self.assertEqual(215678284, token.max())
-        self.assertEqual(215678284, token.min())
-        self.assertEqual(
-            {215678284: 1}, token.get_probability_distribution().get_result_map()
-        )
+        expected_outcome = {215678284: 1}
+        self.assert_distribution(token, expected_outcome, 215678284, 215678284)
 
-    # pylint: disable=maybe-no-member
     def test_parser_add(self):
         token = self._test_parser.parse("3 + -20")
-        self.assertEqual(-17, token.roll())
-        self.assertEqual(-17, token.max())
-        self.assertEqual(-17, token.min())
-        self.assertEqual(
-            {-17: 1}, token.get_probability_distribution().get_result_map()
-        )
+        expected_outcome = {-17: 1}
+        self.assert_distribution(token, expected_outcome, -17, -17)
 
-    # pylint: disable=maybe-no-member
     def test_parser_subtract(self):
         token = self._test_parser.parse("3 - -20")
-        self.assertEqual(23, token.roll())
-        self.assertEqual(23, token.max())
-        self.assertEqual(23, token.min())
-        self.assertEqual({23: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {23: 1}
+        self.assert_distribution(token, expected_outcome, 23, 23)
 
-    # pylint: disable=maybe-no-member
     def test_parser_add_and_subtract(self):
         token = self._test_parser.parse("3 - -20 + 2")
-        self.assertEqual(25, token.roll())
-        self.assertEqual(25, token.max())
-        self.assertEqual(25, token.min())
-        self.assertEqual({25: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {25: 1}
+        self.assert_distribution(token, expected_outcome, 25, 25)
 
-    # pylint: disable=maybe-no-member
     def test_parser_multiply(self):
         token = self._test_parser.parse("3 * -20 + 2")
-        self.assertEqual(-58, token.roll())
-        self.assertEqual(-58, token.max())
-        self.assertEqual(-58, token.min())
-        self.assertEqual(
-            {-58: 1}, token.get_probability_distribution().get_result_map()
-        )
+        expected_outcome = {-58: 1}
+        self.assert_distribution(token, expected_outcome, -58, -58)
 
-    # pylint: disable=maybe-no-member
     def test_parser_multiply_order_of_operation(self):
         token = self._test_parser.parse("2 - 3 * -20")
-        self.assertEqual(62, token.roll())
-        self.assertEqual(62, token.max())
-        self.assertEqual(62, token.min())
-        self.assertEqual({62: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {62: 1}
+        self.assert_distribution(token, expected_outcome, 62, 62)
 
-    # pylint: disable=maybe-no-member
     def test_parser_integer_division(self):
         token = self._test_parser.parse("37 // 4 + 2")
-        self.assertEqual(11, token.roll())
-        self.assertEqual(11, token.max())
-        self.assertEqual(11, token.min())
-        self.assertEqual({11: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {11: 1}
+        self.assert_distribution(token, expected_outcome, 11, 11)
 
-    # pylint: disable=maybe-no-member
     def test_parser_integer_division_order_of_operation(self):
         token = self._test_parser.parse("62 // 3 * 2")
-        self.assertEqual(40, token.roll())
-        self.assertEqual(40, token.max())
-        self.assertEqual(40, token.min())
-        self.assertEqual({40: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {40: 1}
+        self.assert_distribution(token, expected_outcome, 40, 40)
 
-    # pylint: disable=maybe-no-member
     def test_parser_integer_division_order_of_operation_two(self):
         token = self._test_parser.parse("2 * 62 // 3")
-        self.assertEqual(41, token.roll())
-        self.assertEqual(41, token.max())
-        self.assertEqual(41, token.min())
-        self.assertEqual({41: 1}, token.get_probability_distribution().get_result_map())
+        expected_outcome = {41: 1}
+        self.assert_distribution(token, expected_outcome, 41, 41)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice(self):
         token = self._test_parser.parse("2d4 * 2 // 3")
         expected_outcome = {1: 1, 2: 5, 3: 4, 4: 5, 5: 1}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(5, token.max())
-        self.assertEqual(1, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 1, 5)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice_add(self):
         token = self._test_parser.parse("2d4 + 1d2")
         expected_outcome = {3: 1, 4: 3, 5: 5, 6: 7, 7: 7, 8: 5, 9: 3, 10: 1}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(10, token.max())
-        self.assertEqual(3, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 3, 10)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice_subtract(self):
         token = self._test_parser.parse("2d4 - 1d2")
         expected_outcome = {0: 1, 1: 3, 2: 5, 3: 7, 4: 7, 5: 5, 6: 3, 7: 1}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(7, token.max())
-        self.assertEqual(0, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 0, 7)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice_multiply(self):
         token = self._test_parser.parse("2d4 * 1d2")
         expected_outcome = {
@@ -147,27 +102,13 @@ class TestPythonDiceParser(unittest.TestCase):
             14: 2,
             16: 1,
         }
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(16, token.max())
-        self.assertEqual(2, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 2, 16)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice_division(self):
         token = self._test_parser.parse("2d4 // 1d2")
         expected_outcome = {2: 8, 1: 3, 3: 7, 4: 4, 5: 4, 6: 3, 7: 2, 8: 1}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(8, token.max())
-        self.assertEqual(1, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 1, 8)
 
-    # pylint: disable=maybe-no-member
     def test_parser_dice_full_test(self):
         token = self._test_parser.parse("2d4 * 1d2 + 6d6 // 1d4")
         expected_outcome = {
@@ -222,46 +163,61 @@ class TestPythonDiceParser(unittest.TestCase):
             51: 6,
             52: 1,
         }
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(52, token.max())
-        self.assertEqual(3, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 3, 52)
 
-    # pylint: disable=maybe-no-member
     def test_parser_parenthesis_enclosed_expression(self):
         token = self._test_parser.parse("(1d4 + 2 )// 1d2")
         expected_outcome = {1: 1, 2: 2, 3: 2, 4: 1, 5: 1, 6: 1}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(6, token.max())
-        self.assertEqual(1, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 1, 6)
 
-    # pylint: disable=maybe-no-member
     def test_parser_constant_binary_expression(self):
         token = self._test_parser.parse("True + True - (False * 2d6)")
         expected_outcome = {2: 36}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(2, token.max())
-        self.assertEqual(2, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assert_distribution(token, expected_outcome, 2, 2)
 
-    # pylint: disable=maybe-no-member
     def test_parser_not_expression(self):
         token = self._test_parser.parse("!(1d6 - 1d6)")
         expected_outcome = {0: 30, 1: 6}
-        for _ in range(1000):
-            self.assertIn(token.roll(), expected_outcome.keys())
-        self.assertEqual(1, token.max())
-        self.assertEqual(0, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_equal_expression(self):
+        token = self._test_parser.parse("1d6 == 1d6")
+        expected_outcome = {0: 30, 1: 6}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_not_equal_expression(self):
+        token = self._test_parser.parse("1d6 != 3")
+        expected_outcome = {0: 1, 1: 5}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_less_than_equal_expression(self):
+        token = self._test_parser.parse("((8d6 + 8) // 2) >= (2d8 + 5)")
+        expected_outcome = {0: 16394638, 1: 91100786}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_less_than_expression(self):
+        token = self._test_parser.parse("((8d6 + 8) // 2) > (3d8 + 5)")
+        expected_outcome = {0: 518536200, 1: 341427192}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_greater_than_equal_expression(self):
+        token = self._test_parser.parse("((8d6 + 8) // 2) <= (3d8 + 5)")
+        expected_outcome = {0: 341427192, 1: 518536200}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_greater_than_expression(self):
+        token = self._test_parser.parse("((8d6 + 8) // 2) < (2d8 + 5)")
+        expected_outcome = {0: 91100786, 1: 16394638}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_and_expression(self):
+        token = self._test_parser.parse(
+            "(((1d2 == 2) AND ((1d20 + 6) >= 22))) > ((1d20 + 6) >= 23)"
         )
+        expected_outcome = {0: 720, 1: 80}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_or_expression(self):
+        token = self._test_parser.parse("((1d20 + 7) > 19) OR ((1d20 + 7) > 19)")
+        expected_outcome = {0: 144, 1: 256}
+        self.assert_distribution(token, expected_outcome, 0, 1)

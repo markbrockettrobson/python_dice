@@ -1,4 +1,5 @@
 import python_dice.src.python_dice_expression.add_expression as add_expression
+import python_dice.src.python_dice_expression.binary_operator_expression as binary_operator_expression
 import python_dice.src.python_dice_expression.constant_binary_expression as constant_binary_expression
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
@@ -43,6 +44,7 @@ PARSER_EXPRESSIONS = [
     subtract_expression.SubtractExpression,
     multiply_expression.MultiplyExpression,
     integer_division_expression.IntegerDivisionExpression,
+    binary_operator_expression.BinaryOperatorExpression,
 ]
 
 PRECEDENCE = [
