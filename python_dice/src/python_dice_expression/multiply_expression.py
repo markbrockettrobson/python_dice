@@ -7,8 +7,6 @@ import python_dice.src.probability_distribution as probability_distribution
 
 
 class MultiplyExpression(i_dice_expression.IDiceExpression):
-    TOKEN_NAME = "MULTIPLY"
-    TOKEN_REGEX = r"\*"
     TOKEN_RULE = """expression : expression MULTIPLY expression"""
 
     @staticmethod

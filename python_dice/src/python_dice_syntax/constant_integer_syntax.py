@@ -12,6 +12,3 @@ class ConstantIntegerSyntax(i_dice_statement.IDiceSyntax):
     @staticmethod
     def get_token_regex() -> str:
         return ConstantIntegerSyntax.TOKEN_REGEX
-
-    def __init__(self, number: str):
-        self._number = number

@@ -7,8 +7,6 @@ import python_dice.src.probability_distribution as probability_distribution
 
 
 class IntegerDivisionExpression(i_dice_expression.IDiceExpression):
-    TOKEN_NAME = "INTEGER_DIVISION"
-    TOKEN_REGEX = r"//"
     TOKEN_RULE = """expression : expression INTEGER_DIVISION expression"""
 
     @staticmethod

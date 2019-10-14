@@ -6,35 +6,36 @@ import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_
 import python_dice.src.probability_distribution as probability_distribution
 
 
-class ParenthesisEnclosedExpression(i_dice_expression.IDiceExpression):
-    RULE = """expression : OPEN_PARENTHESIS expression CLOSE_PARENTHESIS"""
+class NotExpression(i_dice_expression.IDiceExpression):
+
+    TOKEN_RULE = """expression : NOT expression"""
 
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
-        @parser_generator.production(ParenthesisEnclosedExpression.RULE)
-        def parenthesis_enclosed(tokens) -> i_dice_expression.IDiceExpression:
-            return ParenthesisEnclosedExpression(tokens[1])
+        @parser_generator.production(NotExpression.TOKEN_RULE)
+        def not_operation(tokens) -> i_dice_expression.IDiceExpression:
+            return NotExpression(tokens[1])
 
-        return parenthesis_enclosed
+        return not_operation
 
     def __init__(self, expression: i_dice_expression.IDiceExpression):
         self._expression = expression
 
     def roll(self) -> int:
-        return self._expression.roll()
+        return 0 if self._expression.roll() else 1
 
     def max(self) -> int:
-        return self._expression.max()
+        return self.get_probability_distribution().max()
 
     def min(self) -> int:
-        return self._expression.min()
+        return self.get_probability_distribution().min()
 
     def __str__(self) -> str:
-        return f"({str(self._expression)})"
+        return f"!{str(self._expression)}"
 
     def get_probability_distribution(
         self
     ) -> probability_distribution.ProbabilityDistribution:
-        return self._expression.get_probability_distribution()
+        return self._expression.get_probability_distribution().not_operator()

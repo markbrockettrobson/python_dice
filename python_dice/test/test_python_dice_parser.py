@@ -241,3 +241,27 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assertEqual(
             expected_outcome, token.get_probability_distribution().get_result_map()
         )
+
+    # pylint: disable=maybe-no-member
+    def test_parser_constant_binary_expression(self):
+        token = self._test_parser.parse("True + True - (False * 2d6)")
+        expected_outcome = {2: 36}
+        for _ in range(1000):
+            self.assertIn(token.roll(), expected_outcome.keys())
+        self.assertEqual(2, token.max())
+        self.assertEqual(2, token.min())
+        self.assertEqual(
+            expected_outcome, token.get_probability_distribution().get_result_map()
+        )
+
+    # pylint: disable=maybe-no-member
+    def test_parser_not_expression(self):
+        token = self._test_parser.parse("!(1d6 - 1d6)")
+        expected_outcome = {0: 30, 1: 6}
+        for _ in range(1000):
+            self.assertIn(token.roll(), expected_outcome.keys())
+        self.assertEqual(1, token.max())
+        self.assertEqual(0, token.min())
+        self.assertEqual(
+            expected_outcome, token.get_probability_distribution().get_result_map()
+        )

@@ -14,7 +14,7 @@ class TestParenthesisEnclosedExpression(unittest.TestCase):
         self._mock_syntax.roll.return_value = 10
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
-        self._mock_syntax.__str__.return_value = "7"
+        self._mock_syntax.__str__.return_value = "7d4"
         self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
             {-2: 1, 4: 1}
         )
@@ -43,7 +43,7 @@ class TestParenthesisEnclosedExpression(unittest.TestCase):
         self.assertEqual(6, self._test_parentheses_enclosed_expression.min())
 
     def test_add_str(self):
-        self.assertEqual("( 7 )", str(self._test_parentheses_enclosed_expression))
+        self.assertEqual("(7d4)", str(self._test_parentheses_enclosed_expression))
 
     def test_add_get_probability_distribution(self):
         self.assertEqual(

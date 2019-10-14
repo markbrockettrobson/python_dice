@@ -8,8 +8,6 @@ import python_dice.src.probability_distribution as probability_distribution
 
 
 class DiceExpression(i_dice_expression.IDiceExpression):
-    TOKEN_NAME = "DICE"
-    TOKEN_REGEX = r"\d+d\d+"
     TOKEN_RULE = """expression : DICE"""
 
     @staticmethod

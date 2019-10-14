@@ -7,8 +7,6 @@ import python_dice.src.probability_distribution as probability_distribution
 
 
 class SubtractExpression(i_dice_expression.IDiceExpression):
-    TOKEN_NAME = "SUBTRACT"
-    TOKEN_REGEX = r"\-"
     TOKEN_RULE = """expression : expression SUBTRACT expression"""
 
     @staticmethod
