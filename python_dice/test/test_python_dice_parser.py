@@ -221,3 +221,13 @@ class TestPythonDiceParser(unittest.TestCase):
         token = self._test_parser.parse("((1d20 + 7) > 19) OR ((1d20 + 7) > 19)")
         expected_outcome = {0: 144, 1: 256}
         self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_max_expression(self):
+        token = self._test_parser.parse("MAX(1d20 + 3, 1d20 + 3) > 15")
+        expected_outcome = {0: 144, 1: 256}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_min_expression(self):
+        token = self._test_parser.parse("MIN(1d20 + 3, 1d20 + 3) > 15")
+        expected_outcome = {0: 336, 1: 64}
+        self.assert_distribution(token, expected_outcome, 0, 1)
