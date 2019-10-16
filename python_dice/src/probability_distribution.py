@@ -188,7 +188,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             new_result_map[key] += value
 
         for result_key, result_value in self._result_map.items():
-            for other_result_key, other_result_value in other._result_map.items():
+            for other_result_key, other_result_value in other.get_result_map().items():
                 safe_add(
                     max(result_key, other_result_key), result_value * other_result_value
                 )
@@ -205,7 +205,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             new_result_map[key] += value
 
         for result_key, result_value in self._result_map.items():
-            for other_result_key, other_result_value in other._result_map.items():
+            for other_result_key, other_result_value in other.get_result_map().items():
                 safe_add(
                     min(result_key, other_result_key), result_value * other_result_value
                 )
