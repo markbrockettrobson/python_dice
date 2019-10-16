@@ -248,3 +248,12 @@ class TestPythonDiceLexer(unittest.TestCase):
         self.assertEqual(
             ["MIN", "(", "4", ",", "1d6", ")"], [token.value for token in tokens]
         )
+
+    def test_lex_abs(self):
+        tokens = self._test_lexer.lex("ABS(1d6)")
+
+        self.assertEqual(
+            ["ABS", "OPEN_PARENTHESIS", "DICE", "CLOSE_PARENTHESIS"],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(["ABS", "(", "1d6", ")"], [token.value for token in tokens])

@@ -210,3 +210,15 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
                     min(result_key, other_result_key), result_value * other_result_value
                 )
         return ProbabilityDistribution(new_result_map)
+
+    def abs_operator(self) -> "ProbabilityDistribution":
+        new_result_map = {}
+
+        def safe_add(key, value):
+            if key not in new_result_map:
+                new_result_map[key] = 0
+            new_result_map[key] += value
+
+        for result_key, result_value in self._result_map.items():
+            safe_add(abs(result_key), result_value)
+        return ProbabilityDistribution(new_result_map)
