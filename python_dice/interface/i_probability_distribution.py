@@ -107,3 +107,15 @@ class IProbabilityDistribution(abc.ABC):
     @abc.abstractmethod
     def not_operator(self) -> "IProbabilityDistribution":
         pass
+
+    @abc.abstractmethod
+    def max_operator(
+        self, other: "IProbabilityDistribution"
+    ) -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def min_operator(
+        self, other: "IProbabilityDistribution"
+    ) -> "IProbabilityDistribution":
+        pass

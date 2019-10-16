@@ -176,3 +176,37 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             else:
                 safe_add(1, result_value)
         return ProbabilityDistribution(new_result_map)
+
+    def max_operator(
+        self, other: "ProbabilityDistribution"
+    ) -> "ProbabilityDistribution":
+        new_result_map = {}
+
+        def safe_add(key, value):
+            if key not in new_result_map:
+                new_result_map[key] = 0
+            new_result_map[key] += value
+
+        for result_key, result_value in self._result_map.items():
+            for other_result_key, other_result_value in other._result_map.items():
+                safe_add(
+                    max(result_key, other_result_key), result_value * other_result_value
+                )
+        return ProbabilityDistribution(new_result_map)
+
+    def min_operator(
+        self, other: "ProbabilityDistribution"
+    ) -> "ProbabilityDistribution":
+        new_result_map = {}
+
+        def safe_add(key, value):
+            if key not in new_result_map:
+                new_result_map[key] = 0
+            new_result_map[key] += value
+
+        for result_key, result_value in self._result_map.items():
+            for other_result_key, other_result_value in other._result_map.items():
+                safe_add(
+                    min(result_key, other_result_key), result_value * other_result_value
+                )
+        return ProbabilityDistribution(new_result_map)

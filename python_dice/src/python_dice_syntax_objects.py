@@ -4,6 +4,7 @@ import python_dice.src.python_dice_expression.constant_binary_expression as cons
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
+import python_dice.src.python_dice_expression.minmax_expression as minmax_expression
 import python_dice.src.python_dice_expression.multiply_expression as multiply_expression
 import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
@@ -11,10 +12,12 @@ import python_dice.src.python_dice_expression.subtract_expression as subtract_ex
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
 import python_dice.src.python_dice_syntax.binary_operator_syntax as binary_operator_syntax
 import python_dice.src.python_dice_syntax.close_parenthesis_syntax as close_parenthesis_syntax
+import python_dice.src.python_dice_syntax.comma_syntax as comma_syntax
 import python_dice.src.python_dice_syntax.constant_binary_syntax as constant_binary_syntax
 import python_dice.src.python_dice_syntax.constant_integer_syntax as constant_integer_syntax
 import python_dice.src.python_dice_syntax.dice_syntax as dice_syntax
 import python_dice.src.python_dice_syntax.integer_division_syntax as integer_division_syntax
+import python_dice.src.python_dice_syntax.min_max_syntax as min_max_syntax
 import python_dice.src.python_dice_syntax.multiply_syntax as multiply_syntax
 import python_dice.src.python_dice_syntax.not_syntax as not_syntax
 import python_dice.src.python_dice_syntax.open_parenthesis_syntax as open_parenthesis_syntax
@@ -22,8 +25,9 @@ import python_dice.src.python_dice_syntax.subtract_syntax as subtract_syntax
 
 LEXER_SYNTAX = [
     open_parenthesis_syntax.OpenParenthesisSyntax,
-    not_syntax.NotSyntax,
     close_parenthesis_syntax.CloseParenthesisSyntax,
+    comma_syntax.CommaSyntax,
+    not_syntax.NotSyntax,
     dice_syntax.DiceSyntax,
     binary_operator_syntax.BinaryOperatorSyntax,
     constant_integer_syntax.ConstantIntegerSyntax,
@@ -32,6 +36,7 @@ LEXER_SYNTAX = [
     subtract_syntax.SubtractSyntax,
     multiply_syntax.MultiplySyntax,
     integer_division_syntax.IntegerDivisionSyntax,
+    min_max_syntax.MinMaxSyntax,
 ]
 
 PARSER_EXPRESSIONS = [
@@ -45,6 +50,7 @@ PARSER_EXPRESSIONS = [
     multiply_expression.MultiplyExpression,
     integer_division_expression.IntegerDivisionExpression,
     binary_operator_expression.BinaryOperatorExpression,
+    minmax_expression.MinMaxExpression,
 ]
 
 PRECEDENCE = [

@@ -212,3 +212,39 @@ class TestPythonDiceLexer(unittest.TestCase):
             [token.name for token in tokens],
         )
         self.assertEqual(["1d4", "OR", "True"], [token.value for token in tokens])
+
+    def test_lex_max(self):
+        tokens = self._test_lexer.lex("MAX(1d4, 3)")
+
+        self.assertEqual(
+            [
+                "MINMAX",
+                "OPEN_PARENTHESIS",
+                "DICE",
+                "COMMA",
+                "CONSTANT_INTEGER",
+                "CLOSE_PARENTHESIS",
+            ],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["MAX", "(", "1d4", ",", "3", ")"], [token.value for token in tokens]
+        )
+
+    def test_lex_min(self):
+        tokens = self._test_lexer.lex("MIN(4, 1d6)")
+
+        self.assertEqual(
+            [
+                "MINMAX",
+                "OPEN_PARENTHESIS",
+                "CONSTANT_INTEGER",
+                "COMMA",
+                "DICE",
+                "CLOSE_PARENTHESIS",
+            ],
+            [token.name for token in tokens],
+        )
+        self.assertEqual(
+            ["MIN", "(", "4", ",", "1d6", ")"], [token.value for token in tokens]
+        )
