@@ -1,3 +1,4 @@
+import python_dice.src.python_dice_expression.abs_expression as abs_expression
 import python_dice.src.python_dice_expression.add_expression as add_expression
 import python_dice.src.python_dice_expression.binary_operator_expression as binary_operator_expression
 import python_dice.src.python_dice_expression.constant_binary_expression as constant_binary_expression
@@ -9,6 +10,7 @@ import python_dice.src.python_dice_expression.multiply_expression as multiply_ex
 import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
+import python_dice.src.python_dice_syntax.abs_syntax as abs_syntax
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
 import python_dice.src.python_dice_syntax.binary_operator_syntax as binary_operator_syntax
 import python_dice.src.python_dice_syntax.close_parenthesis_syntax as close_parenthesis_syntax
@@ -37,6 +39,7 @@ LEXER_SYNTAX = [
     multiply_syntax.MultiplySyntax,
     integer_division_syntax.IntegerDivisionSyntax,
     min_max_syntax.MinMaxSyntax,
+    abs_syntax.AbsSyntax,
 ]
 
 PARSER_EXPRESSIONS = [
@@ -51,6 +54,7 @@ PARSER_EXPRESSIONS = [
     integer_division_expression.IntegerDivisionExpression,
     binary_operator_expression.BinaryOperatorExpression,
     minmax_expression.MinMaxExpression,
+    abs_expression.AbsExpression,
 ]
 
 PRECEDENCE = [

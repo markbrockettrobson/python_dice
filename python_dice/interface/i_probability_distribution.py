@@ -119,3 +119,7 @@ class IProbabilityDistribution(abc.ABC):
         self, other: "IProbabilityDistribution"
     ) -> "IProbabilityDistribution":
         pass
+
+    @abc.abstractmethod
+    def abs_operator(self) -> "IProbabilityDistribution":
+        pass

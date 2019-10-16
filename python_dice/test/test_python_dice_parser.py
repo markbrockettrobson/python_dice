@@ -231,3 +231,8 @@ class TestPythonDiceParser(unittest.TestCase):
         token = self._test_parser.parse("MIN(1d20 + 3, 1d20 + 3) > 15")
         expected_outcome = {0: 336, 1: 64}
         self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_abs_expression(self):
+        token = self._test_parser.parse("ABS(1d4 - 1d4)")
+        expected_outcome = {0: 4, 1: 6, 2: 4, 3: 2}
+        self.assert_distribution(token, expected_outcome, 0, 3)
