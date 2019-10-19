@@ -2,8 +2,8 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
-import python_dice.src.probability_distribution as probability_distribution
 
 
 class AbsExpression(i_dice_expression.IDiceExpression):
@@ -15,7 +15,7 @@ class AbsExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(AbsExpression.TOKEN_RULE)
-        def abs_operation(tokens) -> i_dice_expression.IDiceExpression:
+        def abs_operation(_, tokens) -> i_dice_expression.IDiceExpression:
             return AbsExpression(tokens[2])
 
         return abs_operation
@@ -37,5 +37,5 @@ class AbsExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         return self._expression.get_probability_distribution().abs_operator()

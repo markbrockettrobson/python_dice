@@ -4,14 +4,17 @@ import python_dice.src.python_dice_expression.binary_operator_expression as bina
 import python_dice.src.python_dice_expression.constant_binary_expression as constant_binary_expression
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
+import python_dice.src.python_dice_expression.get_var_expression as get_var_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
 import python_dice.src.python_dice_expression.minmax_expression as minmax_expression
 import python_dice.src.python_dice_expression.multiply_expression as multiply_expression
 import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
+import python_dice.src.python_dice_expression.var_assignment_expression as var_assignment_expression
 import python_dice.src.python_dice_syntax.abs_syntax as abs_syntax
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
+import python_dice.src.python_dice_syntax.assignment_syntax as assignment_syntax
 import python_dice.src.python_dice_syntax.binary_operator_syntax as binary_operator_syntax
 import python_dice.src.python_dice_syntax.close_parenthesis_syntax as close_parenthesis_syntax
 import python_dice.src.python_dice_syntax.comma_syntax as comma_syntax
@@ -21,9 +24,11 @@ import python_dice.src.python_dice_syntax.dice_syntax as dice_syntax
 import python_dice.src.python_dice_syntax.integer_division_syntax as integer_division_syntax
 import python_dice.src.python_dice_syntax.min_max_syntax as min_max_syntax
 import python_dice.src.python_dice_syntax.multiply_syntax as multiply_syntax
+import python_dice.src.python_dice_syntax.name_syntax as name_syntax
 import python_dice.src.python_dice_syntax.not_syntax as not_syntax
 import python_dice.src.python_dice_syntax.open_parenthesis_syntax as open_parenthesis_syntax
 import python_dice.src.python_dice_syntax.subtract_syntax as subtract_syntax
+import python_dice.src.python_dice_syntax.var_syntax as var_syntax
 
 LEXER_SYNTAX = [
     open_parenthesis_syntax.OpenParenthesisSyntax,
@@ -40,6 +45,9 @@ LEXER_SYNTAX = [
     integer_division_syntax.IntegerDivisionSyntax,
     min_max_syntax.MinMaxSyntax,
     abs_syntax.AbsSyntax,
+    assignment_syntax.AssignmentSyntax,
+    var_syntax.VarSyntax,
+    name_syntax.NameSyntax,
 ]
 
 PARSER_EXPRESSIONS = [
@@ -55,9 +63,13 @@ PARSER_EXPRESSIONS = [
     binary_operator_expression.BinaryOperatorExpression,
     minmax_expression.MinMaxExpression,
     abs_expression.AbsExpression,
+    var_assignment_expression.VarAssignmentExpression,
+    get_var_expression.GetVarExpression,
 ]
 
 PRECEDENCE = [
+    ("nonassoc", [var_syntax.VarSyntax.get_token_name()]),
+    ("left", [assignment_syntax.AssignmentSyntax.get_token_name()]),
     ("left", [open_parenthesis_syntax.OpenParenthesisSyntax.get_token_name()]),
     ("left", [not_syntax.NotSyntax.get_token_name()]),
     (

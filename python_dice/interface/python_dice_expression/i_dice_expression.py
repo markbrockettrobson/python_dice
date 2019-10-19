@@ -5,7 +5,7 @@ import rply
 import python_dice.src.probability_distribution as probability_distribution
 
 
-class IDiceExpression(abc.ABC, rply.token.BaseBox):
+class IDiceExpression(abc.ABC, rply.token.Token):
     @staticmethod
     @abc.abstractmethod
     def add_production_function(parser_generator: rply.ParserGenerator) -> None:

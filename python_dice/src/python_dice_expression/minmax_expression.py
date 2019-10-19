@@ -2,8 +2,8 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
-import python_dice.src.probability_distribution as probability_distribution
 
 
 class MinMaxExpression(i_dice_expression.IDiceExpression):
@@ -16,7 +16,7 @@ class MinMaxExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(MinMaxExpression.TOKEN_RULE)
-        def min_max(tokens) -> i_dice_expression.IDiceExpression:
+        def min_max(_, tokens) -> i_dice_expression.IDiceExpression:
             return MinMaxExpression(tokens[0].value, tokens[2], tokens[2])
 
         return min_max
@@ -53,7 +53,7 @@ class MinMaxExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         if self._min_max == "MAX":
             return self._expression_one.get_probability_distribution().max_operator(
                 self._expression_two.get_probability_distribution()
