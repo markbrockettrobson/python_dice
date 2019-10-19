@@ -25,6 +25,7 @@ class PythonDiceParser(i_pydice_parser.IPythonDiceParser):
         for syntax in pydice_syntax_objects.PARSER_EXPRESSIONS:
             syntax.add_production_function(parser_generator)
 
+        #  pylint: disable=unused-variable
         @parser_generator.error
         def error_handler(
             _: probability_state.ProbabilityState, token: rply.token.Token

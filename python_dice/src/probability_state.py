@@ -1,4 +1,3 @@
-import abc
 import typing
 
 import python_dice.interface.i_probability_distribution as i_probability_distribution
@@ -21,14 +20,12 @@ class ProbabilityState(i_probability_state.IProbabilityDistributionState):
     def get_constant(self, name: str) -> int:
         if not self.has_constant(name):
             raise KeyError(f"Constant named {name} not in state.")
-        else:
-            return self._constants[name]
+        return self._constants[name]
 
     def get_var(self, name: str) -> i_probability_distribution.IProbabilityDistribution:
         if not self.has_var(name):
             raise KeyError(f"Var named {name} not in state.")
-        else:
-            return self._var[name]
+        return self._var[name]
 
     def set_constant(self, name: str, value: int) -> None:
         self._constants[name] = value

@@ -17,6 +17,7 @@ class TestPythonDiceParser(unittest.TestCase):
         self._test_parser.parse("215678284")
         self._mock_pydice_lexer.lex.assert_called_once_with("215678284")
 
+    # pylint: disable=maybe-no-member
     def assert_distribution(self, token, expected_outcome, min_value, max_value):
         for _ in range(1000):
             self.assertIn(token.roll(), expected_outcome.keys())

@@ -1,5 +1,4 @@
 import abc
-import typing
 
 import python_dice.interface.i_probability_distribution as i_probability_distribution
 

@@ -36,7 +36,7 @@ class TestVarAssignmentExpression(unittest.TestCase):
             self._mock_parser_gen
         )
         self._mock_parser_gen.production.assert_called_once_with(
-            """var : VAR NAME ASSIGNMENT expression"""
+            """expression : VAR NAME ASSIGNMENT expression"""
         )
 
     def test_var_assignment_roll(self):
