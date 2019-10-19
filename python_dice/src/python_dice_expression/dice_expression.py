@@ -3,6 +3,7 @@ import typing
 import numpy
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
 import python_dice.src.probability_distribution as probability_distribution
 
@@ -15,7 +16,7 @@ class DiceExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(DiceExpression.TOKEN_RULE)
-        def dice(tokens) -> i_dice_expression.IDiceExpression:
+        def dice(_, tokens) -> i_dice_expression.IDiceExpression:
             return DiceExpression(tokens[0].value)
 
         return dice
@@ -47,7 +48,7 @@ class DiceExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         single_dice_distribution = probability_distribution.ProbabilityDistribution(
             {value: 1 for value in range(1, self._get_number_of_sides() + 1)}
         )

@@ -2,8 +2,8 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
-import python_dice.src.probability_distribution as probability_distribution
 
 
 class ParenthesisEnclosedExpression(i_dice_expression.IDiceExpression):
@@ -14,7 +14,7 @@ class ParenthesisEnclosedExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(ParenthesisEnclosedExpression.RULE)
-        def parenthesis_enclosed(tokens) -> i_dice_expression.IDiceExpression:
+        def parenthesis_enclosed(_, tokens) -> i_dice_expression.IDiceExpression:
             return ParenthesisEnclosedExpression(tokens[1])
 
         return parenthesis_enclosed
@@ -36,5 +36,5 @@ class ParenthesisEnclosedExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         return self._expression.get_probability_distribution()

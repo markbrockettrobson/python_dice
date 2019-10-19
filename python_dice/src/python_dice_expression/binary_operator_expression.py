@@ -3,8 +3,8 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
-import python_dice.src.probability_distribution as probability_distribution
 
 
 class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
@@ -25,7 +25,7 @@ class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(BinaryOperatorExpression.RULE)
-        def binary_operator(tokens) -> i_dice_expression.IDiceExpression:
+        def binary_operator(_, tokens) -> i_dice_expression.IDiceExpression:
             return BinaryOperatorExpression(tokens[1].value, tokens[0], tokens[2])
 
         return binary_operator
@@ -62,7 +62,7 @@ class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         return self.OPERATOR_MAP[self._operator](
             self._expression_one.get_probability_distribution(),
             self._expression_two.get_probability_distribution(),

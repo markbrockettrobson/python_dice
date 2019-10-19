@@ -2,6 +2,7 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
 import python_dice.src.probability_distribution as probability_distribution
 
@@ -14,7 +15,7 @@ class ConstantIntegerExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(ConstantIntegerExpression.TOKEN_RULE)
-        def constant_integer(tokens) -> i_dice_expression.IDiceExpression:
+        def constant_integer(_, tokens) -> i_dice_expression.IDiceExpression:
             return ConstantIntegerExpression(tokens[0].value)
 
         return constant_integer
@@ -36,5 +37,5 @@ class ConstantIntegerExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         return probability_distribution.ProbabilityDistribution({int(self._number): 1})

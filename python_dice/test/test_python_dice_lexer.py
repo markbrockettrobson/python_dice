@@ -257,3 +257,13 @@ class TestPythonDiceLexer(unittest.TestCase):
             [token.name for token in tokens],
         )
         self.assertEqual(["ABS", "(", "1d6", ")"], [token.value for token in tokens])
+
+    def test_lex_var(self):
+        tokens = self._test_lexer.lex("VAR apple = 1d4")
+
+        self.assertEqual(
+            ["VAR", "NAME", "ASSIGNMENT", "DICE"], [token.name for token in tokens]
+        )
+        self.assertEqual(
+            ["VAR", "apple", "=", "1d4"], [token.value for token in tokens]
+        )

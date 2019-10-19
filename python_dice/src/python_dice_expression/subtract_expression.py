@@ -2,8 +2,8 @@ import typing
 
 import rply
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
-import python_dice.src.probability_distribution as probability_distribution
 
 
 class SubtractExpression(i_dice_expression.IDiceExpression):
@@ -14,7 +14,7 @@ class SubtractExpression(i_dice_expression.IDiceExpression):
         parser_generator: rply.ParserGenerator
     ) -> typing.Callable:
         @parser_generator.production(SubtractExpression.TOKEN_RULE)
-        def subtract(tokens) -> i_dice_expression.IDiceExpression:
+        def subtract(_, tokens) -> i_dice_expression.IDiceExpression:
             return SubtractExpression(tokens[0], tokens[2])
 
         return subtract
@@ -41,7 +41,7 @@ class SubtractExpression(i_dice_expression.IDiceExpression):
 
     def get_probability_distribution(
         self
-    ) -> probability_distribution.ProbabilityDistribution:
+    ) -> i_probability_distribution.IProbabilityDistribution:
         return (
             self._expression_one.get_probability_distribution()
             - self._expression_two.get_probability_distribution()
