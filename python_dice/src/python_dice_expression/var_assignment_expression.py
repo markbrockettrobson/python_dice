@@ -41,11 +41,13 @@ class VarAssignmentExpression(i_dice_expression.IDiceExpression):
     def max(self) -> int:
         max_value = self._expression.max()
         self._state.set_constant(self._name, max_value)
+        self._state.set_var(self._name, self._expression.get_probability_distribution())
         return max_value
 
     def min(self) -> int:
         min_value = self._expression.min()
         self._state.set_constant(self._name, min_value)
+        self._state.set_var(self._name, self._expression.get_probability_distribution())
         return min_value
 
     def __str__(self) -> str:
