@@ -9,3 +9,4 @@ pytest-mypy==0.3.3
 pytest-pylint==0.14.1
 rply==0.7.7
 matplotlib==3.1.1
+numpy==1.17.3
