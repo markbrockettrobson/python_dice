@@ -1,7 +1,7 @@
 import abc
 import typing
 
-import matplotlib.pyplot as pyplot
+import PIL.Image as Image
 
 
 class IProbabilityDistribution(abc.ABC):
@@ -22,7 +22,7 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
-    def show_histogram(self) -> pyplot.Figure:
+    def get_histogram(self) -> Image:
         """
 
         prints a plot of the distribution with matplotlib

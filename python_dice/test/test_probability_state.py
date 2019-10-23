@@ -52,3 +52,17 @@ class TestProbabilityState(unittest.TestCase):
             self._mock_distribution,
             self._test_probability_state.get_var(self._test_name),
         )
+
+    def test_probability_state_get_var_dict(self):
+        self._test_probability_state.set_var(self._test_name, self._mock_distribution)
+        self.assertEqual(
+            {self._test_name: self._mock_distribution},
+            self._test_probability_state.get_var_dict(),
+        )
+
+    def test_probability_state_get_constant_dict(self):
+        self._test_probability_state.set_constant(self._test_name, self._test_int)
+        self.assertEqual(
+            {self._test_name: self._test_int},
+            self._test_probability_state.get_constant_dict(),
+        )

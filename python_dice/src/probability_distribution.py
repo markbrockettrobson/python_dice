@@ -1,7 +1,9 @@
+import io
 import operator
 import typing
 
 import matplotlib.pyplot as pyplot
+import PIL.Image as Image
 
 import python_dice.interface.i_probability_distribution as i_probability_distribution
 
@@ -15,7 +17,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         for value in self._result_map.values():
             self._outcome_count += value
 
-    def show_histogram(self) -> pyplot.Figure:
+    def get_histogram(self) -> Image:
         item_list = [item for item in self._get_show_histogram_form().items()]
         item_list.sort(key=lambda tup: tup[0])
         y_values = [value for _, value in item_list]
@@ -23,11 +25,17 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         bins = [key - 0.5 for key, _ in item_list]
         bins.append(item_list[-1][0] + 0.5)
 
-        figure, axis = pyplot.subplots()
+        _, axis = pyplot.subplots()
         axis.hist(x_values, weights=y_values, bins=bins)
         axis.grid(True, linestyle="-.")
-        figure.show()
-        return figure
+        axis.set_ylabel("odds")
+        axis.set_xlabel("outcome")
+
+        buffer = io.BytesIO()
+        pyplot.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = Image.open(buffer)
+        return image
 
     def max(self) -> int:
         return max(self._result_map.keys())

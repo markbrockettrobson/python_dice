@@ -1,4 +1,8 @@
+import pathlib
 import unittest
+
+import PIL.Image as Image
+import PIL.ImageChops as ImageChops
 
 import python_dice.src.probability_distribution as probability_distribution
 
@@ -130,3 +134,18 @@ class TestProbabilityDistribution(unittest.TestCase):
             test_distribution_d2_less_one
         )
         self.assertEqual({0: 1, 1: 3}, test_distribution.get_result_map())
+
+    def disable_test_get_histogram(self):
+        test_distribution = probability_distribution.ProbabilityDistribution(
+            {1: 1, 2: 3, 3: 6, 4: 1}
+        )
+        image_path = pathlib.Path(
+            pathlib.Path.cwd(),
+            "python_dice",
+            "test",
+            "test_image",
+            "TestProbabilityDistribution_test_get_histogram.png",
+        )
+        image = test_distribution.get_histogram()
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
