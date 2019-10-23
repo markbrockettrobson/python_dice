@@ -82,7 +82,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             "python_dice",
             "test",
             "test_image",
-            "histogram.png",
+            "TestPythonDiceInterpreter_test_get_histogram.png",
         )
         image = interpreter.get_histogram(program)
         expected_image = Image.open(image_path)
