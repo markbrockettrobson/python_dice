@@ -5,6 +5,12 @@ import python_dice.interface.i_probability_state as i_probability_state
 
 
 class ProbabilityState(i_probability_state.IProbabilityDistributionState):
+    def get_var_dict(self):
+        return self._var
+
+    def get_constant_dict(self):
+        return self._constants
+
     def __init__(self):
         self._var: typing.Dict[
             str, i_probability_distribution.IProbabilityDistribution

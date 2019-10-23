@@ -21,6 +21,10 @@ class IProbabilityDistributionState(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def get_var_dict(self):
+        pass
+
+    @abc.abstractmethod
     def get_constant(self, name: str) -> int:
         pass
 
@@ -30,4 +34,8 @@ class IProbabilityDistributionState(abc.ABC):
 
     @abc.abstractmethod
     def set_constant(self, name: str, value: int) -> None:
+        pass
+
+    @abc.abstractmethod
+    def get_constant_dict(self):
         pass
