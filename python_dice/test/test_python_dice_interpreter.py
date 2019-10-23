@@ -63,9 +63,9 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             "VAR save_roll = 1d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
-            "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
+            "burning_arch_damage // (pass_save + 1)",
         ]
-        self.assertEqual(12, interpreter.max(program)["damage_half_on_save"])
+        self.assertEqual(12, interpreter.max(program)["stdout"])
 
     def test_get_histogram(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
@@ -82,7 +82,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             "python_dice",
             "test",
             "test_image",
-            "TestPythonDiceInterpreter_test_get_histogram.png",
+            "histogram.png",
         )
         image = interpreter.get_histogram(program)
         expected_image = Image.open(image_path)
