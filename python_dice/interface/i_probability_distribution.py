@@ -55,6 +55,22 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
+    def average(self) -> float:
+        """
+
+        :return: returns the waited average of the distribution
+                 <float>
+        """
+
+    @abc.abstractmethod
+    def at_least(self) -> typing.Dict[int, float]:
+        pass
+
+    @abc.abstractmethod
+    def at_most(self) -> typing.Dict[int, float]:
+        pass
+
+    @abc.abstractmethod
     def __add__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
         pass
 

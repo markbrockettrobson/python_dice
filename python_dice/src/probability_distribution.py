@@ -46,6 +46,32 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
     def contains_zero(self) -> bool:
         return 0 in self._result_map and self._result_map[0] != 0
 
+    def average(self) -> float:
+        total_values = 0
+        for item, value in self._result_map.items():
+            total_values += item * value
+        return total_values / self._outcome_count
+
+    def at_least(self) -> typing.Dict[int, float]:
+        at_least_dict = {}
+        total_above = self._outcome_count
+        keys = self._result_map.keys()
+        sorted(keys)
+        for value in keys:
+            at_least_dict[value] = total_above / self._outcome_count
+            total_above -= self._result_map[value]
+        return at_least_dict
+
+    def at_most(self) -> typing.Dict[int, float]:
+        at_most_dict = {}
+        at_or_below = 0
+        keys = self._result_map.keys()
+        sorted(keys, reverse=True)
+        for value in keys:
+            at_or_below += self._result_map[value]
+            at_most_dict[value] = at_or_below / self._outcome_count
+        return at_most_dict
+
     def get_result_map(self) -> typing.Dict[int, int]:
         return self._result_map
 
