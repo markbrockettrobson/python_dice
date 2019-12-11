@@ -10,7 +10,7 @@ setuptools.setup(
     author_email="mark.brockett.robson@gmail.com",
     description="a statistical dice library for python",
     long_description=LONG_DESCRIPTION,
-    long_description_content_type='text/markdown',
+    long_description_content_type="text/markdown",
     url="https://github.com/markbrockettrobson/python_dice",
     packages=[
         "python_dice",
@@ -31,7 +31,7 @@ setuptools.setup(
         "rply==0.7.7",
         "networkx==2.3",
         "numpy==1.17.3",
-        "pillow==6.2.1"
+        "pillow==6.2.1",
     ],
     python_requires=">=3.6",
 )

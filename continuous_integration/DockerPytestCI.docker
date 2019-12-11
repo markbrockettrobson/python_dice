@@ -12,6 +12,7 @@ WORKDIR /usr/localrepo/pydice
 RUN rm -rf ./python_dice
 COPY .coveragerc ./
 COPY pylintrc ./
+COPY setup.py ./
 COPY python_dice ./python_dice
 
 
