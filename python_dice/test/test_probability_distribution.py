@@ -92,6 +92,46 @@ class TestProbabilityDistribution(unittest.TestCase):
         self.assertAlmostEqual(5, test_distribution_one.average(), delta=1e8)
         self.assertAlmostEqual(0, test_distribution_two.average(), delta=1e8)
 
+    def test_probability_distribution_at_least(self):
+        test_distribution_one = self._test_distribution_d4
+        test_distribution_two = self._test_distribution_d4 - self._test_distribution_d4
+
+        least_one = test_distribution_one.at_least()
+        least_two = test_distribution_two.at_least()
+
+        self.assertAlmostEqual(1, least_one[1], delta=1e8)
+        self.assertAlmostEqual(0.75, least_one[2], delta=1e8)
+        self.assertAlmostEqual(0.5, least_one[3], delta=1e8)
+        self.assertAlmostEqual(0.25, least_one[4], delta=1e8)
+
+        self.assertAlmostEqual(1, least_two[-3], delta=1e8)
+        self.assertAlmostEqual(6 / 7, least_two[-2], delta=1e8)
+        self.assertAlmostEqual(5 / 7, least_two[-1], delta=1e8)
+        self.assertAlmostEqual(4 / 7, least_two[0], delta=1e8)
+        self.assertAlmostEqual(3 / 7, least_two[1], delta=1e8)
+        self.assertAlmostEqual(2 / 7, least_two[2], delta=1e8)
+        self.assertAlmostEqual(1 / 7, least_two[3], delta=1e8)
+
+    def test_probability_distribution_at_most(self):
+        test_distribution_one = self._test_distribution_d4
+        test_distribution_two = self._test_distribution_d4 - self._test_distribution_d4
+
+        most_one = test_distribution_one.at_most()
+        most_two = test_distribution_two.at_most()
+
+        self.assertAlmostEqual(0.25, most_one[1], delta=1e8)
+        self.assertAlmostEqual(0.5, most_one[2], delta=1e8)
+        self.assertAlmostEqual(0.75, most_one[3], delta=1e8)
+        self.assertAlmostEqual(1, most_one[4], delta=1e8)
+
+        self.assertAlmostEqual(1 / 7, most_two[-3], delta=1e8)
+        self.assertAlmostEqual(2 / 7, most_two[-2], delta=1e8)
+        self.assertAlmostEqual(3 / 7, most_two[-1], delta=1e8)
+        self.assertAlmostEqual(4 / 7, most_two[0], delta=1e8)
+        self.assertAlmostEqual(5 / 7, most_two[1], delta=1e8)
+        self.assertAlmostEqual(6 / 7, most_two[2], delta=1e8)
+        self.assertAlmostEqual(1, most_two[3], delta=1e8)
+
     def test_probability_distribution_eq(self):
         test_distribution = self._test_distribution_d4 == self._test_distribution_d4
         self.assertEqual({0: 12, 1: 4}, test_distribution.get_result_map())
