@@ -55,6 +55,14 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
+    def average(self) -> float:
+        """
+
+        :return: returns the waited average of the distribution
+                 <float>
+        """
+
+    @abc.abstractmethod
     def __add__(self, other: "IProbabilityDistribution") -> "IProbabilityDistribution":
         pass
 

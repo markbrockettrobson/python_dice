@@ -86,6 +86,12 @@ class TestProbabilityDistribution(unittest.TestCase):
         self.assertEqual(False, test_distribution_one.contains_zero())
         self.assertEqual(True, test_distribution_two.contains_zero())
 
+    def test_probability_distribution_average(self):
+        test_distribution_one = self._test_distribution_d4 + self._test_distribution_d4
+        test_distribution_two = self._test_distribution_d4 - self._test_distribution_d4
+        self.assertAlmostEqual(5, test_distribution_one.average(), delta=1e8)
+        self.assertAlmostEqual(0, test_distribution_two.average(), delta=1e8)
+
     def test_probability_distribution_eq(self):
         test_distribution = self._test_distribution_d4 == self._test_distribution_d4
         self.assertEqual({0: 12, 1: 4}, test_distribution.get_result_map())
@@ -135,14 +141,12 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
         self.assertEqual({0: 1, 1: 3}, test_distribution.get_result_map())
 
-    def disable_test_get_histogram(self):
+    def disabled_test_get_histogram(self):
         test_distribution = probability_distribution.ProbabilityDistribution(
             {1: 1, 2: 3, 3: 6, 4: 1}
         )
         image_path = pathlib.Path(
             pathlib.Path.cwd(),
-            "python_dice",
-            "test",
             "test_image",
             "TestProbabilityDistribution_test_get_histogram.png",
         )
