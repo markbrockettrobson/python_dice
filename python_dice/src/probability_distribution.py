@@ -18,19 +18,29 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             self._outcome_count += value
 
     def get_histogram(self) -> Image:
+        max_hight = max(
+            [self._result_map[key] / self._outcome_count for key in self._result_map]
+        )
         item_list = [item for item in self._get_show_histogram_form().items()]
         item_list.sort(key=lambda tup: tup[0])
         y_values = [value for _, value in item_list]
         x_values = [key for key, _ in item_list]
         bins = [key - 0.5 for key, _ in item_list]
         bins.append(item_list[-1][0] + 0.5)
+        average = self.average()
 
         _, axis = pyplot.subplots()
         axis.hist(x_values, weights=y_values, bins=bins)
         axis.grid(True, linestyle="-.")
         axis.set_ylabel("odds")
         axis.set_xlabel("outcome")
-
+        axis.plot(
+            [average, average],
+            [0, max_hight * 1.1],
+            "-r",
+            lw=2,
+            label="Average = %d" % average,
+        )
         buffer = io.BytesIO()
         pyplot.savefig(buffer, format="png")
         buffer.seek(0)
