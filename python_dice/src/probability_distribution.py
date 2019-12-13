@@ -1,3 +1,4 @@
+import copy
 import io
 import operator
 import typing
@@ -18,29 +19,50 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             self._outcome_count += value
 
     def get_histogram(self) -> Image:
-        max_hight = max(
-            [self._result_map[key] / self._outcome_count for key in self._result_map]
+        histogram_data = self._get_histogram_form(self.get_dict_form())
+        x_values = list(histogram_data.keys())
+        return self._make_histogram(
+            x_values, [histogram_data[x_value] for x_value in x_values], self.average()
         )
-        item_list = [item for item in self._get_show_histogram_form().items()]
-        item_list.sort(key=lambda tup: tup[0])
-        y_values = [value for _, value in item_list]
-        x_values = [key for key, _ in item_list]
-        bins = [key - 0.5 for key, _ in item_list]
-        bins.append(item_list[-1][0] + 0.5)
-        average = self.average()
+
+    def get_at_least_histogram(self) -> Image:
+        histogram_data = self.at_least()
+        x_values = list(histogram_data.keys())
+        return self._make_histogram(
+            x_values, [histogram_data[x_value] for x_value in x_values], self.average()
+        )
+
+    def get_at_most_histogram(self) -> Image:
+        histogram_data = self.at_most()
+        x_values = list(histogram_data.keys())
+        return self._make_histogram(
+            x_values, [histogram_data[x_value] for x_value in x_values], self.average()
+        )
+
+    @staticmethod
+    def _make_histogram(
+        x_values: typing.List[float],
+        y_values: typing.List[float],
+        average: float = None,
+    ) -> Image:
+        x_values, y_values = (list(t) for t in zip(*sorted(zip(x_values, y_values))))
+        bins = [value - 0.5 for value in x_values]
+        bins.append(x_values[-1] + 0.5)
 
         _, axis = pyplot.subplots()
         axis.hist(x_values, weights=y_values, bins=bins)
         axis.grid(True, linestyle="-.")
         axis.set_ylabel("odds")
         axis.set_xlabel("outcome")
-        axis.plot(
-            [average, average],
-            [0, max_hight * 1.1],
-            "-r",
-            lw=2,
-            label="Average = %d" % average,
-        )
+        if average is not None:
+            max_height = max([value for value in y_values])
+            axis.plot(
+                [average, average],
+                [0, max_height * 1.1],
+                "-r",
+                lw=2,
+                label="Average = %d" % average,
+            )
         buffer = io.BytesIO()
         pyplot.savefig(buffer, format="png")
         buffer.seek(0)
@@ -64,22 +86,24 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
 
     def at_least(self) -> typing.Dict[int, float]:
         at_least_dict = {}
-        total_above = self._outcome_count
-        keys = self._result_map.keys()
-        sorted(keys)
+        total_above = 1
+        histogram_form = self._get_histogram_form(self.get_dict_form())
+        keys = list(histogram_form.keys())
+        keys = sorted(keys)
         for value in keys:
-            at_least_dict[value] = total_above / self._outcome_count
-            total_above -= self._result_map[value]
+            at_least_dict[value] = total_above / 1
+            total_above -= histogram_form[value]
         return at_least_dict
 
     def at_most(self) -> typing.Dict[int, float]:
         at_most_dict = {}
         at_or_below = 0
-        keys = self._result_map.keys()
-        sorted(keys, reverse=True)
+        histogram_form = self._get_histogram_form(self.get_dict_form())
+        keys = list(histogram_form.keys())
+        keys = sorted(keys)
         for value in keys:
-            at_or_below += self._result_map[value]
-            at_most_dict[value] = at_or_below / self._outcome_count
+            at_or_below += histogram_form[value]
+            at_most_dict[value] = at_or_below / 1
         return at_most_dict
 
     def get_result_map(self) -> typing.Dict[int, int]:
@@ -90,14 +114,17 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             key: value / self._outcome_count for key, value in self._result_map.items()
         }
 
-    def _get_show_histogram_form(self) -> typing.Dict[int, float]:
-        dict_data = self.get_dict_form()
-        item_list = [item for item in dict_data.items()]
+    @staticmethod
+    def _get_histogram_form(
+        base_data: typing.Dict[int, float]
+    ) -> typing.Dict[int, float]:
+        base_data = copy.copy(base_data)
+        item_list = [item for item in base_data.items()]
         item_list.sort(key=lambda tup: tup[0])
         for int_value in range(item_list[0][0], item_list[-1][0] + 1):
-            if int_value not in dict_data:
-                dict_data[int_value] = 0
-        return dict_data
+            if int_value not in base_data:
+                base_data[int_value] = 0
+        return base_data
 
     def _combine_distributions(
         self,

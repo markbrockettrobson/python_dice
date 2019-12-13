@@ -41,3 +41,17 @@ class IPythonDiceInterpreter(abc.ABC):
 
         :return: output of state of the pydice program
         """
+
+    @abc.abstractmethod
+    def get_at_least_histogram(self, input_text: typing.List[str]) -> Image:
+        """
+
+        :return: output of state of the pydice program
+        """
+
+    @abc.abstractmethod
+    def get_at_most_histogram(self, input_text: typing.List[str]) -> Image:
+        """
+
+        :return: output of state of the pydice program
+        """
