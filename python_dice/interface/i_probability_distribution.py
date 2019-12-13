@@ -27,7 +27,25 @@ class IProbabilityDistribution(abc.ABC):
 
         prints a plot of the distribution with matplotlib
         :returns the pyplot figure for plot
-                 <pyplot.Figure>
+                 <Image>
+        """
+
+    @abc.abstractmethod
+    def get_at_least_histogram(self) -> Image:
+        """
+
+        prints a plot of the area under the distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <Image>
+        """
+
+    @abc.abstractmethod
+    def get_at_most_histogram(self) -> Image:
+        """
+
+        prints a plot of 1 - the area under the distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <Image>
         """
 
     @abc.abstractmethod

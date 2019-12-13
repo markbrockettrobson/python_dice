@@ -67,3 +67,17 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_histogram()
+
+    def get_at_least_histogram(self, input_text: typing.List[str]) -> Image:
+        stdout = probability_distribution.ProbabilityDistribution()
+        for line in input_text:
+            token, _ = self._parser.parse(line, state=self._state)
+            stdout = token.get_probability_distribution()
+        return stdout.get_at_least_histogram()
+
+    def get_at_most_histogram(self, input_text: typing.List[str]) -> Image:
+        stdout = probability_distribution.ProbabilityDistribution()
+        for line in input_text:
+            token, _ = self._parser.parse(line, state=self._state)
+            stdout = token.get_probability_distribution()
+        return stdout.get_at_most_histogram()

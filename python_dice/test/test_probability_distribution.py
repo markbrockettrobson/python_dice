@@ -193,3 +193,29 @@ class TestProbabilityDistribution(unittest.TestCase):
         image = test_distribution.get_histogram()
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
+
+    def disabled_test_get_at_least_histogram(self):
+        test_distribution = probability_distribution.ProbabilityDistribution(
+            {2: 1, 3: 2, 4: 4, 5: 8, 6: 4, 7: 2, 8: 1}
+        )
+        image_path = pathlib.Path(
+            pathlib.Path.cwd(),
+            "test_image",
+            "TestProbabilityDistribution_test_get_at_least_histogram.png",
+        )
+        image = test_distribution.get_at_least_histogram()
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
+
+    def disabled_test_get_at_most_histogram(self):
+        test_distribution = probability_distribution.ProbabilityDistribution(
+            {1: 1, 2: 3, 3: 6, 4: 1}
+        )
+        image_path = pathlib.Path(
+            pathlib.Path.cwd(),
+            "test_image",
+            "TestProbabilityDistribution_test_get_at_most_histogram.png",
+        )
+        image = test_distribution.get_at_most_histogram()
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())

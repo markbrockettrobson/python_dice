@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="python_dice",
-    version="0.0.4",
+    version="0.0.5",
     author="Mark Brockett Robson",
     author_email="mark.brockett.robson@gmail.com",
     description="a statistical dice library for python",
