@@ -27,7 +27,7 @@ class IPythonDiceInterpreter(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_probability_distribution(
+    def get_probability_distributions(
         self, input_text: typing.List[str]
     ) -> typing.Dict[str, typing.Dict[int, float]]:
         """
@@ -51,6 +51,13 @@ class IPythonDiceInterpreter(abc.ABC):
 
     @abc.abstractmethod
     def get_at_most_histogram(self, input_text: typing.List[str]) -> Image:
+        """
+
+        :return: output of state of the pydice program
+        """
+
+    @abc.abstractmethod
+    def get_average(self, input_text: typing.List[str]) -> typing.Dict[str, float]:
         """
 
         :return: output of state of the pydice program

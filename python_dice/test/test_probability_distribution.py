@@ -1,3 +1,4 @@
+import os
 import pathlib
 import unittest
 
@@ -181,12 +182,12 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
         self.assertEqual({0: 1, 1: 3}, test_distribution.get_result_map())
 
-    def disabled_test_get_histogram(self):
+    def test_get_histogram(self):
         test_distribution = probability_distribution.ProbabilityDistribution(
             {1: 1, 2: 3, 3: 6, 4: 1}
         )
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestProbabilityDistribution_test_get_histogram.png",
         )
@@ -194,12 +195,12 @@ class TestProbabilityDistribution(unittest.TestCase):
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
 
-    def disabled_test_get_at_least_histogram(self):
+    def test_get_at_least_histogram(self):
         test_distribution = probability_distribution.ProbabilityDistribution(
             {2: 1, 3: 2, 4: 4, 5: 8, 6: 4, 7: 2, 8: 1}
         )
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestProbabilityDistribution_test_get_at_least_histogram.png",
         )
@@ -207,15 +208,31 @@ class TestProbabilityDistribution(unittest.TestCase):
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
 
-    def disabled_test_get_at_most_histogram(self):
+    def test_get_at_most_histogram(self):
         test_distribution = probability_distribution.ProbabilityDistribution(
             {1: 1, 2: 3, 3: 6, 4: 1}
         )
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestProbabilityDistribution_test_get_at_most_histogram.png",
         )
         image = test_distribution.get_at_most_histogram()
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
+
+    def test_get_compare_histogram(self):
+        test_distribution_one = probability_distribution.ProbabilityDistribution(
+            {1: 2, 2: 3, 3: 6, 4: 1}
+        )
+        test_distribution_two = probability_distribution.ProbabilityDistribution(
+            {1: 1, 2: 3, 3: 6, 4: 2}
+        )
+        image_path = pathlib.Path(
+            os.path.dirname(os.path.abspath(__file__)),
+            "test_image",
+            "TestProbabilityDistribution_test_get_compare_histogram.png",
+        )
+        image = test_distribution_one.get_compare_histogram(test_distribution_two)
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())

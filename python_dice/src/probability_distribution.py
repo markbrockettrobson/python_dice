@@ -39,6 +39,28 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             x_values, [histogram_data[x_value] for x_value in x_values], self.average()
         )
 
+    def get_compare_histogram(
+        self, other_probability: i_probability_distribution.IProbabilityDistribution
+    ) -> Image:
+        this_histogram_data = self._get_histogram_form(self.get_dict_form())
+        other_histogram_data = self._get_histogram_form(
+            other_probability.get_dict_form()
+        )
+        x_values = list(this_histogram_data.keys())
+        x_values.extend(other_histogram_data.keys())
+
+        def y_value_calculator(key):
+            value = 0
+            if key in this_histogram_data:
+                value += this_histogram_data[key]
+            if key in other_histogram_data:
+                value -= other_histogram_data[key]
+            return value
+
+        return self._make_histogram(
+            x_values, [y_value_calculator(x_value) for x_value in x_values]
+        )
+
     @staticmethod
     def _make_histogram(
         x_values: typing.List[float],

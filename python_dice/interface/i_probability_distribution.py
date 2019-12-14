@@ -49,6 +49,17 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
+    def get_compare_histogram(
+        self, other_probability: "IProbabilityDistribution"
+    ) -> Image:
+        """
+
+        prints a plot of this distribution - other distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <Image>
+        """
+
+    @abc.abstractmethod
     def max(self) -> int:
         """
 
