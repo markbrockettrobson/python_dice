@@ -50,7 +50,7 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return return_dict
 
-    def get_probability_distribution(
+    def get_probability_distributions(
         self, input_text: typing.List[str]
     ) -> typing.Dict[str, typing.Dict[int, float]]:
         return_dict = {}
@@ -60,6 +60,15 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             return_dict = self._state.get_var_dict()
             return_dict["stdout"] = stdout
         return {key: value.get_dict_form() for key, value in return_dict.items()}
+
+    def get_average(self, input_text: typing.List[str]) -> typing.Dict[str, float]:
+        return_dict = {}
+        for line in input_text:
+            token, _ = self._parser.parse(line, state=self._state)
+            stdout = token.get_probability_distribution()
+            return_dict = self._state.get_var_dict()
+            return_dict["stdout"] = stdout
+        return {key: value.average() for key, value in return_dict.items()}
 
     def get_histogram(self, input_text: typing.List[str]) -> Image:
         stdout = probability_distribution.ProbabilityDistribution()

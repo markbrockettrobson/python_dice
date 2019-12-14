@@ -1,3 +1,4 @@
+import os
 import pathlib
 import unittest
 
@@ -31,7 +32,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
                 11: 0.027777777777777776,
                 12: 0.013888888888888888,
             },
-            interpreter.get_probability_distribution(program)["damage_half_on_save"],
+            interpreter.get_probability_distributions(program)["damage_half_on_save"],
         )
 
     def test_roll_single_line(self):
@@ -67,6 +68,16 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         ]
         self.assertEqual(12, interpreter.max(program)["stdout"])
 
+    def test_average(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = [
+            "VAR save_roll = 1d20 + 8",
+            "VAR burning_arch_damage = 2d6",
+            "VAR pass_save = ( save_roll >= 19 ) ",
+            "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
+        ]
+        self.assertEqual(5.125, interpreter.get_average(program)["damage_half_on_save"])
+
     def disabled_test_get_histogram(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
@@ -78,7 +89,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         ]
 
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestPythonDiceInterpreter_test_get_histogram.png",
         )
@@ -97,7 +108,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         ]
 
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestPythonDiceInterpreter_test_get_at_least_histogram.png",
         )
@@ -110,11 +121,10 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         program = ["10 * 1d4"]
 
         image_path = pathlib.Path(
-            pathlib.Path.cwd(),
+            os.path.dirname(os.path.abspath(__file__)),
             "test_image",
             "TestPythonDiceInterpreter_test_get_at_most_histogram.png",
         )
         image = interpreter.get_at_most_histogram(program)
-        image.show()
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
