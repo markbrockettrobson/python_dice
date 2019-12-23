@@ -9,6 +9,34 @@ import python_dice.src.python_dice_interpreter as python_dice_interpreter
 
 
 class TestPythonDiceInterpreter(unittest.TestCase):
+    def test_get_probability_distribution_dict(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = [
+            "VAR save_roll = 1d20 + 8",
+            "VAR burning_arch_damage = 2d6",
+            "VAR pass_save = ( save_roll >= 19 ) ",
+            "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
+        ]
+        self.assertEqual(
+            {
+                1: 0.041666666666666664,
+                2: 0.1111111111111111,
+                3: 0.18055555555555555,
+                4: 0.16666666666666666,
+                5: 0.125,
+                6: 0.08333333333333333,
+                7: 0.08333333333333333,
+                8: 0.06944444444444445,
+                9: 0.05555555555555555,
+                10: 0.041666666666666664,
+                11: 0.027777777777777776,
+                12: 0.013888888888888888,
+            },
+            interpreter.get_probability_distributions_dict(program)[
+                "damage_half_on_save"
+            ],
+        )
+
     def test_get_probability_distribution(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
@@ -32,7 +60,9 @@ class TestPythonDiceInterpreter(unittest.TestCase):
                 11: 0.027777777777777776,
                 12: 0.013888888888888888,
             },
-            interpreter.get_probability_distributions(program)["damage_half_on_save"],
+            interpreter.get_probability_distributions(program)[
+                "damage_half_on_save"
+            ].get_dict_form(),
         )
 
     def test_roll_single_line(self):

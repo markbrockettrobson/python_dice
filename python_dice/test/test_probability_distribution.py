@@ -236,3 +236,39 @@ class TestProbabilityDistribution(unittest.TestCase):
         image = test_distribution_one.get_compare_histogram(test_distribution_two)
         expected_image = Image.open(image_path)
         self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
+
+    def disabled_test_get_compare_at_least_histogram(self):
+        test_distribution_one = probability_distribution.ProbabilityDistribution(
+            {1: 2, 2: 3, 3: 6, 4: 1}
+        )
+        test_distribution_two = probability_distribution.ProbabilityDistribution(
+            {1: 1, 2: 3, 3: 6, 4: 7}
+        )
+        image_path = pathlib.Path(
+            os.path.dirname(os.path.abspath(__file__)),
+            "test_image",
+            "TestProbabilityDistribution_test_get_compare_at_least_histogram.png",
+        )
+        image = test_distribution_one.get_compare_at_least_histogram(
+            test_distribution_two, "option 1", "option 2"
+        )
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())
+
+    def disabled_test_get_compare_at_most_histogram(self):
+        test_distribution_one = probability_distribution.ProbabilityDistribution(
+            {1: 2, 2: 3, 3: 16, 4: 1}
+        )
+        test_distribution_two = probability_distribution.ProbabilityDistribution(
+            {1: 1, 2: 3, 3: 6, 4: 2}
+        )
+        image_path = pathlib.Path(
+            os.path.dirname(os.path.abspath(__file__)),
+            "test_image",
+            "TestProbabilityDistribution_test_get_compare_at_most_histogram.png",
+        )
+        image = test_distribution_one.get_compare_at_most_histogram(
+            test_distribution_two, "option a", "option b"
+        )
+        expected_image = Image.open(image_path)
+        self.assertIsNone(ImageChops.difference(expected_image, image).getbbox())

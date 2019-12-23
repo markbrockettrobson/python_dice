@@ -2,6 +2,7 @@ import typing
 
 import PIL.Image as Image
 
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 import python_dice.interface.i_probability_state as i_probability_state
 import python_dice.interface.i_python_dice_interpreter as i_python_dice_interpreter
 import python_dice.interface.i_python_dice_parser as i_python_dice_parser
@@ -50,7 +51,7 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return return_dict
 
-    def get_probability_distributions(
+    def get_probability_distributions_dict(
         self, input_text: typing.List[str]
     ) -> typing.Dict[str, typing.Dict[int, float]]:
         return_dict = {}
@@ -60,6 +61,17 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             return_dict = self._state.get_var_dict()
             return_dict["stdout"] = stdout
         return {key: value.get_dict_form() for key, value in return_dict.items()}
+
+    def get_probability_distributions(
+        self, input_text: typing.List[str]
+    ) -> typing.Dict[str, i_probability_distribution.IProbabilityDistribution]:
+        return_dict = {}
+        for line in input_text:
+            token, _ = self._parser.parse(line, state=self._state)
+            stdout = token.get_probability_distribution()
+            return_dict = self._state.get_var_dict()
+            return_dict["stdout"] = stdout
+        return {key: value for key, value in return_dict.items()}
 
     def get_average(self, input_text: typing.List[str]) -> typing.Dict[str, float]:
         return_dict = {}
