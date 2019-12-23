@@ -60,6 +60,34 @@ class IProbabilityDistribution(abc.ABC):
         """
 
     @abc.abstractmethod
+    def get_compare_at_least_histogram(
+        self,
+        other_probability: "IProbabilityDistribution",
+        this_distribution_name: str,
+        other_distribution_name: str,
+    ) -> Image:
+        """
+
+        prints a plot of this at least this distribution alongside another distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <Image>
+        """
+
+    @abc.abstractmethod
+    def get_compare_at_most_histogram(
+        self,
+        other_probability: "IProbabilityDistribution",
+        this_distribution_name: str,
+        other_distribution_name: str,
+    ) -> Image:
+        """
+
+        prints a plot of this at most this distribution alongside another distribution with matplotlib
+        :returns the pyplot figure for plot
+                 <Image>
+        """
+
+    @abc.abstractmethod
     def max(self) -> int:
         """
 

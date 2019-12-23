@@ -61,6 +61,46 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             x_values, [y_value_calculator(x_value) for x_value in x_values]
         )
 
+    def get_compare_at_least_histogram(
+        self,
+        other_probability: i_probability_distribution.IProbabilityDistribution,
+        this_distribution_name: str = "This distribution",
+        other_distribution_name: str = "other distribution",
+    ) -> Image:
+        this_at_least_data = self.at_least()
+        other_at_least_data = other_probability.at_least()
+
+        x_values_one = list(this_at_least_data.keys())
+        x_values_two = list(other_at_least_data.keys())
+        return self._make_line_plot(
+            x_values_one,
+            [this_at_least_data[x_value] for x_value in x_values_one],
+            x_values_two,
+            [other_at_least_data[x_value] for x_value in x_values_two],
+            this_distribution_name,
+            other_distribution_name,
+        )
+
+    def get_compare_at_most_histogram(
+        self,
+        other_probability: i_probability_distribution.IProbabilityDistribution,
+        this_distribution_name: str = "This distribution",
+        other_distribution_name: str = "other distribution",
+    ) -> Image:
+        this_at_most_data = self.at_most()
+        other_at_most_data = other_probability.at_most()
+
+        x_values_one = list(this_at_most_data.keys())
+        x_values_two = list(other_at_most_data.keys())
+        return self._make_line_plot(
+            x_values_one,
+            [this_at_most_data[x_value] for x_value in x_values_one],
+            x_values_two,
+            [other_at_most_data[x_value] for x_value in x_values_two],
+            this_distribution_name,
+            other_distribution_name,
+        )
+
     @staticmethod
     def _make_histogram(
         x_values: typing.List[float],
@@ -85,6 +125,34 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
                 lw=2,
                 label="Average = %d" % average,
             )
+        buffer = io.BytesIO()
+        pyplot.savefig(buffer, format="png")
+        buffer.seek(0)
+        image = Image.open(buffer)
+        return image
+
+    @staticmethod
+    def _make_line_plot(
+        x_values_one: typing.List[float],
+        y_values_one: typing.List[float],
+        x_values_two: typing.List[float],
+        y_values_two: typing.List[float],
+        lable_one: str = "Distribution One",
+        lable_two: str = "Distribution Two",
+    ) -> Image:
+        x_values_one, y_values_one = (
+            list(t) for t in zip(*sorted(zip(x_values_one, y_values_one)))
+        )
+        x_values_two, y_values_two = (
+            list(t) for t in zip(*sorted(zip(x_values_two, y_values_two)))
+        )
+        _, axis = pyplot.subplots()
+        axis.plot(x_values_one, y_values_one, "b", label=lable_one)
+        axis.plot(x_values_two, y_values_two, "r", label=lable_two)
+        axis.grid(True, linestyle="-.")
+        axis.set_ylabel("odds")
+        axis.set_xlabel("outcome")
+        axis.legend()
         buffer = io.BytesIO()
         pyplot.savefig(buffer, format="png")
         buffer.seek(0)
