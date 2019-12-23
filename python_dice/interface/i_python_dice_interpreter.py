@@ -2,6 +2,7 @@ import abc
 import typing
 
 import PIL.Image as Image
+import python_dice.interface.i_probability_distribution as i_probability_distribution
 
 
 class IPythonDiceInterpreter(abc.ABC):
@@ -27,9 +28,18 @@ class IPythonDiceInterpreter(abc.ABC):
         """
 
     @abc.abstractmethod
-    def get_probability_distributions(
+    def get_probability_distributions_dict(
         self, input_text: typing.List[str]
     ) -> typing.Dict[str, typing.Dict[int, float]]:
+        """
+
+        :return: output of state of the pydice program
+        """
+
+    @abc.abstractmethod
+    def get_probability_distributions(
+        self, input_text: typing.List[str]
+    ) -> typing.Dict[str, i_probability_distribution.IProbabilityDistribution]:
         """
 
         :return: output of state of the pydice program
