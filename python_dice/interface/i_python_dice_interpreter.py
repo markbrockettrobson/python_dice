@@ -2,6 +2,7 @@ import abc
 import typing
 
 import PIL.Image as Image
+
 import python_dice.interface.i_probability_distribution as i_probability_distribution
 
 
