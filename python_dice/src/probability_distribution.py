@@ -68,7 +68,9 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         other_distribution_name: str = "other distribution",
     ) -> Image:
         this_at_least_data = self._get_histogram_form(self.get_dict_form())
-        other_at_least_data = self._get_histogram_form(other_probability.get_dict_form())
+        other_at_least_data = self._get_histogram_form(
+            other_probability.get_dict_form()
+        )
 
         x_values_one = list(this_at_least_data.keys())
         x_values_two = list(other_at_least_data.keys())

@@ -61,10 +61,10 @@ class IProbabilityDistribution(abc.ABC):
 
     @abc.abstractmethod
     def get_compare(
-            self,
-            other_probability: "IProbabilityDistribution",
-            this_distribution_name: str,
-            other_distribution_name: str,
+        self,
+        other_probability: "IProbabilityDistribution",
+        this_distribution_name: str,
+        other_distribution_name: str,
     ) -> Image:
         """
 
