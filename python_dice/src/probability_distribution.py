@@ -61,7 +61,29 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             x_values, [y_value_calculator(x_value) for x_value in x_values]
         )
 
-    def get_compare_at_least_histogram(
+    def get_compare(
+        self,
+        other_probability: i_probability_distribution.IProbabilityDistribution,
+        this_distribution_name: str = "This distribution",
+        other_distribution_name: str = "other distribution",
+    ) -> Image:
+        this_at_least_data = self._get_histogram_form(self.get_dict_form())
+        other_at_least_data = self._get_histogram_form(
+            other_probability.get_dict_form()
+        )
+
+        x_values_one = list(this_at_least_data.keys())
+        x_values_two = list(other_at_least_data.keys())
+        return self._make_line_plot(
+            x_values_one,
+            [this_at_least_data[x_value] for x_value in x_values_one],
+            x_values_two,
+            [other_at_least_data[x_value] for x_value in x_values_two],
+            this_distribution_name,
+            other_distribution_name,
+        )
+
+    def get_compare_at_least(
         self,
         other_probability: i_probability_distribution.IProbabilityDistribution,
         this_distribution_name: str = "This distribution",
@@ -81,7 +103,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             other_distribution_name,
         )
 
-    def get_compare_at_most_histogram(
+    def get_compare_at_most(
         self,
         other_probability: i_probability_distribution.IProbabilityDistribution,
         this_distribution_name: str = "This distribution",
