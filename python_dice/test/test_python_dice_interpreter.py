@@ -12,7 +12,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_get_probability_distribution_dict(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -40,7 +40,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_get_probability_distribution(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -68,7 +68,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_roll_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -81,7 +81,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_min_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -91,7 +91,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_max_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "burning_arch_damage // (pass_save + 1)",
@@ -101,7 +101,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_average(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 2d6",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -111,7 +111,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def disabled_test_get_histogram(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 9d6 + 9",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -130,7 +130,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def disabled_test_get_at_least_histogram(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
-            "VAR save_roll = 1d20 + 8",
+            "VAR save_roll = d20 + 8",
             "VAR burning_arch_damage = 9d6 + 9",
             "VAR pass_save = ( save_roll >= 19 ) ",
             "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
