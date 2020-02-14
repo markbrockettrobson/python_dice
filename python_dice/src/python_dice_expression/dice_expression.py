@@ -25,10 +25,12 @@ class DiceExpression(i_dice_expression.IDiceExpression):
         self._string_form = string_form
 
     def _get_number_of_dice(self) -> int:
-        return int(self._string_form.split("d")[0])
+        string_num = self._string_form.split("d")[0]
+        return 1 if string_num == "" else int(string_num)
 
     def _get_number_of_sides(self) -> int:
-        return int(self._string_form.split("d")[1])
+        string_num = self._string_form.split("d")[1]
+        return 100 if string_num == "%" else int(string_num)
 
     def roll(self) -> int:
         return sum(
