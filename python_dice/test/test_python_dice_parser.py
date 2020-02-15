@@ -28,7 +28,7 @@ class TestPythonDiceParser(unittest.TestCase):
         )
 
     def test_parser_error(self):
-        for invalid in ["2d30 1", "(((1d2) + 1 ) + 1 ) + 1)"]:
+        for invalid in ["2d30 1", "(((d2) + 1 ) + 1 ) + 1)"]:
             self.assertRaises(ValueError, self._test_parser.parse, invalid)
 
     def test_parser_constant_integer(self):
@@ -82,17 +82,17 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, 1, 5)
 
     def test_parser_dice_add(self):
-        token, _ = self._test_parser.parse("2d4 + 1d2")
+        token, _ = self._test_parser.parse("2d4 + d2")
         expected_outcome = {3: 1, 4: 3, 5: 5, 6: 7, 7: 7, 8: 5, 9: 3, 10: 1}
         self.assert_distribution(token, expected_outcome, 3, 10)
 
     def test_parser_dice_subtract(self):
-        token, _ = self._test_parser.parse("2d4 - 1d2")
+        token, _ = self._test_parser.parse("2d4 - d2")
         expected_outcome = {0: 1, 1: 3, 2: 5, 3: 7, 4: 7, 5: 5, 6: 3, 7: 1}
         self.assert_distribution(token, expected_outcome, 0, 7)
 
     def test_parser_dice_multiply(self):
-        token, _ = self._test_parser.parse("2d4 * 1d2")
+        token, _ = self._test_parser.parse("2d4 * d2")
         expected_outcome = {
             2: 1,
             4: 4,
@@ -109,12 +109,12 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, 2, 16)
 
     def test_parser_dice_division(self):
-        token, _ = self._test_parser.parse("2d4 // 1d2")
+        token, _ = self._test_parser.parse("2d4 // d2")
         expected_outcome = {2: 8, 1: 3, 3: 7, 4: 4, 5: 4, 6: 3, 7: 2, 8: 1}
         self.assert_distribution(token, expected_outcome, 1, 8)
 
     def test_parser_dice_full_test(self):
-        token, _ = self._test_parser.parse("2d4 * 1d2 + 6d6 // 1d4")
+        token, _ = self._test_parser.parse("2d4 * d2 + 6d6 // 1d4")
         expected_outcome = {
             8: 150534,
             5: 5474,
