@@ -80,7 +80,17 @@ class TestPythonDiceLexer(unittest.TestCase):
         tokens = self._test_lexer.lex("d4 * 4d6 + 10d1 + 2d% - -10000000")
 
         self.assertEqual(
-            ["DICE", "MULTIPLY", "DICE", "ADD", "DICE", "ADD", "DICE", "SUBTRACT", "CONSTANT_INTEGER"],
+            [
+                "DICE",
+                "MULTIPLY",
+                "DICE",
+                "ADD",
+                "DICE",
+                "ADD",
+                "DICE",
+                "SUBTRACT",
+                "CONSTANT_INTEGER",
+            ],
             [token.name for token in tokens],
         )
         self.assertEqual(
@@ -110,7 +120,21 @@ class TestPythonDiceLexer(unittest.TestCase):
             [token.name for token in tokens],
         )
         self.assertEqual(
-            ["(", "(", "d4", "*", "4d6", ")", "+", "10d1", "+", "2d%", ")", "-", "-10000000"],
+            [
+                "(",
+                "(",
+                "d4",
+                "*",
+                "4d6",
+                ")",
+                "+",
+                "10d1",
+                "+",
+                "2d%",
+                ")",
+                "-",
+                "-10000000",
+            ],
             [token.value for token in tokens],
         )
 
@@ -136,7 +160,21 @@ class TestPythonDiceLexer(unittest.TestCase):
             [token.name for token in tokens],
         )
         self.assertEqual(
-            ["(", "(", "d4", "*", "True", ")", "+", "10d1", "+", "2d%", ")", "-", "False"],
+            [
+                "(",
+                "(",
+                "d4",
+                "*",
+                "True",
+                ")",
+                "+",
+                "10d1",
+                "+",
+                "2d%",
+                ")",
+                "-",
+                "False",
+            ],
             [token.value for token in tokens],
         )
 
@@ -268,6 +306,4 @@ class TestPythonDiceLexer(unittest.TestCase):
         self.assertEqual(
             ["VAR", "NAME", "ASSIGNMENT", "DICE"], [token.name for token in tokens]
         )
-        self.assertEqual(
-            ["VAR", "apple", "=", "d4"], [token.value for token in tokens]
-        )
+        self.assertEqual(["VAR", "apple", "=", "d4"], [token.value for token in tokens])
