@@ -12,6 +12,7 @@ import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
 import python_dice.src.python_dice_expression.var_assignment_expression as var_assignment_expression
+import python_dice.src.python_dice_expression.drop_keep_expression as drop_keep_expression
 import python_dice.src.python_dice_syntax.abs_syntax as abs_syntax
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
 import python_dice.src.python_dice_syntax.assignment_syntax as assignment_syntax
@@ -29,12 +30,14 @@ import python_dice.src.python_dice_syntax.not_syntax as not_syntax
 import python_dice.src.python_dice_syntax.open_parenthesis_syntax as open_parenthesis_syntax
 import python_dice.src.python_dice_syntax.subtract_syntax as subtract_syntax
 import python_dice.src.python_dice_syntax.var_syntax as var_syntax
+import python_dice.src.python_dice_syntax.drop_keep_syntax as drop_keep_syntax
 
 LEXER_SYNTAX = [
     open_parenthesis_syntax.OpenParenthesisSyntax,
     close_parenthesis_syntax.CloseParenthesisSyntax,
     comma_syntax.CommaSyntax,
     not_syntax.NotSyntax,
+    drop_keep_syntax.DropKeepSyntax,
     dice_syntax.DiceSyntax,
     binary_operator_syntax.BinaryOperatorSyntax,
     constant_integer_syntax.ConstantIntegerSyntax,
@@ -53,6 +56,7 @@ LEXER_SYNTAX = [
 PARSER_EXPRESSIONS = [
     parentheses_enclosed_expression.ParenthesisEnclosedExpression,
     not_expression.NotExpression,
+    drop_keep_expression.DropKeepExpression,
     dice_expression.DiceExpression,
     constant_integer_expression.ConstantIntegerExpression,
     constant_binary_expression.ConstantBinaryExpression,
