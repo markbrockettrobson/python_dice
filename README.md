@@ -22,7 +22,7 @@ https://github.com/markbrockettrobson/python_dice
 from python_dice import PythonDiceInterpreter
 
 interpreter = PythonDiceInterpreter()
-program = ["1d6"]
+program = ["d6"]
 roll = interpreter.roll(program)["stdout"]
 print(roll)
 
@@ -34,12 +34,12 @@ from python_dice import PythonDiceInterpreter
 
 interpreter = PythonDiceInterpreter()
 program = [
-     "VAR one_dice = 1d6 + 10",
-     "VAR two_dice = 1d6 - 10"
+     "VAR a_name = 1d6 + 10",
+     "VAR b_name = 1d6 - 10"
 ]
-roll_one = interpreter.max(program)["one_dice"]
-roll_two = interpreter.min(program)["two_dice"]
-print(roll_one, roll_two)
+a_name = interpreter.max(program)["a_name"]
+b_name = interpreter.min(program)["b_name"]
+print(a_name, b_name)
 
 > 16 -9
 ~~~
@@ -47,7 +47,7 @@ print(roll_one, roll_two)
 ~~~
 interpreter = python_dice_interpreter.PythonDiceInterpreter()
 program = [
-    "VAR save_roll = 1d20",
+    "VAR save_roll = d20",
     "VAR burning_arch_damage = 10d6 + 10",
     "VAR pass_save = ( save_roll >= 10 ) ",
     "VAR damage_half_on_save = burning_arch_damage // (pass_save + 1)",
@@ -59,6 +59,16 @@ im.show()
 ![image of 10d6 add 10 half round up if 1d20 greater than 10](https://raw.githubusercontent.com/markbrockettrobson/python_dice/master/images/histogram.png)
 
 ### Syntax
+Dice
+<number of dice to roll>d<number of sides on the dice>
+
+number of dice is missing will be treated as one
+number of sides can also be % for 100
+~~~
+VAR a = 4d10
+VAR b = d6
+VAR c = 1d%
+~~~
 
 Set a var
 ~~~
@@ -87,4 +97,9 @@ VAR h = (1d4 >= 2) OR !(1d20 == 2)
 abs
 ~~~
 var abs = ABS( 1d6 - 1d6 )
+~~~
+Min and Max
+~~~
+MAX(7d7, 2d2)
+MIN(50, d%)
 ~~~

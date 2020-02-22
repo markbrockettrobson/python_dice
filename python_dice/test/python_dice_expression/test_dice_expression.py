@@ -1,3 +1,5 @@
+import collections
+import itertools
 import unittest
 import unittest.mock as mock
 
@@ -26,40 +28,80 @@ class TestDiceExpression(unittest.TestCase):
         self.assertEqual(20, max(roll_set))
         self.assertEqual(2, min(roll_set))
 
+    def test_dice_roll_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        roll_set = set()
+        for _ in range(1000):
+            roll_set.add(self._test_dice.roll())
+        self.assertEqual(10, len(roll_set))
+        self.assertEqual(10, max(roll_set))
+        self.assertEqual(1, min(roll_set))
+
+    def test_dice_roll_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("1d%")
+        roll_set = set()
+        for _ in range(10000):
+            roll_set.add(self._test_dice.roll())
+        self.assertEqual(100, len(roll_set))
+        self.assertEqual(100, max(roll_set))
+        self.assertEqual(1, min(roll_set))
+
     def test_dice_max(self):
         self.assertEqual(24, self._test_dice.max())
+
+    def test_dice_max_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        self.assertEqual(10, self._test_dice.max())
+
+    def test_dice_max_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("1d%")
+        self.assertEqual(100, self._test_dice.max())
 
     def test_dice_min(self):
         self.assertEqual(4, self._test_dice.min())
 
+    def test_dice_min_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        self.assertEqual(1, self._test_dice.min())
+
+    def test_dice_min_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("1d%")
+        self.assertEqual(1, self._test_dice.min())
+
     def test_dice_str(self):
         self.assertEqual("4d6", str(self._test_dice))
 
+    def test_dice_str_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        self.assertEqual("d10", str(self._test_dice))
+
+    def test_dice_str_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("1d%")
+        self.assertEqual("1d%", str(self._test_dice))
+
     def test_dice_get_probability_distribution(self):
         self._test_dice = dice_expression.DiceExpression("4d6")
+        possible_rolls = itertools.product(range(1, 7), repeat=4)
+        results = [sum(t) for t in possible_rolls]
         self.assertEqual(
-            {
-                4: 1,
-                5: 4,
-                6: 10,
-                7: 20,
-                8: 35,
-                9: 56,
-                10: 80,
-                11: 104,
-                12: 125,
-                13: 140,
-                14: 146,
-                15: 140,
-                16: 125,
-                17: 104,
-                18: 80,
-                19: 56,
-                20: 35,
-                21: 20,
-                22: 10,
-                23: 4,
-                24: 1,
-            },
+            dict(collections.Counter(results)),
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        possible_rolls = itertools.product(range(1, 11), repeat=1)
+        results = [sum(t) for t in possible_rolls]
+        self.assertEqual(
+            dict(collections.Counter(results)),
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("2d%")
+        possible_rolls = itertools.product(range(1, 101), repeat=2)
+        results = [sum(t) for t in possible_rolls]
+        self.assertEqual(
+            dict(collections.Counter(results)),
             self._test_dice.get_probability_distribution().get_result_map(),
         )
