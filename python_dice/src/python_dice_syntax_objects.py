@@ -4,6 +4,7 @@ import python_dice.src.python_dice_expression.binary_operator_expression as bina
 import python_dice.src.python_dice_expression.constant_binary_expression as constant_binary_expression
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
+import python_dice.src.python_dice_expression.drop_keep_expression as drop_keep_expression
 import python_dice.src.python_dice_expression.get_var_expression as get_var_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
 import python_dice.src.python_dice_expression.minmax_expression as minmax_expression
@@ -12,7 +13,6 @@ import python_dice.src.python_dice_expression.not_expression as not_expression
 import python_dice.src.python_dice_expression.parentheses_enclosed_expression as parentheses_enclosed_expression
 import python_dice.src.python_dice_expression.subtract_expression as subtract_expression
 import python_dice.src.python_dice_expression.var_assignment_expression as var_assignment_expression
-import python_dice.src.python_dice_expression.drop_keep_expression as drop_keep_expression
 import python_dice.src.python_dice_syntax.abs_syntax as abs_syntax
 import python_dice.src.python_dice_syntax.add_syntax as add_syntax
 import python_dice.src.python_dice_syntax.assignment_syntax as assignment_syntax
@@ -22,6 +22,7 @@ import python_dice.src.python_dice_syntax.comma_syntax as comma_syntax
 import python_dice.src.python_dice_syntax.constant_binary_syntax as constant_binary_syntax
 import python_dice.src.python_dice_syntax.constant_integer_syntax as constant_integer_syntax
 import python_dice.src.python_dice_syntax.dice_syntax as dice_syntax
+import python_dice.src.python_dice_syntax.drop_keep_syntax as drop_keep_syntax
 import python_dice.src.python_dice_syntax.integer_division_syntax as integer_division_syntax
 import python_dice.src.python_dice_syntax.min_max_syntax as min_max_syntax
 import python_dice.src.python_dice_syntax.multiply_syntax as multiply_syntax
@@ -30,7 +31,6 @@ import python_dice.src.python_dice_syntax.not_syntax as not_syntax
 import python_dice.src.python_dice_syntax.open_parenthesis_syntax as open_parenthesis_syntax
 import python_dice.src.python_dice_syntax.subtract_syntax as subtract_syntax
 import python_dice.src.python_dice_syntax.var_syntax as var_syntax
-import python_dice.src.python_dice_syntax.drop_keep_syntax as drop_keep_syntax
 
 LEXER_SYNTAX = [
     open_parenthesis_syntax.OpenParenthesisSyntax,

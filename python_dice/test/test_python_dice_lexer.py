@@ -312,7 +312,8 @@ class TestPythonDiceLexer(unittest.TestCase):
         tokens = self._test_lexer.lex("2d10 >= 4d4d1")
 
         self.assertEqual(
-            ["DICE", "BINARY_OPERATOR", "DROP_KEEP_DICE"], [token.name for token in tokens]
+            ["DICE", "BINARY_OPERATOR", "DROP_KEEP_DICE"],
+            [token.name for token in tokens],
         )
         self.assertEqual(["2d10", ">=", "4d4d1"], [token.value for token in tokens])
 
@@ -320,6 +321,7 @@ class TestPythonDiceLexer(unittest.TestCase):
         tokens = self._test_lexer.lex("4 <= 2d20k1")
 
         self.assertEqual(
-            ["CONSTANT_INTEGER", "BINARY_OPERATOR", "DROP_KEEP_DICE"], [token.name for token in tokens]
+            ["CONSTANT_INTEGER", "BINARY_OPERATOR", "DROP_KEEP_DICE"],
+            [token.name for token in tokens],
         )
         self.assertEqual(["4", "<=", "2d20k1"], [token.value for token in tokens])

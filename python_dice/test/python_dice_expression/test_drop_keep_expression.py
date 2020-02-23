@@ -13,7 +13,9 @@ class TestDiceExpression(unittest.TestCase):
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_drop_keep_add_production_function(self):
-        drop_keep_expression.DropKeepExpression.add_production_function(self._mock_parser_gen)
+        drop_keep_expression.DropKeepExpression.add_production_function(
+            self._mock_parser_gen
+        )
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : DROP_KEEP_DICE"""
         )
@@ -32,17 +34,85 @@ class TestDiceExpression(unittest.TestCase):
             roll_set_keep.add(test_dice.roll())
         self.assertEqual(2, min(roll_set_keep))
 
+    def test_drop_keep_roll_keep_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
+        roll_set_keep = set()
+        for _ in range(10000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(2, min(roll_set_keep))
+        self.assertEqual(6, max(roll_set_keep))
+        self.assertEqual(5, len(roll_set_keep))
+
+    def test_drop_keep_roll_drop_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d10")
+        roll_set_keep = set()
+        for _ in range(10000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(0, min(roll_set_keep))
+        self.assertEqual(0, max(roll_set_keep))
+        self.assertEqual(1, len(roll_set_keep))
+
+    def test_drop_keep_roll_keep_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k0")
+        roll_set_keep = set()
+        for _ in range(10000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(0, min(roll_set_keep))
+        self.assertEqual(0, max(roll_set_keep))
+        self.assertEqual(1, len(roll_set_keep))
+
+    def test_drop_keep_roll_drop_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d0")
+        roll_set_keep = set()
+        for _ in range(10000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(2, min(roll_set_keep))
+        self.assertEqual(6, max(roll_set_keep))
+        self.assertEqual(5, len(roll_set_keep))
+
     def test_drop_keep_max_drop(self):
         self.assertEqual(12, self._test_dice_drop.max())
 
     def test_drop_keep_max_keep(self):
         self.assertEqual(12, self._test_dice_keep.max())
 
+    def test_drop_keep_max_keep_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
+        self.assertEqual(6, test_dice.max())
+
+    def test_drop_keep_max_drop_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d10")
+        self.assertEqual(0, test_dice.max())
+
+    def test_drop_keep_max_keep_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k0")
+        self.assertEqual(0, test_dice.max())
+
+    def test_drop_keep_max_drop_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d0")
+        self.assertEqual(6, test_dice.max())
+
     def test_drop_keep_min_drop(self):
         self.assertEqual(2, self._test_dice_drop.min())
 
     def test_drop_keep_min_keep(self):
         self.assertEqual(2, self._test_dice_keep.min())
+
+    def test_drop_keep_min_keep_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
+        self.assertEqual(2, test_dice.min())
+
+    def test_drop_keep_min_drop_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d10")
+        self.assertEqual(0, test_dice.min())
+
+    def test_drop_keep_min_keep_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k0")
+        self.assertEqual(0, test_dice.min())
+
+    def test_drop_keep_min_drop_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d0")
+        self.assertEqual(2, test_dice.min())
 
     def test_drop_keep_str_drop(self):
         self.assertEqual("4d6d2", str(self._test_dice_drop))
@@ -53,15 +123,7 @@ class TestDiceExpression(unittest.TestCase):
     def test_drop_keep_get_probability_distribution_drop(self):
         test_dice = drop_keep_expression.DropKeepExpression("6d4d4")
         self.assertEqual(
-            {
-                2: 1909,
-                3: 1266,
-                4: 659,
-                5: 192,
-                6: 63,
-                7: 6,
-                8: 1,
-            },
+            {2: 1909, 3: 1266, 4: 659, 5: 192, 6: 63, 7: 6, 8: 1},
             test_dice.get_probability_distribution().get_result_map(),
         )
 
@@ -108,15 +170,7 @@ class TestDiceExpression(unittest.TestCase):
     def test_drop_keep_get_probability_distribution_keep(self):
         test_dice = drop_keep_expression.DropKeepExpression("6d4k2")
         self.assertEqual(
-            {
-                2: 1,
-                3: 6,
-                4: 63,
-                5: 192,
-                6: 659,
-                7: 1266,
-                8: 1909,
-            },
+            {2: 1, 3: 6, 4: 63, 5: 192, 6: 659, 7: 1266, 8: 1909},
             test_dice.get_probability_distribution().get_result_map(),
         )
 
@@ -163,43 +217,25 @@ class TestDiceExpression(unittest.TestCase):
     def test_drop_keep_get_probability_distribution_keep_to_many(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
         self.assertEqual(
-            {
-                2: 1,
-                3: 2,
-                4: 3,
-                5: 2,
-                6: 1,
-            },
+            {2: 1, 3: 2, 4: 3, 5: 2, 6: 1},
             test_dice.get_probability_distribution().get_result_map(),
         )
 
     def test_drop_keep_get_probability_distribution_drop_to_many(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3d10")
         self.assertEqual(
-            {
-                0: 1,
-            },
-            test_dice.get_probability_distribution().get_result_map(),
+            {0: 1}, test_dice.get_probability_distribution().get_result_map()
         )
 
     def test_drop_keep_get_probability_distribution_keep_to_zero(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3k0")
         self.assertEqual(
-            {
-                0: 1,
-            },
-            test_dice.get_probability_distribution().get_result_map(),
+            {0: 1}, test_dice.get_probability_distribution().get_result_map()
         )
 
     def test_drop_keep_get_probability_distribution_drop_to_zero(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3d0")
         self.assertEqual(
-            {
-                2: 1,
-                3: 2,
-                4: 3,
-                5: 2,
-                6: 1,
-            },
+            {2: 1, 3: 2, 4: 3, 5: 2, 6: 1},
             test_dice.get_probability_distribution().get_result_map(),
         )
