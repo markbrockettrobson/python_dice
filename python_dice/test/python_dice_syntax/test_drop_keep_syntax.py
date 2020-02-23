@@ -12,7 +12,8 @@ class TestDropKeepSyntax(unittest.TestCase):
 
     def test_drop_keep_get_token_regex(self):
         self.assertEqual(
-            r"\d+d\d+[kdKD]\d+", drop_keep_syntax.DropKeepSyntax.get_token_regex()
+            r"\d*d(\d+|%|F|\[(\s*(-?)\d+\s*,\s*)*(-?)\d+\s*(,?)\s*])[kd]\d+",
+            drop_keep_syntax.DropKeepSyntax.get_token_regex(),
         )
 
     def test_drop_keep_regex_will_match(self):
@@ -23,6 +24,16 @@ class TestDropKeepSyntax(unittest.TestCase):
             "12d90k4",
             "3d210321k314",
             "12652125d12k312",
+            "3d%k1",
+            "2d%d10",
+            "10dFd3",
+            "4dFk3",
+            "4d[1]k1",
+            "4d[-1]d3",
+            "10d[ 1,2,3,4]k3",
+            "2d[-1 , 22, 1, 1]d1",
+            "80d[0,1, 2, -1]k10",
+            "d[1,]d2",
         ]
         for test_case in test_cases:
             self.assertTrue(
@@ -43,6 +54,12 @@ class TestDropKeepSyntax(unittest.TestCase):
             "ad21",
             "2d2",
             "d210321314",
+            "d[1]",
+            "d[]k3",
+            "d[ 1,,3,4]d6",
+            "d[-1 , 22, 1, 1]32",
+            "2d[0,1, 2, -1]",
+            "5d[1,d3",
         ]
         for test_case in test_cases:
             self.assertIsNone(

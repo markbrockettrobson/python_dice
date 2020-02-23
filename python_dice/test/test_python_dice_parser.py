@@ -251,6 +251,51 @@ class TestPythonDiceParser(unittest.TestCase):
         expected_outcome = {0: 4056, 1: 3944}
         self.assert_distribution(token, expected_outcome, 0, 1)
 
+    def test_parser_fate_dice(self):
+        token, _ = self._test_parser.parse("4dFk2 >= 2dF")
+        expected_outcome = {0: 105, 1: 624}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_custom_dice(self):
+        token, _ = self._test_parser.parse("2d[-1,-1,0,0,1] <= 2dF")
+        expected_outcome = {0: 64, 1: 161}
+        self.assert_distribution(token, expected_outcome, 0, 1)
+
+    def test_parser_fate_keep_dice(self):
+        token, _ = self._test_parser.parse("3dFk2")
+        expected_outcome = {-2: 1, -1: 3, 0: 7, 1: 9, 2: 7}
+        self.assert_distribution(token, expected_outcome, -2, 2)
+
+    def test_parser_fate_drop_dice(self):
+        token, _ = self._test_parser.parse("2dFd1")
+        expected_outcome = {-1: 5, 0: 3, 1: 1}
+        self.assert_distribution(token, expected_outcome, -1, 1)
+
+    def test_parser_percentile_dice(self):
+        token, _ = self._test_parser.parse("d%")
+        expected_outcome = {i: 1 for i in range(1, 101)}
+        self.assert_distribution(token, expected_outcome, 1, 100)
+
+    def test_parser_percentile_dice_keep(self):
+        token, _ = self._test_parser.parse("2d%k1")
+        expected_outcome = {i: 1 + 2 * (i - 1) for i in range(1, 101)}
+        self.assert_distribution(token, expected_outcome, 1, 100)
+
+    def test_parser_percentile_dice_drop(self):
+        token, _ = self._test_parser.parse("2d%d1")
+        expected_outcome = {i: 1 + 2 * (100 - i) for i in range(1, 101)}
+        self.assert_distribution(token, expected_outcome, 1, 100)
+
+    def test_parser_custom_keep_dice(self):
+        token, _ = self._test_parser.parse("3d[-1,1]k2")
+        expected_outcome = {-2: 1, 0: 3, 2: 4}
+        self.assert_distribution(token, expected_outcome, -2, 2)
+
+    def test_parser_custom_drop_dice(self):
+        token, _ = self._test_parser.parse("2d[-6,1,2]d1")
+        expected_outcome = {-6: 5, 1: 3, 2: 1}
+        self.assert_distribution(token, expected_outcome, -6, 2)
+
     def test_parser_state_var_expression_one(self):
         token, state = self._test_parser.parse(
             "VAR burning_arc_over_sure_spell = ((8d6 + 8) // 2) < (2d8 + 5)"

@@ -3,7 +3,7 @@ import python_dice.interface.python_dice_syntax.i_dice_syntax as i_dice_statemen
 
 class DiceSyntax(i_dice_statement.IDiceSyntax):
     TOKEN_NAME = "DICE"
-    TOKEN_REGEX = r"\d*d(\d+|%)"
+    TOKEN_REGEX = r"\d*d(\d+|%|F|\[(\s*(-?)\d+\s*,\s*)*(-?)\d+\s*(,?)\s*])"
 
     @staticmethod
     def get_token_name() -> str:

@@ -22,7 +22,7 @@ https://github.com/markbrockettrobson/python_dice
 from python_dice import PythonDiceInterpreter
 
 interpreter = PythonDiceInterpreter()
-program = ["d6"]
+program = ["1d6"]
 roll = interpreter.roll(program)["stdout"]
 print(roll)
 
@@ -34,8 +34,8 @@ from python_dice import PythonDiceInterpreter
 
 interpreter = PythonDiceInterpreter()
 program = [
-     "VAR a_name = 1d6 + 10",
-     "VAR b_name = 1d6 - 10"
+     "VAR a_name = d6 + 10",
+     "VAR b_name = d6 - 10"
 ]
 a_name = interpreter.max(program)["a_name"]
 b_name = interpreter.min(program)["b_name"]
@@ -65,19 +65,24 @@ Dice
 4d10
 d6
 1d%
+30dF
+2d[1,1,2,3,5,8]
 ~~~
 
-number of dice is missing will be treated as one <br>
-number of sides can also be % for 100 <br>
+number of dice is missing will be treated as one. <br>
+number of sides can also be:<br>
++ % for 100.
++ F for fate dice [-1,0,1].
++ custom dice with a comma separated list of side values in [ ] square brackets (trailing comma allowed).
 
 
 Keep Drop
 ~~~
 <number of dice to roll>d<number of sides on the dice>[k for keep d for drop]<number of dice to keep or drop>
 2d20k1  roll 2 d20's take the highest 1
-16d6k10 roll 16 d6 keep the hightest 10
-10d4d5  roll 10 d4's keep the lowest 5
-2d20d1  roll 2 d20's keep the lowest 1
+16d%k10 roll 16 d% keep the hightest 10
+10d[-1,1]d5  roll 10 d[-1,1]'s keep the lowest 5
+2dFd1  roll 2 dF's keep the lowest 1
 ~~~
 
 If the number of dice to keep is set above the number of dice to roll it will keep all dice. <br>
