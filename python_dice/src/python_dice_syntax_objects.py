@@ -4,6 +4,7 @@ import python_dice.src.python_dice_expression.binary_operator_expression as bina
 import python_dice.src.python_dice_expression.constant_binary_expression as constant_binary_expression
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
+import python_dice.src.python_dice_expression.drop_keep_expression as drop_keep_expression
 import python_dice.src.python_dice_expression.get_var_expression as get_var_expression
 import python_dice.src.python_dice_expression.integer_division_expression as integer_division_expression
 import python_dice.src.python_dice_expression.minmax_expression as minmax_expression
@@ -21,6 +22,7 @@ import python_dice.src.python_dice_syntax.comma_syntax as comma_syntax
 import python_dice.src.python_dice_syntax.constant_binary_syntax as constant_binary_syntax
 import python_dice.src.python_dice_syntax.constant_integer_syntax as constant_integer_syntax
 import python_dice.src.python_dice_syntax.dice_syntax as dice_syntax
+import python_dice.src.python_dice_syntax.drop_keep_syntax as drop_keep_syntax
 import python_dice.src.python_dice_syntax.integer_division_syntax as integer_division_syntax
 import python_dice.src.python_dice_syntax.min_max_syntax as min_max_syntax
 import python_dice.src.python_dice_syntax.multiply_syntax as multiply_syntax
@@ -35,6 +37,7 @@ LEXER_SYNTAX = [
     close_parenthesis_syntax.CloseParenthesisSyntax,
     comma_syntax.CommaSyntax,
     not_syntax.NotSyntax,
+    drop_keep_syntax.DropKeepSyntax,
     dice_syntax.DiceSyntax,
     binary_operator_syntax.BinaryOperatorSyntax,
     constant_integer_syntax.ConstantIntegerSyntax,
@@ -53,6 +56,7 @@ LEXER_SYNTAX = [
 PARSER_EXPRESSIONS = [
     parentheses_enclosed_expression.ParenthesisEnclosedExpression,
     not_expression.NotExpression,
+    drop_keep_expression.DropKeepExpression,
     dice_expression.DiceExpression,
     constant_integer_expression.ConstantIntegerExpression,
     constant_binary_expression.ConstantBinaryExpression,
