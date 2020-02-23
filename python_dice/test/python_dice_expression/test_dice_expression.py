@@ -46,6 +46,29 @@ class TestDiceExpression(unittest.TestCase):
         self.assertEqual(100, max(roll_set))
         self.assertEqual(1, min(roll_set))
 
+    def test_dice_roll_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("2dF")
+        roll_set = set()
+        for _ in range(10000):
+            roll_set.add(self._test_dice.roll())
+        self.assertSetEqual(roll_set, {-2, -1, 0, 1, 2})
+
+    def test_dice_roll_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("2d[-2,2,100]")
+        roll_set = set()
+        for _ in range(10000):
+            roll_set.add(self._test_dice.roll())
+        self.assertSetEqual(roll_set, {-4, 0, 4, 98, 102, 200})
+
+    def test_dice_roll_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("2d[-2,0,2,4,6,31]")
+        roll_set = set()
+        for _ in range(10000):
+            roll_set.add(self._test_dice.roll())
+        self.assertSetEqual(
+            roll_set, {-4, -2, 0, 2, 4, 6, 8, 10, 12, 29, 31, 33, 35, 37, 62}
+        )
+
     def test_dice_max(self):
         self.assertEqual(24, self._test_dice.max())
 
@@ -56,6 +79,18 @@ class TestDiceExpression(unittest.TestCase):
     def test_dice_max_percentile_dice(self):
         self._test_dice = dice_expression.DiceExpression("1d%")
         self.assertEqual(100, self._test_dice.max())
+
+    def test_dice_max_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("2dF")
+        self.assertEqual(2, self._test_dice.max())
+
+    def test_dice_max_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("21d[-2,2,100]")
+        self.assertEqual(2100, self._test_dice.max())
+
+    def test_dice_max_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("76d[-2,0,2,4,6,31]")
+        self.assertEqual(2356, self._test_dice.max())
 
     def test_dice_min(self):
         self.assertEqual(4, self._test_dice.min())
@@ -68,6 +103,18 @@ class TestDiceExpression(unittest.TestCase):
         self._test_dice = dice_expression.DiceExpression("1d%")
         self.assertEqual(1, self._test_dice.min())
 
+    def test_dice_min_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("4dF")
+        self.assertEqual(-4, self._test_dice.min())
+
+    def test_dice_min_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("21d[-2,2,100]")
+        self.assertEqual(-42, self._test_dice.min())
+
+    def test_dice_min_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("d[-2,0,2,4,6,31,-2,-24]")
+        self.assertEqual(-24, self._test_dice.min())
+
     def test_dice_str(self):
         self.assertEqual("4d6", str(self._test_dice))
 
@@ -78,6 +125,18 @@ class TestDiceExpression(unittest.TestCase):
     def test_dice_str_percentile_dice(self):
         self._test_dice = dice_expression.DiceExpression("1d%")
         self.assertEqual("1d%", str(self._test_dice))
+
+    def test_dice_str_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("4dF")
+        self.assertEqual("4dF", str(self._test_dice))
+
+    def test_dice_str_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("21d[-2,2,100]")
+        self.assertEqual("21d[-2,2,100]", str(self._test_dice))
+
+    def test_dice_str_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("d[-2,0,2,4,6,31,-2,-24]")
+        self.assertEqual("d[-2,0,2,4,6,31,-2,-24]", str(self._test_dice))
 
     def test_dice_get_probability_distribution(self):
         self._test_dice = dice_expression.DiceExpression("4d6")
@@ -103,5 +162,26 @@ class TestDiceExpression(unittest.TestCase):
         results = [sum(t) for t in possible_rolls]
         self.assertEqual(
             dict(collections.Counter(results)),
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("4dF")
+        self.assertEqual(
+            {-4: 1, -3: 4, -2: 10, -1: 16, 0: 19, 1: 16, 2: 10, 3: 4, 4: 1},
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("2d[-2,2,100]")
+        self.assertEqual(
+            {-4: 1, 0: 2, 4: 1, 98: 2, 102: 2, 200: 1},
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("d[-2,0,2,4,6,31,-2,-24]")
+        self.assertEqual(
+            {-24: 1, -2: 2, 0: 1, 2: 1, 4: 1, 6: 1, 31: 1},
             self._test_dice.get_probability_distribution().get_result_map(),
         )

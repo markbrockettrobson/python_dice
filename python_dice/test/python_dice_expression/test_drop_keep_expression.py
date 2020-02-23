@@ -34,6 +34,52 @@ class TestDiceExpression(unittest.TestCase):
             roll_set_keep.add(test_dice.roll())
         self.assertEqual(2, min(roll_set_keep))
 
+    def test_drop_keep_roll_keep_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d%k1")
+        roll_set_keep = set()
+        for _ in range(100000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(1, min(roll_set_keep))
+        self.assertEqual(100, max(roll_set_keep))
+        self.assertEqual(100, len(roll_set_keep))
+
+    def test_drop_keep_roll_drop_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d%d1")
+        roll_set_keep = set()
+        for _ in range(100000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertEqual(1, min(roll_set_keep))
+        self.assertEqual(100, max(roll_set_keep))
+        self.assertEqual(100, len(roll_set_keep))
+
+    def test_drop_keep_roll_keep_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFk2")
+        roll_set_keep = set()
+        for _ in range(1000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertSetEqual({-2, -1, 0, 1, 2}, roll_set_keep)
+
+    def test_drop_keep_roll_drop_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFd1")
+        roll_set_keep = set()
+        for _ in range(1000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertSetEqual({-2, -1, 0, 1, 2}, roll_set_keep)
+
+    def test_drop_keep_roll_keep_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[5,10,15]k2")
+        roll_set_keep = set()
+        for _ in range(1000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertSetEqual({10, 15, 20, 25, 30}, roll_set_keep)
+
+    def test_drop_keep_roll_drop_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-3,2,4]d1")
+        roll_set_keep = set()
+        for _ in range(1000):
+            roll_set_keep.add(test_dice.roll())
+        self.assertSetEqual({-6, -1, 1, 4, 6, 8}, roll_set_keep)
+
     def test_drop_keep_roll_keep_to_many(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
         roll_set_keep = set()
@@ -76,6 +122,30 @@ class TestDiceExpression(unittest.TestCase):
     def test_drop_keep_max_keep(self):
         self.assertEqual(12, self._test_dice_keep.max())
 
+    def test_drop_keep_max_keep_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("59d%k2")
+        self.assertEqual(200, test_dice.max())
+
+    def test_drop_keep_max_drop_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("24d%d12")
+        self.assertEqual(1200, test_dice.max())
+
+    def test_drop_keep_max_keep_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFk2")
+        self.assertEqual(2, test_dice.max())
+
+    def test_drop_keep_max_drop_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFd1")
+        self.assertEqual(2, test_dice.max())
+
+    def test_drop_keep_max_keep_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[5,10,15]k2")
+        self.assertEqual(30, test_dice.max())
+
+    def test_drop_keep_max_drop_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-3,2,4]d1")
+        self.assertEqual(8, test_dice.max())
+
     def test_drop_keep_max_keep_to_many(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
         self.assertEqual(6, test_dice.max())
@@ -98,6 +168,30 @@ class TestDiceExpression(unittest.TestCase):
     def test_drop_keep_min_keep(self):
         self.assertEqual(2, self._test_dice_keep.min())
 
+    def test_drop_keep_min_keep_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("14d%k12")
+        self.assertEqual(12, test_dice.min())
+
+    def test_drop_keep_min_drop_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("24d%d12")
+        self.assertEqual(12, test_dice.min())
+
+    def test_drop_keep_min_keep_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFk2")
+        self.assertEqual(-2, test_dice.min())
+
+    def test_drop_keep_min_drop_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFd1")
+        self.assertEqual(-2, test_dice.min())
+
+    def test_drop_keep_min_keep_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[5,10,15]k2")
+        self.assertEqual(10, test_dice.min())
+
+    def test_drop_keep_min_drop_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-3,2,4]d1")
+        self.assertEqual(-6, test_dice.min())
+
     def test_drop_keep_min_keep_to_many(self):
         test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
         self.assertEqual(2, test_dice.min())
@@ -119,6 +213,30 @@ class TestDiceExpression(unittest.TestCase):
 
     def test_drop_keep_str_keep(self):
         self.assertEqual("4d6k2", str(self._test_dice_keep))
+
+    def test_drop_keep_str_keep_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("14d%k12")
+        self.assertEqual("14d%k12", str(test_dice))
+
+    def test_drop_keep_str_drop_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("24d%d12")
+        self.assertEqual("24d%d12", str(test_dice))
+
+    def test_drop_keep_str_keep_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFk2")
+        self.assertEqual("3dFk2", str(test_dice))
+
+    def test_drop_keep_str_drop_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFd1")
+        self.assertEqual("3dFd1", str(test_dice))
+
+    def test_drop_keep_str_keep_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[5,10,15]k2")
+        self.assertEqual("3d[5,10,15]k2", str(test_dice))
+
+    def test_drop_keep_str_drop_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-3,2,4]d1")
+        self.assertEqual("3d[-3,2,4]d1", str(test_dice))
 
     def test_drop_keep_get_probability_distribution_drop(self):
         test_dice = drop_keep_expression.DropKeepExpression("6d4d4")
@@ -211,6 +329,48 @@ class TestDiceExpression(unittest.TestCase):
                 11: 149420940,
                 12: 3276020625,
             },
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_keep_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d%k1")
+        self.assertEqual(
+            {i: 1 + 2 * (i - 1) for i in range(1, 101)},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_drop_percentile_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d%d1")
+        self.assertEqual(
+            {i: 1 + 2 * (100 - i) for i in range(1, 101)},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_keep_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFk2")
+        self.assertEqual(
+            {-2: 1, -1: 3, 0: 7, 1: 9, 2: 7},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_drop_fate_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3dFd1")
+        self.assertEqual(
+            {-2: 7, -1: 9, 0: 7, 1: 3, 2: 1},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_keep_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[5,10,15]k2")
+        self.assertEqual(
+            {10: 1, 15: 3, 20: 7, 25: 9, 30: 7},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_drop_custom_dice(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-3,2,4]d1")
+        self.assertEqual(
+            {-6: 7, -1: 9, 1: 3, 4: 4, 6: 3, 8: 1},
             test_dice.get_probability_distribution().get_result_map(),
         )
 
