@@ -159,3 +159,47 @@ class TestDiceExpression(unittest.TestCase):
             },
             test_dice.get_probability_distribution().get_result_map(),
         )
+
+    def test_drop_keep_get_probability_distribution_keep_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k10")
+        self.assertEqual(
+            {
+                2: 1,
+                3: 2,
+                4: 3,
+                5: 2,
+                6: 1,
+            },
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_drop_to_many(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d10")
+        self.assertEqual(
+            {
+                0: 1,
+            },
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_keep_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3k0")
+        self.assertEqual(
+            {
+                0: 1,
+            },
+            test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_drop_keep_get_probability_distribution_drop_to_zero(self):
+        test_dice = drop_keep_expression.DropKeepExpression("2d3d0")
+        self.assertEqual(
+            {
+                2: 1,
+                3: 2,
+                4: 3,
+                5: 2,
+                6: 1,
+            },
+            test_dice.get_probability_distribution().get_result_map(),
+        )

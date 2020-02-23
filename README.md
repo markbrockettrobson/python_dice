@@ -60,15 +60,30 @@ im.show()
 
 ### Syntax
 Dice
+~~~
 <number of dice to roll>d<number of sides on the dice>
+4d10
+d6
+1d%
+~~~
 
-number of dice is missing will be treated as one
-number of sides can also be % for 100
+number of dice is missing will be treated as one <br>
+number of sides can also be % for 100 <br>
+
+
+Keep Drop
 ~~~
-VAR a = 4d10
-VAR b = d6
-VAR c = 1d%
+<number of dice to roll>d<number of sides on the dice>[k for keep d for drop]<number of dice to keep or drop>
+2d20k1  roll 2 d20's take the highest 1
+16d6k10 roll 16 d6 keep the hightest 10
+10d4d5  roll 10 d4's keep the lowest 5
+2d20d1  roll 2 d20's keep the lowest 1
 ~~~
+
+If the number of dice to keep is set above the number of dice to roll it will keep all dice. <br>
+If the number to drop is equal or greater then the number of dice to roll it will always roll 0. <br>
+If the number of dice to keep is set to zero then it will always roll 0. <br>
+If the number of dice to drop is set to zero then it will be ignored. <br>
 
 Set a var
 ~~~
@@ -100,6 +115,6 @@ var abs = ABS( 1d6 - 1d6 )
 ~~~
 Min and Max
 ~~~
-MAX(7d7, 2d2)
+MAX(4d7, 2d10)
 MIN(50, d%)
 ~~~

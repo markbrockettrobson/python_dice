@@ -247,8 +247,8 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, 0, 1)
 
     def test_parser_drop_expression(self):
-        token, _ = self._test_parser.parse("2d20d1 > d20")
-        expected_outcome = {0: 384796448, 1: 12649264}
+        token, _ = self._test_parser.parse("2d20d1 < (d20 - 3)")
+        expected_outcome = {0: 4056, 1: 3944}
         self.assert_distribution(token, expected_outcome, 0, 1)
 
     def test_parser_state_var_expression_one(self):
