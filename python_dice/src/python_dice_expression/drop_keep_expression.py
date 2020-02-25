@@ -9,6 +9,7 @@ import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_
 import python_dice.src.probability_distribution as probability_distribution
 import python_dice.src.python_dice_expression.constant_integer_expression as constant_integer_expression
 import python_dice.src.python_dice_expression.dice_expression as dice_expression
+import python_dice.src.python_dice_expression.dice_expression_helper as dice_expression_helper
 
 
 class DropKeepExpression(i_dice_expression.IDiceExpression):
@@ -27,7 +28,9 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
     def __init__(self, string_form: str):
         self._string_form = string_form
         self._number_of_dice = self._get_number_of_dice()
-        self._single_dice_outcome_map = self._get_single_dice_outcome_map()
+        self._single_dice_outcome_map = dice_expression_helper.get_single_dice_outcome_map(
+            re.split(r"[dk]", self._string_form)[1]
+        )
         self._number_to_keep_or_drop = self._get_number_to_keep_or_drop()
         self._simplified_form = None
 
@@ -59,30 +62,6 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
 
     def _get_number_of_sides_string(self) -> str:
         return re.split(r"[dk]", self._string_form)[1]
-
-    def _get_single_dice_outcome_map(self) -> typing.Dict[int, int]:
-        def save_add(dictionary, value):
-            if value not in dictionary:
-                dictionary[value] = 0
-            dictionary[value] += 1
-
-        string_num = re.split(r"[dk]", self._string_form)[1]
-
-        if re.match(r"\d+", string_num) is not None:
-            value_dictionary = {value: 1 for value in range(1, int(string_num) + 1)}
-        elif string_num == "%":
-            value_dictionary = {value: 1 for value in range(1, 100 + 1)}
-        elif string_num == "F":
-            value_dictionary = {-1: 1, 0: 1, 1: 1}
-        else:
-            number_list = [
-                int(value)
-                for value in re.split(r",", re.sub(r"(\[|\]|\s+)", "", string_num))
-            ]
-            value_dictionary = {}
-            for number in number_list:
-                save_add(value_dictionary, number)
-        return value_dictionary
 
     def _is_keep(self) -> bool:
         return "k" in self._string_form
