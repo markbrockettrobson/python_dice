@@ -1,4 +1,3 @@
-
 _NUMBER_OF_DICE = r"\d*"
 _DICE_SYMBOL = r"d"
 _DICE_TYPE = r"(\d+|%|F|\[(\s*(-?)\d+\s*,\s*)*(-?)\d+\s*(,?)\s*])"
