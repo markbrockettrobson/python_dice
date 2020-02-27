@@ -74,6 +74,10 @@ number of sides can also be:<br>
 + % for 100.
 + F for fate dice [-1,0,1].
 + custom dice with a comma separated list of side values in [ ] square brackets (trailing comma allowed).
++ range of values d[1,2,3,4,5] == d[1-5] ==d5
+  + d[-5,-4,-3,-2] == d[-5--2] == d[-2--5]
++ multiplier for many equal sides d[1,1,1,1,1,1,1,8] == d[1*7, 8]
+  + d[1,1,1,2,2,3,3,4] == d[1-3*2,1,4] 
 
 
 Keep Drop

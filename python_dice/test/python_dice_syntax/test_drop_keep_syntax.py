@@ -12,7 +12,8 @@ class TestDropKeepSyntax(unittest.TestCase):
 
     def test_drop_keep_get_token_regex(self):
         self.assertEqual(
-            r"\d*d(\d+|%|F|\[(\s*(-?)\d+\s*,\s*)*(-?)\d+\s*(,?)\s*])[kd]\d+",
+            r"\d*d(\d+|%|F|\[(\s*(-?\d+--?\d+(\*\d+)?|-?\d+(\*\d+)?)\s*,\s*)*\s*(-?\d+--?\d+(\*\d+)?|-?\d+("
+            r"\*\d+)?)\s*(,?)\s*\])[kd]\d+",
             drop_keep_syntax.DropKeepSyntax.get_token_regex(),
         )
 
@@ -30,7 +31,9 @@ class TestDropKeepSyntax(unittest.TestCase):
             "4dFk3",
             "4d[1]k1",
             "4d[-1]d3",
-            "10d[ 1,2,3,4]k3",
+            "10d[ 1,2*4,3*2,4]k3",
+            "10d[ 1-4]k3",
+            "10d[-4--1*3]k3",
             "2d[-1 , 22, 1, 1]d1",
             "80d[0,1, 2, -1]k10",
             "d[1,]d2",
@@ -57,7 +60,10 @@ class TestDropKeepSyntax(unittest.TestCase):
             "d[1]",
             "d[]k3",
             "d[ 1,,3,4]d6",
-            "d[-1 , 22, 1, 1]32",
+            "d[-1 , 2-2, 1, 1]32",
+            "10d[-1*-1]d2",
+            "10d[--1]d2",
+            "10d[-1-]d2",
             "2d[0,1, 2, -1]",
             "5d[1,d3",
         ]

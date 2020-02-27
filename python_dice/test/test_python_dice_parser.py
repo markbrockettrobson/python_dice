@@ -287,13 +287,13 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, 1, 100)
 
     def test_parser_custom_keep_dice(self):
-        token, _ = self._test_parser.parse("3d[-1,1]k2")
-        expected_outcome = {-2: 1, 0: 3, 2: 4}
+        token, _ = self._test_parser.parse("3d[-1*2,1]k2")
+        expected_outcome = {-2: 8, 0: 12, 2: 7}
         self.assert_distribution(token, expected_outcome, -2, 2)
 
     def test_parser_custom_drop_dice(self):
-        token, _ = self._test_parser.parse("2d[-6,1,2]d1")
-        expected_outcome = {-6: 5, 1: 3, 2: 1}
+        token, _ = self._test_parser.parse("2d[-6,1-2*2]d1")
+        expected_outcome = {-6: 9, 1: 12, 2: 4}
         self.assert_distribution(token, expected_outcome, -6, 2)
 
     def test_parser_state_var_expression_one(self):
