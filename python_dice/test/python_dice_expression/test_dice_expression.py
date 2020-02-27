@@ -185,3 +185,24 @@ class TestDiceExpression(unittest.TestCase):
             {-24: 1, -2: 2, 0: 1, 2: 1, 4: 1, 6: 1, 31: 1},
             self._test_dice.get_probability_distribution().get_result_map(),
         )
+
+    def test_dice_get_probability_distribution_custom_dice_multiplier(self):
+        self._test_dice = dice_expression.DiceExpression("d[-2*3,0,2]")
+        self.assertEqual(
+            {-2: 3, 0: 1, 2: 1},
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_custom_dice_range(self):
+        self._test_dice = dice_expression.DiceExpression("d[1-2*3,0,2]")
+        self.assertEqual(
+            {0: 1, 1: 3, 2: 4},
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )
+
+    def test_dice_get_probability_distribution_custom_dice_multiplier_range(self):
+        self._test_dice = dice_expression.DiceExpression("d[1-2*3,-4--9*10]")
+        self.assertEqual(
+            {-9: 10, -8: 10, -7: 10, -6: 10, -5: 10, -4: 10, 1: 3, 2: 3},
+            self._test_dice.get_probability_distribution().get_result_map(),
+        )

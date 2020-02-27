@@ -10,7 +10,8 @@ class TestDiceSyntax(unittest.TestCase):
 
     def test_dice_get_token_regex(self):
         self.assertEqual(
-            r"\d*d(\d+|%|F|\[(\s*(-?)\d+\s*,\s*)*(-?)\d+\s*(,?)\s*])",
+            r"\d*d(\d+|%|F|\[(\s*(-?\d+--?\d+(\*\d+)?|-?\d+(\*\d+)?)\s*,\s*)*\s*(-?\d+--?\d+(\*\d+)?|-?\d+("
+            r"\*\d+)?)\s*(,?)\s*\])",
             dice_syntax.DiceSyntax.get_token_regex(),
         )
 
@@ -25,11 +26,16 @@ class TestDiceSyntax(unittest.TestCase):
             "d6",
             "3d%",
             "d%",
+            "dF",
+            "10dF",
+            "2dF",
             "d[1]",
             "d[-1]",
             "d[ 1,2,3,4]",
-            "d[-1 , 22, 1, 1]",
+            "d[ 1--6,2,3,4*3]",
+            "d[-1 , -2--2, 1, 1]",
             "2d[0,1, 2, -1]",
+            "2d[0,1, 2*5, -1]",
             "5d[1,]",
         ]
         for test_case in test_cases:
@@ -54,6 +60,9 @@ class TestDiceSyntax(unittest.TestCase):
             "5d[]",
             "1d[1, 2, 3",
             "d[1,,2]",
+            "-1d[1,2]",
+            "1d[1,-2*-2]",
+            "1d[1-,2]",
         ]
         for test_case in test_cases:
             self.assertIsNone(

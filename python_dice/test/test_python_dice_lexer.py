@@ -335,10 +335,10 @@ class TestPythonDiceLexer(unittest.TestCase):
         self.assertEqual(["4", "+", "2dF"], [token.value for token in tokens])
 
     def test_lex_custom_dice(self):
-        tokens = self._test_lexer.lex("2d[1,5,9]")
+        tokens = self._test_lexer.lex("2d[1,5*2,9]")
 
         self.assertEqual(["DICE"], [token.name for token in tokens])
-        self.assertEqual(["2d[1,5,9]"], [token.value for token in tokens])
+        self.assertEqual(["2d[1,5*2,9]"], [token.value for token in tokens])
 
     def test_lex_fate_keep_dice(self):
         tokens = self._test_lexer.lex("4 != 2dFk1")
@@ -374,12 +374,13 @@ class TestPythonDiceLexer(unittest.TestCase):
         self.assertEqual(["100d%d99"], [token.value for token in tokens])
 
     def test_lex_custom_keep_drop_dice(self):
-        tokens = self._test_lexer.lex("2d[1,1,3]k1 <= 2d[1,3,3]d1")
+        tokens = self._test_lexer.lex("2d[1,-1--7*2,-3-6]k1 <= 2d[1,2-3,3]d1")
 
         self.assertEqual(
             ["DROP_KEEP_DICE", "BINARY_OPERATOR", "DROP_KEEP_DICE"],
             [token.name for token in tokens],
         )
         self.assertEqual(
-            ["2d[1,1,3]k1", "<=", "2d[1,3,3]d1"], [token.value for token in tokens]
+            ["2d[1,-1--7*2,-3-6]k1", "<=", "2d[1,2-3,3]d1"],
+            [token.value for token in tokens],
         )

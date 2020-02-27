@@ -399,3 +399,10 @@ class TestDiceExpression(unittest.TestCase):
             {2: 1, 3: 2, 4: 3, 5: 2, 6: 1},
             test_dice.get_probability_distribution().get_result_map(),
         )
+
+    def test_drop_keep_get_probability_distribution_range(self):
+        test_dice = drop_keep_expression.DropKeepExpression("3d[-1-1, 0]d1")
+        self.assertEqual(
+            {-2: 10, -1: 24, 0: 23, 1: 6, 2: 1},
+            test_dice.get_probability_distribution().get_result_map(),
+        )
