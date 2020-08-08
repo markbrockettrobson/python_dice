@@ -1,4 +1,4 @@
-FROM python:3.9.0a1
+FROM python:3.8
 
 RUN mkdir /usr/localrepo
 WORKDIR /usr/localrepo

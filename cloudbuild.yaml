@@ -21,14 +21,6 @@ steps:
          'gcr.io/python_dice/38_pytest',
          '.',
          '-f',
-         'continuous_integration/38_pytest.dockerfile']
-  timeout: 10m
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build',
-         '-t',
-         'gcr.io/python_dice/39_pytest',
-         '.',
-         '-f',
-         'continuous_integration/39_pytest_ci.dockerfile']
+         'continuous_integration/38_pytest_ci.dockerfile']
   timeout: 10m
 timeout: 20m
