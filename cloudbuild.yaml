@@ -6,7 +6,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/36_pytest.dockerfile']
-  timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
          '-t',
@@ -14,7 +13,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/37_pytest.dockerfile']
-  timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
          '-t',
@@ -22,7 +20,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/38_pytest.dockerfile']
-  timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
          '-t',
@@ -30,4 +27,4 @@ steps:
          '.',
          '-f',
          'continuous_integration/39_pytest_ci.dockerfile']
-  timeout: 1200s
+  timeout: 2400s
