@@ -1,33 +1,37 @@
 steps:
-- name: 'gcr.io/cloud-builders/docker'
+- name: 'gcr.io/cloud-builders/docker/python_dice/36_pytest'
   args: ['build',
          '-t',
-         'gcr.io/my-project/my-image',
+         'gcr.io/python_dice/36_pytest',
          '.',
          '-f',
          'continuous_integration/36_pytest.dockerfile']
   timeout: 20m
-- name: 'gcr.io/cloud-builders/docker'
+  waitFor: ["-"]
+- name: 'gcr.io/cloud-builders/docker/python_dice/37_pytest'
   args: ['build',
          '-t',
-         'gcr.io/my-project/my-image',
+         'gcr.io/python_dice/37_pytest',
          '.',
          '-f',
          'continuous_integration/37_pytest.dockerfile']
   timeout: 20m
-- name: 'gcr.io/cloud-builders/docker'
+  waitFor: ["-"]
+- name: 'gcr.io/cloud-builders/docker/python_dice/38_pytest'
   args: ['build',
          '-t',
-         'gcr.io/my-project/my-image',
+         'gcr.io/python_dice/38_pytest',
          '.',
          '-f',
          'continuous_integration/38_pytest.dockerfile']
   timeout: 20m
-- name: 'gcr.io/cloud-builders/docker'
+  waitFor: ["-"]
+- name: 'gcr.io/cloud-builders/docker/python_dice/39_pytest'
   args: ['build',
          '-t',
-         'gcr.io/my-project/my-image',
+         'gcr.io/python_dice/39_pytest',
          '.',
          '-f',
          'continuous_integration/39_pytest_ci.dockerfile']
   timeout: 20m
+  waitFor: ["-"]
