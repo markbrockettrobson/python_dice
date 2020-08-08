@@ -13,7 +13,7 @@ class VarAssignmentExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(VarAssignmentExpression.TOKEN_RULE)
         def var_assignment_operation(
@@ -54,7 +54,7 @@ class VarAssignmentExpression(i_dice_expression.IDiceExpression):
         return f"VAR {self._name} = {str(self._expression)}"
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         distribution = self._expression.get_probability_distribution()
         self._state.set_var(self._name, distribution)

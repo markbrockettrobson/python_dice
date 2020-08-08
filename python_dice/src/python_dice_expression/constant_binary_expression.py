@@ -12,7 +12,7 @@ class ConstantBinaryExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(ConstantBinaryExpression.TOKEN_RULE)
         def constant_binary(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -39,6 +39,6 @@ class ConstantBinaryExpression(i_dice_expression.IDiceExpression):
         return self._binary_string
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return probability_distribution.ProbabilityDistribution({self._get_value(): 1})

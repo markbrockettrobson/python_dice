@@ -13,7 +13,7 @@ class MinMaxExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(MinMaxExpression.TOKEN_RULE)
         def min_max(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -52,7 +52,7 @@ class MinMaxExpression(i_dice_expression.IDiceExpression):
         )
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         if self._min_max == "MAX":
             return self._expression_one.get_probability_distribution().max_operator(

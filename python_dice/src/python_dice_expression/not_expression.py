@@ -12,7 +12,7 @@ class NotExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(NotExpression.TOKEN_RULE)
         def not_operation(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -36,6 +36,6 @@ class NotExpression(i_dice_expression.IDiceExpression):
         return f"!{str(self._expression)}"
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return self._expression.get_probability_distribution().not_operator()

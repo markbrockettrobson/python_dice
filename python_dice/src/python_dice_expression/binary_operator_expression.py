@@ -22,7 +22,7 @@ class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(BinaryOperatorExpression.RULE)
         def binary_operator(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -61,7 +61,7 @@ class BinaryOperatorExpression(i_dice_expression.IDiceExpression):
         )
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return self.OPERATOR_MAP[self._operator](
             self._expression_one.get_probability_distribution(),

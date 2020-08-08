@@ -12,7 +12,7 @@ class ConstantIntegerExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(ConstantIntegerExpression.TOKEN_RULE)
         def constant_integer(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -36,6 +36,6 @@ class ConstantIntegerExpression(i_dice_expression.IDiceExpression):
         return self._number
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return probability_distribution.ProbabilityDistribution({int(self._number): 1})
