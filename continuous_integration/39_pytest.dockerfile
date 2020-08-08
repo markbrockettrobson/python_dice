@@ -1,4 +1,4 @@
-FROM python:3.9
+FROM python:3.9.0a1
 
 RUN mkdir /usr/pydice
 WORKDIR /usr/pydice
