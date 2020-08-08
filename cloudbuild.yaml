@@ -6,7 +6,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/36_pytest.dockerfile']
-  waitFor: ['-']
   timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -15,7 +14,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/37_pytest.dockerfile']
-  waitFor: ['-']
   timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -24,7 +22,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/38_pytest.dockerfile']
-  waitFor: ['-']
   timeout: 1200s
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -33,5 +30,4 @@ steps:
          '.',
          '-f',
          'continuous_integration/39_pytest_ci.dockerfile']
-  waitFor: ['-']
   timeout: 1200s
