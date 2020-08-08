@@ -6,7 +6,7 @@ steps:
          '.',
          '-f',
          'continuous_integration/36_pytest.dockerfile']
-  timeout: 20m
+  timeout: 10m
   waitFor: ["-"]
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -15,7 +15,7 @@ steps:
          '.',
          '-f',
          'continuous_integration/37_pytest.dockerfile']
-  timeout: 20m
+  timeout: 10m
   waitFor: ["-"]
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -24,7 +24,7 @@ steps:
          '.',
          '-f',
          'continuous_integration/38_pytest.dockerfile']
-  timeout: 20m
+  timeout: 10m
   waitFor: ["-"]
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
@@ -33,5 +33,6 @@ steps:
          '.',
          '-f',
          'continuous_integration/39_pytest_ci.dockerfile']
-  timeout: 20m
+  timeout: 10m
   waitFor: ["-"]
+timeout: 20m
