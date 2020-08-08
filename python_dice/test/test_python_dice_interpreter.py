@@ -1,6 +1,6 @@
-import sys
 import os
 import pathlib
+import sys
 import unittest
 import unittest.mock as mock
 
