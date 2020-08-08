@@ -148,7 +148,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
                 label="Average = %d" % average,
             )
         buffer = io.BytesIO()
-        pyplot.savefig(buffer, format="png")
+        pyplot.savefig(buffer, format="tiff")
         buffer.seek(0)
         image = Image.open(buffer)
         return image
