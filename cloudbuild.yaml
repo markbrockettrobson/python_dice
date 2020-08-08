@@ -5,5 +5,29 @@ steps:
          'gcr.io/my-project/my-image',
          '.',
          '-f',
-         'continuous_integration/DockerPytestCI.dockerfile']
+         'continuous_integration/36_pytest.dockerfile']
+  timeout: 600s
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '-t',
+         'gcr.io/my-project/my-image',
+         '.',
+         '-f',
+         'continuous_integration/37_pytest.dockerfile']
+  timeout: 600s
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '-t',
+         'gcr.io/my-project/my-image',
+         '.',
+         '-f',
+         'continuous_integration/38_pytest.dockerfile']
+  timeout: 600s
+- name: 'gcr.io/cloud-builders/docker'
+  args: ['build',
+         '-t',
+         'gcr.io/my-project/my-image',
+         '.',
+         '-f',
+         'continuous_integration/39_pytest_ci.dockerfile']
   timeout: 600s
