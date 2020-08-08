@@ -7,6 +7,53 @@ class TestPythonDiceLexer(unittest.TestCase):
     def setUp(self):
         self._test_lexer = pydice_lexer.PythonDiceLexer()
 
+    def test_lexer_error_single_line(self):
+        try:
+            self._test_lexer.lex(
+                "2d2k1 * (4d[3*1,2-3,7]d1 + 1d[1,2,-3--8]) // d%kk4 + 1d3"
+            )
+            raise Exception("no exception raised")
+        except Exception as inst:  # pylint: disable=broad-except
+            self.assertEqual(
+                "2d2k1 * (4d[3*1,2-3,7]d1 + 1d[1,2,-3--8]) // d%kk4 + 1d3\n"
+                "-----------------------------------------------^",
+                str(inst),
+            )
+
+    def test_lexer_error_multi_line(self):
+        try:
+            self._test_lexer.lex(
+                "VAR apple = 1d4 - 1\nVAR banana = 1d8 / 2\nVAR orange = 1d8 // 2"
+            )
+            raise Exception("no exception raised")
+        except Exception as inst:  # pylint: disable=broad-except
+            self.assertEqual(
+                "VAR banana = 1d8 / 2\n-----------------^", str(inst),
+            )
+
+    def test_lexer_error_end_of_line(self):
+        try:
+            self._test_lexer.lex(
+                "VAR apple = 1d4 - 1\n"
+                "VAR orange = 1d8 // 2\n"
+                "VAR banana = 1d8 /\n"
+                "VAR grape = 5d8 ** 2\n"
+            )
+            raise Exception("no exception raised")
+        except Exception as inst:  # pylint: disable=broad-except
+            self.assertEqual(
+                "VAR banana = 1d8 /\n-----------------^", str(inst),
+            )
+
+    def test_lexer_error_end_of_first_line(self):
+        try:
+            self._test_lexer.lex("VAR apple = 1d4 /\n" "1d8 // 2")
+            raise Exception("no exception raised")
+        except Exception as inst:  # pylint: disable=broad-except
+            self.assertEqual(
+                "VAR apple = 1d4 /\n----------------^", str(inst),
+            )
+
     def test_lex_constant_integer(self):
         tokens = self._test_lexer.lex("1 3 4 5 -10 0 -10000000")
         for token in tokens:
