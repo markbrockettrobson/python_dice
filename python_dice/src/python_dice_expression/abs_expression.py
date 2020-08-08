@@ -12,7 +12,7 @@ class AbsExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(AbsExpression.TOKEN_RULE)
         def abs_operation(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -36,6 +36,6 @@ class AbsExpression(i_dice_expression.IDiceExpression):
         return f"ABS({str(self._expression)})"
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return self._expression.get_probability_distribution().abs_operator()

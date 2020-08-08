@@ -17,7 +17,7 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(DropKeepExpression.TOKEN_RULE)
         def drop_keep(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -108,7 +108,7 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
         return f"{self._string_form}"
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         if self._simplified_form is not None:
             return self._simplified_form.get_probability_distribution()

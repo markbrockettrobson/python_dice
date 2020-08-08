@@ -139,7 +139,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         axis.set_ylabel("odds")
         axis.set_xlabel("outcome")
         if average is not None:
-            max_height = max([value for value in y_values])
+            max_height = max(y_values)
             axis.plot(
                 [average, average],
                 [0, max_height * 1.1],
@@ -148,7 +148,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
                 label="Average = %d" % average,
             )
         buffer = io.BytesIO()
-        pyplot.savefig(buffer, format="png")
+        pyplot.savefig(buffer, format="tiff")
         buffer.seek(0)
         image = Image.open(buffer)
         return image
@@ -231,7 +231,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         base_data: typing.Dict[int, float]
     ) -> typing.Dict[int, float]:
         base_data = copy.copy(base_data)
-        item_list = [item for item in base_data.items()]
+        item_list = [(key, base_data[key]) for key in base_data.keys()]
         item_list.sort(key=lambda tup: tup[0])
         for int_value in range(item_list[0][0], item_list[-1][0] + 1):
             if int_value not in base_data:

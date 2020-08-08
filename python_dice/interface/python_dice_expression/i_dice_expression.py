@@ -40,7 +40,7 @@ class IDiceExpression(abc.ABC, rply.token.Token):
 
     @abc.abstractmethod
     def get_probability_distribution(
-        self
+        self,
     ) -> probability_distribution.ProbabilityDistribution:
         """
 

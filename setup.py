@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="python_dice",
-    version="1.2.0",
+    version="1.2.1",
     author="Mark Brockett Robson",
     author_email="mark.brockett.robson@gmail.com",
     description="a statistical dice library for python",
@@ -27,11 +27,11 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=[
-        "matplotlib==3.1.1",
-        "rply==0.7.7",
-        "networkx==2.3",
-        "numpy==1.17.3",
-        "pillow==6.2.1",
+        "matplotlib>=3.1.1",
+        "rply>=0.7.7",
+        "networkx>=2.3",
+        "numpy>=1.17.3",
+        "pillow>=7.2.0",
     ],
     python_requires=">=3.6",
 )

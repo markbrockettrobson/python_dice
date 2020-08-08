@@ -11,7 +11,7 @@ class MultiplyExpression(i_dice_expression.IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator
+        parser_generator: rply.ParserGenerator,
     ) -> typing.Callable:
         @parser_generator.production(MultiplyExpression.TOKEN_RULE)
         def multiply(_, tokens) -> i_dice_expression.IDiceExpression:
@@ -40,7 +40,7 @@ class MultiplyExpression(i_dice_expression.IDiceExpression):
         return f"{str(self._expression_one)} * {str(self._expression_two)}"
 
     def get_probability_distribution(
-        self
+        self,
     ) -> i_probability_distribution.IProbabilityDistribution:
         return (
             self._expression_one.get_probability_distribution()
