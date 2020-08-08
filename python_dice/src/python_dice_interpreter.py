@@ -71,7 +71,7 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             stdout = token.get_probability_distribution()
             return_dict = self._state.get_var_dict()
             return_dict["stdout"] = stdout
-        return {key: value for key, value in return_dict.items()}
+        return {key: return_dict[key] for key in return_dict.keys()}
 
     def get_average(self, input_text: typing.List[str]) -> typing.Dict[str, float]:
         return_dict = {}

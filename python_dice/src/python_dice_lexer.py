@@ -16,4 +16,4 @@ class PythonDiceLexer(i_pydice_lexer.IPythonDiceLexer):
         self._lexer = partial_lexer.build()
 
     def lex(self, input_text: str) -> typing.List[rply.Token]:
-        return [token for token in self._lexer.lex(input_text)]
+        return list(self._lexer.lex(input_text))
