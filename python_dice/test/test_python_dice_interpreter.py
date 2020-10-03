@@ -105,9 +105,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
 
     def test_roll_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
-        program = [
-            "5d2k4",
-        ]
+        program = ["5d2k4"]
         out_come_list = [4, 5, 6, 7, 8]
         for _ in range(1000):
             roll = interpreter.roll(program)["stdout"]
@@ -115,23 +113,17 @@ class TestPythonDiceInterpreter(unittest.TestCase):
 
     def test_min_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
-        program = [
-            "VAR save_roll = d20 + 8",
-        ]
+        program = ["VAR save_roll = d20 + 8"]
         self.assertEqual(9, interpreter.min(program)["save_roll"])
 
     def test_max_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
-        program = [
-            "d20 + 8",
-        ]
+        program = ["d20 + 8"]
         self.assertEqual(28, interpreter.max(program)["stdout"])
 
     def test_estimated_cost_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
-        program = [
-            "(100d2 + 20d20k10) > 2d4",
-        ]
+        program = ["(100d2 + 20d20k10) > 2d4"]
         self.assertEqual(12800000, interpreter.get_estimated_cost(program))
 
     def test_average(self):
