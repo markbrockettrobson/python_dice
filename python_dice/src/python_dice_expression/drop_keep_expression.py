@@ -28,8 +28,10 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
     def __init__(self, string_form: str):
         self._string_form = string_form
         self._number_of_dice = self._get_number_of_dice()
-        self._single_dice_outcome_map = dice_expression_helper.get_single_dice_outcome_map(
-            re.split(r"[dk]", self._string_form)[1]
+        self._single_dice_outcome_map = (
+            dice_expression_helper.get_single_dice_outcome_map(
+                re.split(r"[dk]", self._string_form)[1]
+            )
         )
         self._number_to_keep_or_drop = self._get_number_to_keep_or_drop()
         self._simplified_form = None
@@ -40,13 +42,13 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
                     "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string())
                 )
             elif self._number_to_keep_or_drop == 0:
-                self._simplified_form = constant_integer_expression.ConstantIntegerExpression(
-                    "0"
+                self._simplified_form = (
+                    constant_integer_expression.ConstantIntegerExpression("0")
                 )
         else:
             if self._number_of_dice <= self._number_to_keep_or_drop:
-                self._simplified_form = constant_integer_expression.ConstantIntegerExpression(
-                    "0"
+                self._simplified_form = (
+                    constant_integer_expression.ConstantIntegerExpression("0")
                 )
             elif self._number_to_keep_or_drop == 0:
                 self._simplified_form = dice_expression.DiceExpression(

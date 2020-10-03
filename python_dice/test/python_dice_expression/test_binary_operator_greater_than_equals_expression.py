@@ -35,8 +35,10 @@ class TestBinaryOperatorGreaterThanEqualsExpression(unittest.TestCase):
             {-3: 2, 0: 1, 1: 2, 4: 1}
         )
 
-        self._test_binary_operator = binary_operator_expression.BinaryOperatorExpression(
-            ">=", self._mock_syntax[0], self._mock_syntax[1]
+        self._test_binary_operator = (
+            binary_operator_expression.BinaryOperatorExpression(
+                ">=", self._mock_syntax[0], self._mock_syntax[1]
+            )
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
