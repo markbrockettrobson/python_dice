@@ -15,8 +15,9 @@ class TestBinaryOperatorNotExpression(unittest.TestCase):
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
         self._mock_syntax.__str__.return_value = "7d3"
-        self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
-            {-3: 1, 0: 2, 4: 1}
+        self._mock_syntax.estimated_cost.return_value = 9
+        self._mock_syntax.get_probability_distribution.return_value = (
+            probability_distribution.ProbabilityDistribution({-3: 1, 0: 2, 4: 1})
         )
 
         self._test_binary_operator = not_expression.NotExpression(self._mock_syntax)
@@ -42,14 +43,14 @@ class TestBinaryOperatorNotExpression(unittest.TestCase):
         self.assertEqual(1, self._test_binary_operator.max())
 
     def test_ne_max_false(self):
-        self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
-            {4: 1, 54: 1}
+        self._mock_syntax.get_probability_distribution.return_value = (
+            probability_distribution.ProbabilityDistribution({4: 1, 54: 1})
         )
         self.assertEqual(0, self._test_binary_operator.max())
 
     def test_ne_min_true(self):
-        self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
-            {0: 1}
+        self._mock_syntax.get_probability_distribution.return_value = (
+            probability_distribution.ProbabilityDistribution({0: 1})
         )
         self.assertEqual(1, self._test_binary_operator.min())
 
@@ -58,6 +59,9 @@ class TestBinaryOperatorNotExpression(unittest.TestCase):
 
     def test_ne_str(self):
         self.assertEqual("!7d3", str(self._test_binary_operator))
+
+    def test_ne_estimated_cost(self):
+        self.assertEqual(9, self._test_binary_operator.estimated_cost())
 
     def test_ne_get_probability_distribution(self):
         self.assertEqual(

@@ -17,6 +17,7 @@ class TestSubtractExpression(unittest.TestCase):
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 6
         self._mock_syntax[0].__str__.return_value = "7"
+        self._mock_syntax[0].estimated_cost.return_value = 9
         self._mock_syntax[
             0
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -27,6 +28,7 @@ class TestSubtractExpression(unittest.TestCase):
         self._mock_syntax[1].max.return_value = 6
         self._mock_syntax[1].min.return_value = 8
         self._mock_syntax[1].__str__.return_value = "2"
+        self._mock_syntax[1].estimated_cost.return_value = 7
         self._mock_syntax[
             1
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -58,6 +60,9 @@ class TestSubtractExpression(unittest.TestCase):
 
     def test_subtract_str(self):
         self.assertEqual("7 - 2", str(self._test_subtract))
+
+    def test_subtract_estimated_cost(self):
+        self.assertEqual(63, self._test_subtract.estimated_cost())
 
     def test_subtract_get_probability_distribution(self):
         self._mock_syntax[

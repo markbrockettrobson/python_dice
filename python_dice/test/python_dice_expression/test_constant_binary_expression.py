@@ -8,11 +8,11 @@ import python_dice.src.python_dice_expression.constant_binary_expression as cons
 
 class TestConstantIntegerExpression(unittest.TestCase):
     def setUp(self):
-        self._test_constant_binary_true = constant_binary_expression.ConstantBinaryExpression(
-            "True"
+        self._test_constant_binary_true = (
+            constant_binary_expression.ConstantBinaryExpression("True")
         )
-        self._test_constant_binary_false = constant_binary_expression.ConstantBinaryExpression(
-            "False"
+        self._test_constant_binary_false = (
+            constant_binary_expression.ConstantBinaryExpression("False")
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
@@ -40,6 +40,10 @@ class TestConstantIntegerExpression(unittest.TestCase):
     def test_constant_binary_str(self):
         self.assertEqual("True", str(self._test_constant_binary_true))
         self.assertEqual("False", str(self._test_constant_binary_false))
+
+    def test_constant_binary_estimated_cost(self):
+        self.assertEqual(1, self._test_constant_binary_true.estimated_cost())
+        self.assertEqual(1, self._test_constant_binary_false.estimated_cost())
 
     def test_constant_binary_get_probability_distribution(self):
         self.assertEqual(

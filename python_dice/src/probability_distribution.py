@@ -12,9 +12,9 @@ import python_dice.interface.i_probability_distribution as i_probability_distrib
 class ProbabilityDistribution(i_probability_distribution.IProbabilityDistribution):
     def __init__(self, result_map: typing.Optional[typing.Dict[int, int]] = None):
         self._outcome_count = 0
-        self._result_map: typing.Dict[
-            int, int
-        ] = {} if result_map is None else result_map
+        self._result_map: typing.Dict[int, int] = (
+            {} if result_map is None else result_map
+        )
         for value in self._result_map.values():
             self._outcome_count += value
 

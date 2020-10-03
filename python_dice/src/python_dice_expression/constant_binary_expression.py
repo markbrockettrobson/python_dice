@@ -38,6 +38,9 @@ class ConstantBinaryExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return self._binary_string
 
+    def estimated_cost(self) -> int:
+        return 1
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

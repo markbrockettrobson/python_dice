@@ -85,8 +85,8 @@ Keep Drop
 <number of dice to roll>d<number of sides on the dice>[k for keep d for drop]<number of dice to keep or drop>
 2d20k1  roll 2 d20's take the highest 1
 16d%k10 roll 16 d% keep the hightest 10
-10d[-1,1]d5  roll 10 d[-1,1]'s keep the lowest 5
-2dFd1  roll 2 dF's keep the lowest 1
+10d[-1,1]d5  roll 10 d[-1,1]'s drop the highest 5
+2dFd1  roll 2 dF's drop the highest 1
 ~~~
 
 If the number of dice to keep is set above the number of dice to roll it will keep all dice. <br>

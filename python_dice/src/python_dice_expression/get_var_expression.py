@@ -38,6 +38,9 @@ class GetVarExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return f"{self._name}"
 
+    def estimated_cost(self) -> int:
+        return self._state.get_constant(self._name)
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

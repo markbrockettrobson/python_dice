@@ -102,3 +102,11 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_at_most_histogram()
+
+    def get_estimated_cost(self, input_text: typing.List[str]) -> int:
+        total_cost = 0
+        for line in input_text:
+            token, _ = self._parser.parse(line, state=self._state)
+            line_cost = token.estimated_cost()
+            total_cost += line_cost
+        return total_cost

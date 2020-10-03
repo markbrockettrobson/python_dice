@@ -10,8 +10,8 @@ import python_dice.src.python_dice_expression.get_var_expression as get_var_expr
 
 class TestGetVarExpression(unittest.TestCase):
     def setUp(self):
-        self._probability_distribution = probability_distribution.ProbabilityDistribution(
-            {-5: 1, 1: 2, 4: 1}
+        self._probability_distribution = (
+            probability_distribution.ProbabilityDistribution({-5: 1, 1: 2, 4: 1})
         )
         self._test_name = "test_name"
 
@@ -49,6 +49,9 @@ class TestGetVarExpression(unittest.TestCase):
 
     def test_var_assignment_str(self):
         self.assertEqual(f"{self._test_name}", str(self._test_assignment_expression))
+
+    def test_var_estimated_cost(self):
+        self.assertEqual(2, self._test_assignment_expression.estimated_cost())
 
     def test_var_get_probability_distribution(self):
         self.assertEqual(

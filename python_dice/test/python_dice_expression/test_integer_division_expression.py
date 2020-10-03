@@ -17,6 +17,7 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 201
         self._mock_syntax[0].__str__.return_value = "7"
+        self._mock_syntax[0].estimated_cost.return_value = 7
         self._mock_syntax[
             0
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -27,6 +28,7 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self._mock_syntax[1].max.return_value = 8
         self._mock_syntax[1].min.return_value = 2
         self._mock_syntax[1].__str__.return_value = "2"
+        self._mock_syntax[1].estimated_cost.return_value = 9
         self._mock_syntax[
             1
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -42,8 +44,10 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
             {2: 1, 3: 2, 0: 10}
         )
-        self._test_integer_division = integer_division_expression.IntegerDivisionExpression(
-            self._mock_syntax[0], self._mock_syntax[1]
+        self._test_integer_division = (
+            integer_division_expression.IntegerDivisionExpression(
+                self._mock_syntax[0], self._mock_syntax[1]
+            )
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
@@ -67,8 +71,10 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self.assertEqual(100, self._test_integer_division.max())
 
     def test_integer_division_max_raise_on_zero(self):
-        self._test_integer_division = integer_division_expression.IntegerDivisionExpression(
-            self._mock_syntax[2], self._mock_syntax[3]
+        self._test_integer_division = (
+            integer_division_expression.IntegerDivisionExpression(
+                self._mock_syntax[2], self._mock_syntax[3]
+            )
         )
         self.assertRaises(ZeroDivisionError, self._test_integer_division.max)
 
@@ -76,13 +82,18 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self.assertEqual(-101, self._test_integer_division.min())
 
     def test_integer_division_min_raise_on_zero(self):
-        self._test_integer_division = integer_division_expression.IntegerDivisionExpression(
-            self._mock_syntax[2], self._mock_syntax[3]
+        self._test_integer_division = (
+            integer_division_expression.IntegerDivisionExpression(
+                self._mock_syntax[2], self._mock_syntax[3]
+            )
         )
         self.assertRaises(ZeroDivisionError, self._test_integer_division.min)
 
     def test_integer_division_str(self):
         self.assertEqual("7 // 2", str(self._test_integer_division))
+
+    def test_integer_division_estimated_cost(self):
+        self.assertEqual(63, self._test_integer_division.estimated_cost())
 
     def test_integer_division_get_probability_distribution(self):
         self._mock_syntax[
@@ -101,8 +112,10 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         )
 
     def test_integer_division_get_probability_distribution_raise_on_zero(self):
-        self._test_integer_division = integer_division_expression.IntegerDivisionExpression(
-            self._mock_syntax[2], self._mock_syntax[3]
+        self._test_integer_division = (
+            integer_division_expression.IntegerDivisionExpression(
+                self._mock_syntax[2], self._mock_syntax[3]
+            )
         )
         self.assertRaises(
             ZeroDivisionError, self._test_integer_division.get_probability_distribution

@@ -138,6 +138,29 @@ class TestDiceExpression(unittest.TestCase):
         self._test_dice = dice_expression.DiceExpression("d[-2,0,2,4,6,31,-2,-24]")
         self.assertEqual("d[-2,0,2,4,6,31,-2,-24]", str(self._test_dice))
 
+    def test_dice_estimated_cost(self):
+        self.assertEqual(4 * 6, self._test_dice.estimated_cost())
+
+    def test_dice_estimated_cost_missing_dice_amount(self):
+        self._test_dice = dice_expression.DiceExpression("d10")
+        self.assertEqual(10, self._test_dice.estimated_cost())
+
+    def test_dice_estimated_cost_percentile_dice(self):
+        self._test_dice = dice_expression.DiceExpression("1d%")
+        self.assertEqual(100, self._test_dice.estimated_cost())
+
+    def test_dice_estimated_cost_fate_dice(self):
+        self._test_dice = dice_expression.DiceExpression("10dF")
+        self.assertEqual(30, self._test_dice.estimated_cost())
+
+    def test_dice_estimated_custom_dice_negative(self):
+        self._test_dice = dice_expression.DiceExpression("21d[-2,2,100]")
+        self.assertEqual(63, self._test_dice.estimated_cost())
+
+    def test_dice_estimated_custom_dice_large_set(self):
+        self._test_dice = dice_expression.DiceExpression("2d[-2,0,2,4,6*7,31,-2,-24]")
+        self.assertEqual(14, self._test_dice.estimated_cost())
+
     def test_dice_get_probability_distribution(self):
         self._test_dice = dice_expression.DiceExpression("4d6")
         possible_rolls = itertools.product(range(1, 7), repeat=4)
