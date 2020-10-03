@@ -10,8 +10,8 @@ import python_dice.src.python_dice_expression.get_var_expression as get_var_expr
 
 class TestGetVarExpression(unittest.TestCase):
     def setUp(self):
-        self._probability_distribution = probability_distribution.ProbabilityDistribution(
-            {-5: 1, 1: 2, 4: 1}
+        self._probability_distribution = (
+            probability_distribution.ProbabilityDistribution({-5: 1, 1: 2, 4: 1})
         )
         self._test_name = "test_name"
 

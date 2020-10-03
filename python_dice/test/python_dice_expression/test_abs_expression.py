@@ -16,8 +16,8 @@ class TestAbsExpression(unittest.TestCase):
         self._mock_syntax.min.return_value = 6
         self._mock_syntax.__str__.return_value = "7d3"
         self._mock_syntax.estimated_cost.return_value = 21
-        self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
-            {-5: 1, 1: 2, 4: 1}
+        self._mock_syntax.get_probability_distribution.return_value = (
+            probability_distribution.ProbabilityDistribution({-5: 1, 1: 2, 4: 1})
         )
 
         self._test_abs_operator = abs_expression.AbsExpression(self._mock_syntax)

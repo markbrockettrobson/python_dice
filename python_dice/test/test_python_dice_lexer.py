@@ -28,7 +28,8 @@ class TestPythonDiceLexer(unittest.TestCase):
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
             self.assertEqual(
-                "VAR banana = 1d8 / 2\n-----------------^", str(inst),
+                "VAR banana = 1d8 / 2\n-----------------^",
+                str(inst),
             )
 
     def test_lexer_error_end_of_line(self):
@@ -42,7 +43,8 @@ class TestPythonDiceLexer(unittest.TestCase):
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
             self.assertEqual(
-                "VAR banana = 1d8 /\n-----------------^", str(inst),
+                "VAR banana = 1d8 /\n-----------------^",
+                str(inst),
             )
 
     def test_lexer_error_end_of_first_line(self):
@@ -51,7 +53,8 @@ class TestPythonDiceLexer(unittest.TestCase):
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
             self.assertEqual(
-                "VAR apple = 1d4 /\n----------------^", str(inst),
+                "VAR apple = 1d4 /\n----------------^",
+                str(inst),
             )
 
     def test_lex_constant_integer(self):
