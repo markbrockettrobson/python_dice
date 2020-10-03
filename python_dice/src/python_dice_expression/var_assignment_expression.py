@@ -53,6 +53,11 @@ class VarAssignmentExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return f"VAR {self._name} = {str(self._expression)}"
 
+    def estimated_cost(self) -> int:
+        cost = self._expression.estimated_cost()
+        self._state.set_constant(self._name, cost)
+        return cost
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

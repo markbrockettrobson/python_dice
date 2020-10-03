@@ -127,6 +127,13 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         ]
         self.assertEqual(28, interpreter.max(program)["stdout"])
 
+    def test_estimated_cost_single_line(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = [
+            "(100d2 + 20d20k10) > 2d4",
+        ]
+        self.assertEqual(12800000, interpreter.get_estimated_cost(program))
+
     def test_average(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = [
@@ -199,3 +206,8 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             pil_image_to_byte_array.image_to_byte_array(expected_image),
             pil_image_to_byte_array.image_to_byte_array(image),
         )
+
+    def test_estimated_cost(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["VAR a = (100d2 + 20d20k10) > 2d4", "a // 1d2"]
+        self.assertEqual(38400000, interpreter.get_estimated_cost(program))

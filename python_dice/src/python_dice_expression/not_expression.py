@@ -35,6 +35,9 @@ class NotExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return f"!{str(self._expression)}"
 
+    def estimated_cost(self) -> int:
+        return self._expression.estimated_cost()
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

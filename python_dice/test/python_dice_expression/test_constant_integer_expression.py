@@ -34,6 +34,9 @@ class TestConstantIntegerExpression(unittest.TestCase):
     def test_constant_integer_str(self):
         self.assertEqual("14", str(self._test_constant_integers))
 
+    def test_constant_integer_estimated_cost(self):
+        self.assertEqual(1, self._test_constant_integers.estimated_cost())
+
     def test_constant_integer_probability_distribution(self):
         self.assertEqual(
             {14: 1},

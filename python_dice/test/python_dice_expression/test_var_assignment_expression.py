@@ -17,6 +17,7 @@ class TestVarAssignmentExpression(unittest.TestCase):
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
         self._mock_syntax.__str__.return_value = "7d3"
+        self._mock_syntax.estimated_cost.return_value = 45
         self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
             {-5: 1, 1: 2, 4: 1}
         )
@@ -56,6 +57,9 @@ class TestVarAssignmentExpression(unittest.TestCase):
         self.assertEqual(
             f"VAR {self._test_name} = 7d3", str(self._test_assignment_expression)
         )
+
+    def test_var_assignment_estimated_cost(self):
+        self.assertEqual(45, self._test_assignment_expression.estimated_cost())
 
     def test_var_get_probability_distribution(self):
         mock_probability_distribution = mock.create_autospec(

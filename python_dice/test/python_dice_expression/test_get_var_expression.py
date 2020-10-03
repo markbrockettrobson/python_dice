@@ -50,6 +50,9 @@ class TestGetVarExpression(unittest.TestCase):
     def test_var_assignment_str(self):
         self.assertEqual(f"{self._test_name}", str(self._test_assignment_expression))
 
+    def test_var_estimated_cost(self):
+        self.assertEqual(2, self._test_assignment_expression.estimated_cost())
+
     def test_var_get_probability_distribution(self):
         self.assertEqual(
             self._probability_distribution,

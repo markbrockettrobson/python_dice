@@ -48,6 +48,9 @@ class DiceExpression(i_dice_expression.IDiceExpression):
     def min(self) -> int:
         return (min(self._single_dice_outcome_map.keys())) * self._number_of_dice
 
+    def estimated_cost(self) -> int:
+        return self._number_of_dice * len(self._single_dice_outcome_map.values())
+
     def __str__(self) -> str:
         return f"{self._string_form}"
 

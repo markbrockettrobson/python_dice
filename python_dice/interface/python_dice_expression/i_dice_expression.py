@@ -39,6 +39,14 @@ class IDiceExpression(abc.ABC, rply.token.Token):
         """
 
     @abc.abstractmethod
+    def estimated_cost(self) -> int:
+        """
+
+        :return: returns a estimated cost of the python dice expression
+                 <int>
+        """
+
+    @abc.abstractmethod
     def get_probability_distribution(
         self,
     ) -> probability_distribution.ProbabilityDistribution:

@@ -48,6 +48,12 @@ class IntegerDivisionExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return f"{str(self._expression_one)} // {str(self._expression_two)}"
 
+    def estimated_cost(self) -> int:
+        return (
+            self._expression_one.estimated_cost()
+            * self._expression_two.estimated_cost()
+        )
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

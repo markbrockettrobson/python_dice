@@ -107,6 +107,13 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
     def __str__(self) -> str:
         return f"{self._string_form}"
 
+    def estimated_cost(self) -> int:
+        return (
+            self._number_of_dice
+            * self._number_of_dice
+            * len(self._single_dice_outcome_map.values())
+        )
+
     def get_probability_distribution(
         self,
     ) -> i_probability_distribution.IProbabilityDistribution:

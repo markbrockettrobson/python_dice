@@ -17,6 +17,7 @@ class TestAddExpression(unittest.TestCase):
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 6
         self._mock_syntax[0].__str__.return_value = "7d7"
+        self._mock_syntax[0].estimated_cost.return_value = 9
         self._mock_syntax[
             0
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -27,6 +28,7 @@ class TestAddExpression(unittest.TestCase):
         self._mock_syntax[1].max.return_value = 6
         self._mock_syntax[1].min.return_value = 8
         self._mock_syntax[1].__str__.return_value = "2d2"
+        self._mock_syntax[1].estimated_cost.return_value = 7
         self._mock_syntax[
             1
         ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
@@ -83,6 +85,9 @@ class TestAddExpression(unittest.TestCase):
             "MIN", self._mock_syntax[0], self._mock_syntax[1]
         )
         self.assertEqual("MIN(7d7, 2d2)", str(self._test_minmax))
+
+    def test_min_max_estimated_cost(self):
+        self.assertEqual(63, self._test_minmax.estimated_cost())
 
     def test_max_get_probability_distribution(self):
         self._mock_syntax[
