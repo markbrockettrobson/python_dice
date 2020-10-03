@@ -159,15 +159,15 @@ class TestProbabilityDistribution(unittest.TestCase):
         self.assertEqual({0: 6, 1: 10}, test_distribution.get_result_map())
 
     def test_probability_distribution_not_operator(self):
-        test_distribution_d4_less_one = (
-            probability_distribution.ProbabilityDistribution({0: 1, 1: 1, 2: 1, 3: 1})
+        test_distribution_d4_less_one = probability_distribution.ProbabilityDistribution(
+            {0: 1, 1: 1, 2: 1, 3: 1}
         )
         test_distribution = test_distribution_d4_less_one.not_operator()
         self.assertEqual({0: 3, 1: 1}, test_distribution.get_result_map())
 
     def test_probability_distribution_and(self):
-        test_distribution_d2_less_one = (
-            probability_distribution.ProbabilityDistribution({0: 1, 1: 1})
+        test_distribution_d2_less_one = probability_distribution.ProbabilityDistribution(
+            {0: 1, 1: 1}
         )
         test_distribution = self._test_distribution_d4.__and__(
             test_distribution_d2_less_one
@@ -175,8 +175,8 @@ class TestProbabilityDistribution(unittest.TestCase):
         self.assertEqual({0: 6, 1: 2}, test_distribution.get_result_map())
 
     def test_probability_distribution_or(self):
-        test_distribution_d2_less_one = (
-            probability_distribution.ProbabilityDistribution({0: 1, 1: 1})
+        test_distribution_d2_less_one = probability_distribution.ProbabilityDistribution(
+            {0: 1, 1: 1}
         )
         test_distribution = test_distribution_d2_less_one.__or__(
             test_distribution_d2_less_one

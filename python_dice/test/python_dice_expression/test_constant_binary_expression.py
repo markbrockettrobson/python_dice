@@ -8,11 +8,11 @@ import python_dice.src.python_dice_expression.constant_binary_expression as cons
 
 class TestConstantIntegerExpression(unittest.TestCase):
     def setUp(self):
-        self._test_constant_binary_true = (
-            constant_binary_expression.ConstantBinaryExpression("True")
+        self._test_constant_binary_true = constant_binary_expression.ConstantBinaryExpression(
+            "True"
         )
-        self._test_constant_binary_false = (
-            constant_binary_expression.ConstantBinaryExpression("False")
+        self._test_constant_binary_false = constant_binary_expression.ConstantBinaryExpression(
+            "False"
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 

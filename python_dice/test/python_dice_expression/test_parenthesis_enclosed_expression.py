@@ -16,14 +16,12 @@ class TestParenthesisEnclosedExpression(unittest.TestCase):
         self._mock_syntax.min.return_value = 6
         self._mock_syntax.__str__.return_value = "7d4"
         self._mock_syntax.estimated_cost.return_value = 987654321
-        self._mock_syntax.get_probability_distribution.return_value = (
-            probability_distribution.ProbabilityDistribution({-2: 1, 4: 1})
+        self._mock_syntax.get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-2: 1, 4: 1}
         )
 
-        self._test_parentheses_enclosed_expression = (
-            parentheses_enclosed_expression.ParenthesisEnclosedExpression(
-                self._mock_syntax
-            )
+        self._test_parentheses_enclosed_expression = parentheses_enclosed_expression.ParenthesisEnclosedExpression(
+            self._mock_syntax
         )
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
