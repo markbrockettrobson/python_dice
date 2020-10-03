@@ -61,6 +61,9 @@ class TestMultiplyExpression(unittest.TestCase):
     def test_multiply_str(self):
         self.assertEqual("7 * 2", str(self._test_multiply))
 
+    def test_multiply_estimated_cost(self):
+        self.assertEqual(63, self._test_multiply.estimated_cost())
+
     def test_multiply_get_probability_distribution(self):
         self._mock_syntax[
             0
