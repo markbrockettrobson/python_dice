@@ -96,7 +96,7 @@ class TestBinaryOperatorEqualsExpression(unittest.TestCase):
         self.assertEqual("7 == 2d8", str(self._test_binary_operator))
 
     def test_eq_estimated_cost(self):
-        self.assertEqual(63, self._test_binary_operator.estimated_cost())
+        self.assertEqual(16, self._test_binary_operator.estimated_cost())
 
     def test_eq_get_probability_distribution(self):
         self.assertEqual(

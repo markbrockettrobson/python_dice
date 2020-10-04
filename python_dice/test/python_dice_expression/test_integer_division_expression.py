@@ -93,7 +93,7 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self.assertEqual("7 // 2", str(self._test_integer_division))
 
     def test_integer_division_estimated_cost(self):
-        self.assertEqual(63, self._test_integer_division.estimated_cost())
+        self.assertEqual(16, self._test_integer_division.estimated_cost())
 
     def test_integer_division_get_probability_distribution(self):
         self._mock_syntax[

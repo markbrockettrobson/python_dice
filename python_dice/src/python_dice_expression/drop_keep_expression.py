@@ -110,11 +110,16 @@ class DropKeepExpression(i_dice_expression.IDiceExpression):
         return f"{self._string_form}"
 
     def estimated_cost(self) -> int:
+        if self._simplified_form is not None:
+            return self._simplified_form.estimated_cost()
+
+        if self._is_keep():
+            return (self._number_of_dice * (self._number_to_keep_or_drop)) * len(
+                self._single_dice_outcome_map.values()
+            )
         return (
-            self._number_of_dice
-            * self._number_of_dice
-            * len(self._single_dice_outcome_map.values())
-        )
+            self._number_of_dice * (self._number_of_dice - self._number_to_keep_or_drop)
+        ) * len(self._single_dice_outcome_map.values())
 
     def get_probability_distribution(
         self,

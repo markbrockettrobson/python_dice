@@ -42,8 +42,8 @@ class TestConstantIntegerExpression(unittest.TestCase):
         self.assertEqual("False", str(self._test_constant_binary_false))
 
     def test_constant_binary_estimated_cost(self):
-        self.assertEqual(1, self._test_constant_binary_true.estimated_cost())
-        self.assertEqual(1, self._test_constant_binary_false.estimated_cost())
+        self.assertEqual(2, self._test_constant_binary_true.estimated_cost())
+        self.assertEqual(2, self._test_constant_binary_false.estimated_cost())
 
     def test_constant_binary_get_probability_distribution(self):
         self.assertEqual(

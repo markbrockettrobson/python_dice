@@ -124,7 +124,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_estimated_cost_single_line(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = ["(100d2 + 20d20k10) > 2d4"]
-        self.assertEqual(12800000, interpreter.get_estimated_cost(program))
+        self.assertEqual(4208, interpreter.get_estimated_cost(program))
 
     def test_average(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
@@ -202,4 +202,4 @@ class TestPythonDiceInterpreter(unittest.TestCase):
     def test_estimated_cost(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = ["VAR a = (100d2 + 20d20k10) > 2d4", "a // 1d2"]
-        self.assertEqual(38400000, interpreter.get_estimated_cost(program))
+        self.assertEqual(4212, interpreter.get_estimated_cost(program))
