@@ -3,17 +3,22 @@
 
 [![codecov](https://codecov.io/gh/markbrockettrobson/python_dice/branch/master/graph/badge.svg)](https://codecov.io/gh/markbrockettrobson/pydice)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
-![MIT](https://black.readthedocs.io/en/stable/_static/license.svg)
+![license](https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png)
 
-a statistical dice library for python
+a statistical dice engine for python
+
+###License 
+http://creativecommons.org/licenses/by-nc-sa/4.0/
+
+This work is licensed under a Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International License
 
 
-### to install
+### To install
 ~~~
 python -m pip install python_dice
 ~~~
 
-### source at 
+### Source at 
 https://github.com/markbrockettrobson/python_dice
 
 ### Usage
@@ -120,7 +125,7 @@ VAR h = (1d4 >= 2) OR !(1d20 == 2)
 ~~~
 abs
 ~~~
-var abs = ABS( 1d6 - 1d6 )
+VAR abs = ABS( 1d6 - 1d6 )
 ~~~
 Min and Max
 ~~~
