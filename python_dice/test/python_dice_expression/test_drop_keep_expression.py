@@ -239,32 +239,32 @@ class TestDiceExpression(unittest.TestCase):
         self.assertEqual("3d[-3,2,4]d1", str(test_dice))
 
     def test_drop_keep_estimated_cost(self):
-        self.assertEqual(16 * 6, self._test_dice_drop.estimated_cost())
-        self.assertEqual(16 * 6, self._test_dice_keep.estimated_cost())
+        self.assertEqual(48, self._test_dice_drop.estimated_cost())
+        self.assertEqual(48, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_estimated_cost_missing_dice_amount(self):
         self._test_dice_drop = drop_keep_expression.DropKeepExpression("d6d2")
         self._test_dice_keep = drop_keep_expression.DropKeepExpression("d6k2")
-        self.assertEqual(6, self._test_dice_drop.estimated_cost())
+        self.assertEqual(2, self._test_dice_drop.estimated_cost())
         self.assertEqual(6, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_estimated_cost_percentile_dice(self):
         self._test_dice_drop = drop_keep_expression.DropKeepExpression("4d%d2")
         self._test_dice_keep = drop_keep_expression.DropKeepExpression("4d%k2")
-        self.assertEqual(1600, self._test_dice_drop.estimated_cost())
-        self.assertEqual(1600, self._test_dice_keep.estimated_cost())
+        self.assertEqual(800, self._test_dice_drop.estimated_cost())
+        self.assertEqual(800, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_estimated_cost_fate_dice(self):
         self._test_dice_drop = drop_keep_expression.DropKeepExpression("4dFd2")
         self._test_dice_keep = drop_keep_expression.DropKeepExpression("4dFk2")
-        self.assertEqual(16 * 3, self._test_dice_drop.estimated_cost())
-        self.assertEqual(16 * 3, self._test_dice_keep.estimated_cost())
+        self.assertEqual(24, self._test_dice_drop.estimated_cost())
+        self.assertEqual(24, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_estimated_custom_dice_negative(self):
         self._test_dice_drop = drop_keep_expression.DropKeepExpression("4d[-2,2,100]d2")
         self._test_dice_keep = drop_keep_expression.DropKeepExpression("4d[-2,2,100]k2")
-        self.assertEqual(16 * 3, self._test_dice_drop.estimated_cost())
-        self.assertEqual(16 * 3, self._test_dice_keep.estimated_cost())
+        self.assertEqual(24, self._test_dice_drop.estimated_cost())
+        self.assertEqual(24, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_estimated_custom_dice_large_set(self):
         self._test_dice_drop = drop_keep_expression.DropKeepExpression(
@@ -273,8 +273,8 @@ class TestDiceExpression(unittest.TestCase):
         self._test_dice_keep = drop_keep_expression.DropKeepExpression(
             "4d[-2,0,2,4,6*7,31,-2,-24]k2"
         )
-        self.assertEqual(16 * 7, self._test_dice_drop.estimated_cost())
-        self.assertEqual(16 * 7, self._test_dice_keep.estimated_cost())
+        self.assertEqual(56, self._test_dice_drop.estimated_cost())
+        self.assertEqual(56, self._test_dice_keep.estimated_cost())
 
     def test_drop_keep_get_probability_distribution_drop(self):
         test_dice = drop_keep_expression.DropKeepExpression("6d4d4")

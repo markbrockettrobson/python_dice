@@ -62,7 +62,7 @@ class TestSubtractExpression(unittest.TestCase):
         self.assertEqual("7 - 2", str(self._test_subtract))
 
     def test_subtract_estimated_cost(self):
-        self.assertEqual(63, self._test_subtract.estimated_cost())
+        self.assertEqual(16, self._test_subtract.estimated_cost())
 
     def test_subtract_get_probability_distribution(self):
         self._mock_syntax[

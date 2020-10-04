@@ -36,7 +36,7 @@ class ConstantIntegerExpression(i_dice_expression.IDiceExpression):
         return self._number
 
     def estimated_cost(self) -> int:
-        return 1
+        return 2
 
     def get_probability_distribution(
         self,

@@ -51,7 +51,7 @@ class IntegerDivisionExpression(i_dice_expression.IDiceExpression):
     def estimated_cost(self) -> int:
         return (
             self._expression_one.estimated_cost()
-            * self._expression_two.estimated_cost()
+            + self._expression_two.estimated_cost()
         )
 
     def get_probability_distribution(

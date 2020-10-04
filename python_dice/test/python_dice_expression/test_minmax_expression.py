@@ -87,7 +87,7 @@ class TestAddExpression(unittest.TestCase):
         self.assertEqual("MIN(7d7, 2d2)", str(self._test_minmax))
 
     def test_min_max_estimated_cost(self):
-        self.assertEqual(63, self._test_minmax.estimated_cost())
+        self.assertEqual(16, self._test_minmax.estimated_cost())
 
     def test_max_get_probability_distribution(self):
         self._mock_syntax[

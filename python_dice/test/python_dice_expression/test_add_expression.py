@@ -60,7 +60,7 @@ class TestAddExpression(unittest.TestCase):
         self.assertEqual("7 + 2", str(self._test_add))
 
     def test_add_estimated_cost(self):
-        self.assertEqual(14, self._test_add.estimated_cost())
+        self.assertEqual(9, self._test_add.estimated_cost())
 
     def test_add_get_probability_distribution(self):
         self._mock_syntax[

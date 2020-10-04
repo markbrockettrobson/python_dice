@@ -1,3 +1,4 @@
+import math
 import typing
 
 import rply
@@ -36,7 +37,7 @@ class NotExpression(i_dice_expression.IDiceExpression):
         return f"!{str(self._expression)}"
 
     def estimated_cost(self) -> int:
-        return self._expression.estimated_cost()
+        return int(math.floor(self._expression.estimated_cost() * 1.1))
 
     def get_probability_distribution(
         self,
