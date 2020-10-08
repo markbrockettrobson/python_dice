@@ -1,4 +1,4 @@
-# python dice ![logo](https://raw.githubusercontent.com/markbrockettrobson/python_dice/master/images/pythondice_logo_128x128.png)
+# Python dice ![logo](https://raw.githubusercontent.com/markbrockettrobson/python_dice/master/images/pythondice_logo_128x128.png)
 
 
 [![codecov](https://codecov.io/gh/markbrockettrobson/python_dice/branch/master/graph/badge.svg)](https://codecov.io/gh/markbrockettrobson/pydice)
