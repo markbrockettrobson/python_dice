@@ -17,7 +17,7 @@ class MinMaxExpression(i_dice_expression.IDiceExpression):
     ) -> typing.Callable:
         @parser_generator.production(MinMaxExpression.TOKEN_RULE)
         def min_max(_, tokens) -> i_dice_expression.IDiceExpression:
-            return MinMaxExpression(tokens[0].value, tokens[2], tokens[2])
+            return MinMaxExpression(tokens[0].value, tokens[2], tokens[4])
 
         return min_max
 

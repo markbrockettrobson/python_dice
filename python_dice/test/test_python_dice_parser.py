@@ -181,7 +181,7 @@ class TestPythonDiceParser(unittest.TestCase):
 
     def test_parser_not_expression(self):
         token, _ = self._test_parser.parse("!(1d6 - 1d6)")
-        expected_outcome = {0: 30, 1: 6}
+        expected_outcome = {0: 15, 1: 21}
         self.assert_distribution(token, expected_outcome, 0, 1)
 
     def test_parser_equal_expression(self):

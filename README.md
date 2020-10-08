@@ -63,7 +63,7 @@ im.show()
 ![image of 10d6 add 10 half round up if 1d20 greater than 10](https://raw.githubusercontent.com/markbrockettrobson/python_dice/master/images/histogram.png)
 
 ### Syntax
-Dice
+#### Dice
 ~~~
 <number of dice to roll>d<number of sides on the dice>
 4d10
@@ -84,7 +84,7 @@ number of sides can also be:<br>
   + d[1,1,1,2,2,3,3,4] == d[1-3*2,1,4] 
 
 
-Keep Drop
+#### Keep Drop
 ~~~
 <number of dice to roll>d<number of sides on the dice>[k for keep d for drop]<number of dice to keep or drop>
 2d20k1  roll 2 d20's take the highest 1
@@ -98,20 +98,20 @@ If the number to drop is equal or greater then the number of dice to roll it wil
 If the number of dice to keep is set to zero then it will always roll 0. <br>
 If the number of dice to drop is set to zero then it will be ignored. <br>
 
-Set a var
+#### Set a var
 ~~~
 VAR lower_case_name = 1
 VAR name = 4d20
 ~~~
-add, subtract, multiply, integer division
+#### Add, subtract, multiply, integer division
 ~~~
 VAR name = 1 + 2d3 - 3 * 4d2 // 5
 ~~~
-parenthesis
+#### Parenthesis
 ~~~
 VAR out = 3 * ( 1 + 1d4 )
 ~~~
-binary operator
+#### Binary operator
 ~~~
 VAR a = 1d4 == 1
 VAR b = 1d4 != 1
@@ -122,11 +122,13 @@ VAR f = 1d4 > 2
 VAR g = (1d4 >= 2) AND !(1d20 == 2)
 VAR h = (1d4 >= 2) OR !(1d20 == 2)
 ~~~
-abs
+for non binary values, values above 0 are considered true.
+
+#### Abs
 ~~~
 VAR abs = ABS( 1d6 - 1d6 )
 ~~~
-Min and Max
+#### Min and Max
 ~~~
 MAX(4d7, 2d10)
 MIN(50, d%)

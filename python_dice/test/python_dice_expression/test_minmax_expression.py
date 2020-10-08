@@ -123,3 +123,73 @@ class TestAddExpression(unittest.TestCase):
             {-12: 6, 0: 3, 2: 1, 3: 2},
             self._test_minmax.get_probability_distribution().get_result_map(),
         )
+
+    def test_max_get_probability_distribution_second_example(self):
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-3: 1, -2: 1, -1: 1, 0: 1, 5: 1, 6: 1}
+        )
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {0: 1}
+        )
+        self.assertEqual(
+            {0: 4, 5: 1, 6: 1},
+            self._test_minmax.get_probability_distribution().get_result_map(),
+        )
+
+    def test_min_get_probability_distribution_second_example(self):
+        self._test_minmax = minmax_expression.MinMaxExpression(
+            "MIN", self._mock_syntax[0], self._mock_syntax[1]
+        )
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-1: 1, 1: 1}
+        )
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {0: 1}
+        )
+        self.assertEqual(
+            {0: 1, -1: 1},
+            self._test_minmax.get_probability_distribution().get_result_map(),
+        )
+
+    def test_max_get_probability_distribution_third_example(self):
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-1: 1, 1: 1}
+        )
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {0: 1}
+        )
+        self.assertEqual(
+            {0: 1, 1: 1},
+            self._test_minmax.get_probability_distribution().get_result_map(),
+        )
+
+    def test_min_get_probability_distribution_third_example(self):
+        self._test_minmax = minmax_expression.MinMaxExpression(
+            "MIN", self._mock_syntax[0], self._mock_syntax[1]
+        )
+        self._mock_syntax[
+            0
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {-3: 1, -2: 1, -1: 1, 0: 1, 5: 1, 6: 1}
+        )
+        self._mock_syntax[
+            1
+        ].get_probability_distribution.return_value = probability_distribution.ProbabilityDistribution(
+            {0: 1}
+        )
+        self.assertEqual(
+            {-3: 1, -2: 1, -1: 1, 0: 3},
+            self._test_minmax.get_probability_distribution().get_result_map(),
+        )

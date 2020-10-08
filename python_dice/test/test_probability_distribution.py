@@ -172,7 +172,7 @@ class TestProbabilityDistribution(unittest.TestCase):
         test_distribution = self._test_distribution_d4.__and__(
             test_distribution_d2_less_one
         )
-        self.assertEqual({0: 6, 1: 2}, test_distribution.get_result_map())
+        self.assertEqual({0: 4, 1: 4}, test_distribution.get_result_map())
 
     def test_probability_distribution_or(self):
         test_distribution_d2_less_one = (

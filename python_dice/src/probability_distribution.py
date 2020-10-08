@@ -333,7 +333,12 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(
-            lambda a, b: 1 if operator.and_(a, b) else 0, other
+            lambda a, b: 1
+            if operator.and_(
+                self._value_to_binary_value(a), self._value_to_binary_value(b)
+            )
+            else 0,
+            other,
         )
         return ProbabilityDistribution(new_result_map)
 
@@ -341,9 +346,18 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
         self, other: i_probability_distribution.IProbabilityDistribution
     ) -> "ProbabilityDistribution":
         new_result_map = self._combine_distributions(
-            lambda a, b: 1 if operator.or_(a, b) else 0, other
+            lambda a, b: 1
+            if operator.or_(
+                self._value_to_binary_value(a), self._value_to_binary_value(b)
+            )
+            else 0,
+            other,
         )
         return ProbabilityDistribution(new_result_map)
+
+    @staticmethod
+    def _value_to_binary_value(value: int):
+        return value > 0
 
     def not_operator(self) -> "ProbabilityDistribution":
         new_result_map = {}
@@ -354,7 +368,7 @@ class ProbabilityDistribution(i_probability_distribution.IProbabilityDistributio
             new_result_map[key] += value
 
         for result_key, result_value in self._result_map.items():
-            if result_key:
+            if self._value_to_binary_value(result_key):
                 safe_add(0, result_value)
             else:
                 safe_add(1, result_value)

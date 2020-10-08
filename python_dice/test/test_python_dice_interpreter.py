@@ -203,3 +203,102 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
         program = ["VAR a = (100d2 + 20d20k10) > 2d4", "a // 1d2"]
         self.assertEqual(4212, interpreter.get_estimated_cost(program))
+
+    def test_probability_distribution_max(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["MAX( 1d[-1, 1] , 0)"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({0: 0.5, 1: 0.5}, probability_distribution.get_dict_form())
+
+    def test_probability_distribution_min(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["MIN( d[-1, 1] , 0)"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({0: 0.5, -1: 0.5}, probability_distribution.get_dict_form())
+
+    def test_probability_distribution_abs(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["ABS( 1d[-1, 1])"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({1: 1}, probability_distribution.get_dict_form())
+
+    def test_probability_distribution_add(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["d[-1, 1] + 3"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({2: 0.5, 4: 0.5}, probability_distribution.get_dict_form())
+
+    def test_probability_distribution_binary_operator(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        operator_map = {
+            "==": {0: 2, 1: 1},
+            "!=": {0: 1, 1: 2},
+            "<=": {1: 3},
+            "<": {0: 1, 1: 2},
+            ">=": {0: 2, 1: 1},
+            ">": {0: 3},
+            "AND": {0: 2, 1: 1},
+            "OR": {1: 3},
+        }
+        for operator, distribution in operator_map.items():
+            program = [f"d[-1-1] {operator} 1"]
+            probability_distribution = interpreter.get_probability_distributions(
+                program
+            )["stdout"]
+            self.assertEqual(distribution, probability_distribution.get_result_map())
+
+    def test_probability_distribution_constant_binary(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["2d[-1, 1]k1 == True"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({1: 3, 0: 1}, probability_distribution.get_result_map())
+
+    def test_probability_distribution_var_example(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["VAR a = d2", "a + 1"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({2: 1, 3: 1}, probability_distribution.get_result_map())
+
+    def test_probability_distribution_div_example(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["d[2,4] // 2"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({1: 1, 2: 1}, probability_distribution.get_result_map())
+
+    def test_probability_distribution_multiply_example(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["d[2,4] * 2"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({4: 1, 8: 1}, probability_distribution.get_result_map())
+
+    def test_probability_distribution_not_example(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["! (d[0,1*3])"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({0: 3, 1: 1}, probability_distribution.get_result_map())
+
+    def test_probability_distribution_subtract_example(self):
+        interpreter = python_dice_interpreter.PythonDiceInterpreter()
+        program = ["34 - 2"]
+        probability_distribution = interpreter.get_probability_distributions(program)[
+            "stdout"
+        ]
+        self.assertEqual({32: 1}, probability_distribution.get_result_map())

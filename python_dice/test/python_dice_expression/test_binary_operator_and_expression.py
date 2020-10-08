@@ -100,6 +100,6 @@ class TestBinaryOperatorAndExpression(unittest.TestCase):
 
     def test_and_get_probability_distribution(self):
         self.assertEqual(
-            {0: 16, 1: 8},
+            {0: 21, 1: 3},
             self._test_binary_operator.get_probability_distribution().get_result_map(),
         )
