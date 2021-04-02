@@ -61,7 +61,7 @@ class TestVarAssignmentExpression(unittest.TestCase):
         )
 
     def test_var_assignment_estimated_cost(self):
-        self.assertEqual(2, self._test_assignment_expression.estimated_cost())
+        self.assertEqual(45 + 2, self._test_assignment_expression.estimated_cost())
 
     def test_var_get_probability_distribution(self):
         mock_probability_distribution = mock.create_autospec(
