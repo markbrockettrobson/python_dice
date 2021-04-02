@@ -200,9 +200,23 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         )
 
     def test_estimated_cost(self):
-        interpreter = python_dice_interpreter.PythonDiceInterpreter()
-        program = ["VAR a = (100d2 + 20d20k10) > 2d4", "a // 1d2"]
-        self.assertEqual(4212, interpreter.get_estimated_cost(program))
+        subtest = [
+            (["1d20"], 20),
+            (["2d20"], 40),
+            (["2d20k1"], 40),
+            (["3d20k2"], 60 * 2),
+            (["10d[1--2]"], 40),
+            (["10d[1--2]k2"], 80),
+            (["VAR a = 1d10", "a"], 22),
+            (["VAR a = 1d10", "VAR b = 1d10", "a + b"], 12 + 12 + 20),
+            (["VAR a = 1d10", "VAR b = 1d10 + a", "VAR a = 1d20"], 12 + 22 + 22),
+            (["VAR a = (100d2 + 20d20k10) > 2d4", "a // 1d2"], 8420),
+        ]
+
+        for program, expected_cost in subtest:
+            with self.subTest("~".join(program)):
+                interpreter = python_dice_interpreter.PythonDiceInterpreter()
+                self.assertEqual(interpreter.get_estimated_cost(program), expected_cost)
 
     def test_probability_distribution_max(self):
         interpreter = python_dice_interpreter.PythonDiceInterpreter()
