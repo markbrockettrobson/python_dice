@@ -1,6 +1,6 @@
 import io
 
-import PIL.Image as Image
+from PIL import Image  # type: ignore
 
 
 def image_to_byte_array(image: Image) -> bytes:

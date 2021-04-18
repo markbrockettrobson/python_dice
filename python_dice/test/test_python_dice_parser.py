@@ -1,19 +1,20 @@
 import unittest
 import unittest.mock as mock
 
-import python_dice.src.python_dice_lexer as pydice_lexer
-import python_dice.src.python_dice_parser as pydice_parser
+from python_dice.src.python_dice_lexer import PythonDiceLexer
+from python_dice.src.python_dice_parser import PythonDiceParser
 
 
+# pylint: disable=too-many-public-methods
 class TestPythonDiceParser(unittest.TestCase):
     def setUp(self):
-        self._test_parser = pydice_parser.PythonDiceParser()
-        self._mock_pydice_lexer = mock.create_autospec(pydice_lexer.PythonDiceLexer)
-        self._mock_token_iter = iter(pydice_lexer.PythonDiceLexer().lex("3"))
+        self._test_parser = PythonDiceParser()
+        self._mock_pydice_lexer = mock.create_autospec(PythonDiceLexer)
+        self._mock_token_iter = iter(PythonDiceLexer().lex("3"))
         self._mock_pydice_lexer.lex.return_value = self._mock_token_iter
 
     def test_use_injected_lexer(self):
-        self._test_parser = pydice_parser.PythonDiceParser(self._mock_pydice_lexer)
+        self._test_parser = PythonDiceParser(self._mock_pydice_lexer)
         self._test_parser.parse("215678284")
         self._mock_pydice_lexer.lex.assert_called_once_with("215678284")
 
@@ -23,9 +24,7 @@ class TestPythonDiceParser(unittest.TestCase):
             self.assertIn(token.roll(), expected_outcome.keys())
         self.assertEqual(max_value, token.max())
         self.assertEqual(min_value, token.min())
-        self.assertEqual(
-            expected_outcome, token.get_probability_distribution().get_result_map()
-        )
+        self.assertEqual(expected_outcome, token.get_probability_distribution().get_result_map())
 
     def test_parser_error(self):
         for invalid in ["2d30 1", "(((d2) + 1 ) + 1 ) + 1)"]:
@@ -215,9 +214,7 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, 0, 1)
 
     def test_parser_and_expression(self):
-        token, _ = self._test_parser.parse(
-            "(((1d2 == 2) AND ((1d20 + 6) >= 22))) > ((1d20 + 6) >= 23)"
-        )
+        token, _ = self._test_parser.parse("(((1d2 == 2) AND ((1d20 + 6) >= 22))) > ((1d20 + 6) >= 23)")
         expected_outcome = {0: 720, 1: 80}
         self.assert_distribution(token, expected_outcome, 0, 1)
 
@@ -297,9 +294,7 @@ class TestPythonDiceParser(unittest.TestCase):
         self.assert_distribution(token, expected_outcome, -6, 2)
 
     def test_parser_state_var_expression_one(self):
-        token, state = self._test_parser.parse(
-            "VAR burning_arc_over_sure_spell = ((8d6 + 8) // 2) < (2d8 + 5)"
-        )
+        token, state = self._test_parser.parse("VAR burning_arc_over_sure_spell = ((8d6 + 8) // 2) < (2d8 + 5)")
         token.get_probability_distribution()
         self.assertEqual(
             {0: 91100786, 1: 16394638},
@@ -309,9 +304,7 @@ class TestPythonDiceParser(unittest.TestCase):
     def test_parser_state_var_expression_two(self):
         token, state = self._test_parser.parse("VAR apple = 1d4 - 1")
         token.get_probability_distribution()
-        self.assertEqual(
-            {0: 1, 1: 1, 2: 1, 3: 1}, state.get_var("apple").get_result_map()
-        )
+        self.assertEqual({0: 1, 1: 1, 2: 1, 3: 1}, state.get_var("apple").get_result_map())
 
     def test_parser_state_var_expression_two_vars_at_once(self):
         token_apple, state = self._test_parser.parse("VAR apple = 1d4")
@@ -322,7 +315,5 @@ class TestPythonDiceParser(unittest.TestCase):
         token_food.get_probability_distribution()
         token_apple2.get_probability_distribution()
 
-        self.assertEqual(
-            {5: 1, 6: 1, 7: 1, 8: 1}, state.get_var("apple").get_result_map()
-        )
+        self.assertEqual({5: 1, 6: 1, 7: 1, 8: 1}, state.get_var("apple").get_result_map())
         self.assertEqual({4: 1}, state.get_var("food").get_result_map())
