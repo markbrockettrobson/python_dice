@@ -2,14 +2,14 @@ import unittest
 import unittest.mock as mock
 
 from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
-from python_dice.src.probability_distribution.probability_state import ProbabilityState
+from python_dice.src.probability_distribution.probability_distribution_state import ProbabilityDistributionState
 
 
 class TestProbabilityState(unittest.TestCase):
     def setUp(self) -> None:
         self._mock_distribution = mock.create_autospec(ProbabilityDistribution)
         self._test_int = 1
-        self._test_probability_state = ProbabilityState()
+        self._test_probability_state = ProbabilityDistributionState()
         self._test_name = "test_name"
 
     def test_probability_state_has_constant_false(self):

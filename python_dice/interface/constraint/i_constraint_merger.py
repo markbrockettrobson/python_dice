@@ -18,3 +18,7 @@ class IConstraintMerger(abc.ABC):
     @abc.abstractmethod
     def __str__(self) -> str:
         pass
+
+    @abc.abstractmethod
+    def __repr__(self) -> str:
+        pass

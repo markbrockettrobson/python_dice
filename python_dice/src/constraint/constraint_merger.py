@@ -54,3 +54,6 @@ class ConstraintMerger(IConstraintMerger):
 
     def __str__(self) -> str:
         return f"{ConstraintMerger.__name__}"
+
+    def __repr__(self) -> str:
+        return self.__str__()

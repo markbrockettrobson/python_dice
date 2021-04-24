@@ -5,7 +5,6 @@ matplotlib>=3.1.1
 networkx>=2.3
 numpy>=1.17.3
 pillow>=7.2.0
-pydantic>=1.8.1
 pylint>=2.3.1
 pytest-black>=0.3.11
 pytest-cov>=2.7.1

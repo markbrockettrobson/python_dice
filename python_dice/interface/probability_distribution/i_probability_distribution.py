@@ -1,10 +1,11 @@
 import abc
 import typing
+from typing import SupportsAbs
 
 from PIL import Image  # type: ignore
 
 
-class IProbabilityDistribution(abc.ABC):
+class IProbabilityDistribution(abc.ABC, SupportsAbs):
     @abc.abstractmethod
     def get_dict_form(self) -> typing.Dict[int, float]:
         """
@@ -197,8 +198,4 @@ class IProbabilityDistribution(abc.ABC):
 
     @abc.abstractmethod
     def min_operator(self, other: object) -> "IProbabilityDistribution":
-        pass
-
-    @abc.abstractmethod
-    def abs_operator(self) -> "IProbabilityDistribution":
         pass

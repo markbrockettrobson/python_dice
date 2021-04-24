@@ -39,3 +39,12 @@ class TestImpossibleConstraint(unittest.TestCase):
     def test_str(self):
         constraint = ImpossibleConstraint()
         self.assertEqual("ImpossibleConstraint", str(constraint))
+
+    def test_repr(self):
+        constraint = ImpossibleConstraint()
+        self.assertEqual("ImpossibleConstraint", repr(constraint))
+
+    def test_hash_equal(self):
+        constraint_one = ImpossibleConstraint()
+        constraint_two = ImpossibleConstraint()
+        self.assertEqual(hash(constraint_one), hash(constraint_two))

@@ -14,6 +14,9 @@ class ImpossibleConstraint(IImpossibleConstraint):
     def merge(self, other: IConstraint) -> IConstraint:
         return self
 
+    def __hash__(self) -> int:
+        return hash(self.__str__())
+
     def __eq__(self, other: object) -> bool:
         return str(self) == str(other)
 
@@ -22,3 +25,6 @@ class ImpossibleConstraint(IImpossibleConstraint):
 
     def __str__(self) -> str:
         return f"{ImpossibleConstraint.__name__}"
+
+    def __repr__(self) -> str:
+        return self.__str__()

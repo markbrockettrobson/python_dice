@@ -310,7 +310,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
         return ProbabilityDistribution(new_result_map)
 
     @staticmethod
-    def _value_to_binary_value(value: int):
+    def _value_to_binary_value(value: int) -> bool:
         return value > 0
 
     def not_operator(self) -> IProbabilityDistribution:
@@ -359,7 +359,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
                 safe_add(min(result_key, other_result_key), result_value * other_result_value)
         return ProbabilityDistribution(new_result_map)
 
-    def abs_operator(self) -> IProbabilityDistribution:
+    def __abs__(self) -> IProbabilityDistribution:
         new_result_map = {}
 
         def safe_add(key, value):

@@ -43,6 +43,9 @@ class VarValueConstraint(IVarValueConstraint):
 
         raise ValueError(f"can not merge {str(other)} with {self.__str__()} however can_merge returned true")
 
+    def __hash__(self) -> int:
+        return hash(self.__str__())
+
     def __eq__(self, other: object) -> bool:
         return str(self) == str(other)
 
@@ -51,3 +54,6 @@ class VarValueConstraint(IVarValueConstraint):
 
     def __str__(self) -> str:
         return f"{VarValueConstraint.__name__}: name={self._name}, values={self._values}"
+
+    def __repr__(self) -> str:
+        return self.__str__()

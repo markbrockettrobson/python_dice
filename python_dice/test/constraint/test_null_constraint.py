@@ -39,3 +39,12 @@ class TestNullConstraint(unittest.TestCase):
     def test_str(self):
         constraint = NullConstraint()
         self.assertEqual("NullConstraint", str(constraint))
+
+    def test_repr(self):
+        constraint = NullConstraint()
+        self.assertEqual("NullConstraint", repr(constraint))
+
+    def test_hash_equal(self):
+        constraint_one = NullConstraint()
+        constraint_two = NullConstraint()
+        self.assertEqual(hash(constraint_one), hash(constraint_two))

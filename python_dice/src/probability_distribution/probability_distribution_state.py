@@ -6,7 +6,7 @@ from python_dice.interface.probability_distribution.i_probability_distribution_s
 )
 
 
-class ProbabilityState(IProbabilityDistributionState):
+class ProbabilityDistributionState(IProbabilityDistributionState):
     def get_var_dict(self):
         return self._var
 

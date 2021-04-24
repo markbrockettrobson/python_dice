@@ -300,3 +300,7 @@ class TestConstraintMerger(unittest.TestCase):
     def test_str(self):
         constraint_merger = ConstraintMerger()
         self.assertEqual("ConstraintMerger", str(constraint_merger))
+
+    def test_repr(self):
+        constraint_merger = ConstraintMerger()
+        self.assertEqual("ConstraintMerger", repr(constraint_merger))

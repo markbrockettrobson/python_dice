@@ -40,6 +40,33 @@ class TestConstraintSet(unittest.TestCase):
 
         self._constraint_merger.merge_new_constraints.assert_has_calls(calls)
 
+    def test_constraints(self):
+        mock_set = mock.Mock()
+        self._constraint_merger.merge_new_constraints.return_value = mock_set
+
+        constraint_set = ConstraintSet(self._constraint_merger)
+        for constraint in self._mock_constraints[0:4]:
+            constraint_set.add_constraint(constraint)
+
+        self.assertEqual(constraint_set.constraints, mock_set.copy())
+
+    def test_combine_sets(self):
+        mock_sets = [
+            {self._mock_constraints[0]},
+            {self._mock_constraints[1]},
+            {self._mock_constraints[2]},
+            {self._mock_constraints[3]},
+        ]
+        self._constraint_merger.merge_new_constraints.side_effect = mock_sets
+
+        constraint_set_one = ConstraintSet(self._constraint_merger)
+        constraint_set_two = ConstraintSet(self._constraint_merger)
+        constraint_set_one.add_constraint(self._mock_constraints[0])
+        constraint_set_two.add_constraint(self._mock_constraints[0])
+
+        constraint_set = constraint_set_one.combine_sets(constraint_set_two)
+        self.assertEqual(constraint_set.constraints, mock_sets[-1].copy())
+
     @hypothesis.given(
         var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
     )
@@ -140,3 +167,9 @@ class TestConstraintSet(unittest.TestCase):
         constraint_set.add_constraint(self._mock_constraints[0])
 
         self.assertEqual(f"ConstraintSet: {set(self._mock_constraints)}", str(constraint_set))
+
+    def test_repr(self):
+        constraint_set = ConstraintSet(self._constraint_merger)
+        constraint_set.add_constraint(self._mock_constraints[0])
+
+        self.assertEqual(f"ConstraintSet: {set(self._mock_constraints)}", repr(constraint_set))

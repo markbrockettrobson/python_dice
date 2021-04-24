@@ -270,6 +270,11 @@ class TestProbabilityDistribution(unittest.TestCase):
                 with self.assertRaises(TypeError):
                     _ = self._test_distribution_d4.__or__(test_type)
 
+    def test_probability_distribution_abs(self):
+        test_distribution = ProbabilityDistribution({-2: 2, -1: 1, 0: 1, 1: 1, 2: 3})
+        abs_test_distribution = abs(test_distribution)
+        self.assertEqual({0: 1, 1: 2, 2: 5}, abs_test_distribution.get_result_map())
+
     def test_get_histogram(self):
         test_distribution = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 1})
         image_path = pathlib.Path(

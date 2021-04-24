@@ -168,3 +168,40 @@ class TestVarValueConstraint(unittest.TestCase):
     def test_str(self, name: str, int_set: typing.Set[int]):
         constraint = VarValueConstraint(name=name, values=int_set, constraint_factory=self._mock_constraint_factory)
         self.assertEqual(f"VarValueConstraint: name={name}, values={int_set}", str(constraint))
+
+    @hypothesis.given(name=strategies.text(), int_set=strategies.sets(strategies.integers()))
+    def test_repr(self, name: str, int_set: typing.Set[int]):
+        constraint = VarValueConstraint(name=name, values=int_set, constraint_factory=self._mock_constraint_factory)
+        self.assertEqual(f"VarValueConstraint: name={name}, values={int_set}", repr(constraint))
+
+    @hypothesis.given(name=strategies.text(), int_set=strategies.sets(strategies.integers()))
+    def test_hash_equal(self, name: str, int_set: typing.Set[int]):
+        constraint_one = VarValueConstraint(name=name, values=int_set, constraint_factory=self._mock_constraint_factory)
+        constraint_two = VarValueConstraint(name=name, values=int_set, constraint_factory=self._mock_constraint_factory)
+        self.assertEqual(hash(constraint_one), hash(constraint_two))
+
+    @hypothesis.given(
+        names=strategies.lists(strategies.text(), min_size=2, max_size=2, unique=True),
+        int_set=strategies.sets(strategies.integers()),
+    )
+    def test_hash_not_equal_name(self, names: typing.List[str], int_set: typing.Set[int]):
+        constraint_one = VarValueConstraint(
+            name=names[0], values=int_set, constraint_factory=self._mock_constraint_factory
+        )
+        constraint_two = VarValueConstraint(
+            name=names[1], values=int_set, constraint_factory=self._mock_constraint_factory
+        )
+        self.assertNotEqual(hash(constraint_one), hash(constraint_two))
+
+    @hypothesis.given(
+        name=strategies.text(),
+        int_sets=strategies.lists(strategies.sets(strategies.integers()), min_size=2, max_size=2, unique_by=str),
+    )
+    def test_hash_not_equal_set(self, name: str, int_sets: typing.List[typing.Set[int]]):
+        constraint_one = VarValueConstraint(
+            name=name, values=int_sets[0], constraint_factory=self._mock_constraint_factory
+        )
+        constraint_two = VarValueConstraint(
+            name=name, values=int_sets[1], constraint_factory=self._mock_constraint_factory
+        )
+        self.assertNotEqual(hash(constraint_one), hash(constraint_two))

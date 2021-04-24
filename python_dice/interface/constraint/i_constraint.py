@@ -16,6 +16,10 @@ class IConstraint(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def __hash__(self) -> int:
+        pass
+
+    @abc.abstractmethod
     def __eq__(self, other: object) -> bool:
         pass
 
@@ -25,4 +29,8 @@ class IConstraint(abc.ABC):
 
     @abc.abstractmethod
     def __str__(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def __repr__(self) -> str:
         pass

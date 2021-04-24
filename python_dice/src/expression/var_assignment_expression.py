@@ -4,7 +4,7 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
-from python_dice.src.probability_distribution.probability_state import ProbabilityState
+from python_dice.src.probability_distribution.probability_distribution_state import ProbabilityDistributionState
 
 
 class VarAssignmentExpression(IDiceExpression):
@@ -23,7 +23,7 @@ class VarAssignmentExpression(IDiceExpression):
 
     def __init__(
         self,
-        state: ProbabilityState,
+        state: ProbabilityDistributionState,
         name: str,
         expression: IDiceExpression,
     ):

@@ -39,7 +39,7 @@ class AbsExpression(IDiceExpression):
         return self._expression.estimated_cost()
 
     def get_probability_distribution(self) -> IProbabilityDistribution:
-        return self._expression.get_probability_distribution().abs_operator()
+        return abs(self._expression.get_probability_distribution())
 
     def get_contained_variables(
         self,

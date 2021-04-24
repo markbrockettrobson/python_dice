@@ -9,7 +9,7 @@ from python_dice.interface.probability_distribution.i_probability_distribution_s
     IProbabilityDistributionState,
 )
 from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
-from python_dice.src.probability_distribution.probability_state import ProbabilityState
+from python_dice.src.probability_distribution.probability_distribution_state import ProbabilityDistributionState
 from python_dice.src.python_dice_parser import PythonDiceParser
 
 
@@ -22,7 +22,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
         if parser is None:
             parser = PythonDiceParser()
         if starting_state is None:
-            starting_state = ProbabilityState()
+            starting_state = ProbabilityDistributionState()
         self._parser = parser
         self._state = starting_state
 
