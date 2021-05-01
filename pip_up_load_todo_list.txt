@@ -1,3 +1,4 @@
-update version
+update version in setup
+update version in continuous_integration/test_pip_install.dockerfile
 python setup.py sdist
 python -m twine upload dist/*
