@@ -4,12 +4,17 @@ import typing
 import rply  # type: ignore
 
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
 
 
 class IDiceExpression(abc.ABC, rply.token.Token):
     @staticmethod
     @abc.abstractmethod
-    def add_production_function(parser_generator: rply.ParserGenerator) -> typing.Callable:
+    def add_production_function(
+        parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
+    ) -> typing.Callable:
         """
 
         add a production rule to the parser generator

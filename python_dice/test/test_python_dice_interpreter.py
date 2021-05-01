@@ -1,6 +1,3 @@
-import os
-import pathlib
-import sys
 import unittest
 import unittest.mock as mock
 
@@ -8,15 +5,16 @@ from PIL import Image  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.i_python_dice_parser import IPythonDiceParser
-from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
 from python_dice.interface.probability_distribution.i_probability_distribution_state import (
     IProbabilityDistributionState,
 )
 from python_dice.src.python_dice_interpreter import PythonDiceInterpreter
 from python_dice.test import pil_image_to_byte_array
 
-
 # pylint: disable=too-many-public-methods
+from python_dice.test.test_image.test_image_path_finder import get_image_path
+
+
 class TestPythonDiceInterpreter(unittest.TestCase):
     def test_uses_given_parser(self):
         mock_expression = mock.create_autospec(IDiceExpression)
@@ -33,11 +31,11 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         mock_parser.parse.assert_called_once_with("d12", mock.ANY)
 
     def test_uses_starting_state(self):
-        mock_probability_distribution = mock.create_autospec(IProbabilityDistribution)
-        mock_probability_distribution.get_result_map.return_value = {12: 1}
+        test_interpreter_one = PythonDiceInterpreter()
+        probability_distribution = test_interpreter_one.get_probability_distributions(["d12"])["stdout"]
 
         mock_state = mock.create_autospec(IProbabilityDistributionState)
-        mock_state.get_var.return_value = mock_probability_distribution
+        mock_state.get_var.return_value = probability_distribution
         mock_state.get_constant_dict.return_value = {"stored_value": 12}
 
         interpreter = PythonDiceInterpreter(starting_state=mock_state)
@@ -139,10 +137,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             "damage_half_on_save",
         ]
 
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        image_path = get_image_path(
             "TestPythonDiceInterpreter_test_get_histogram.tiff",
         )
         image = interpreter.get_histogram(program)
@@ -162,10 +157,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             "damage_half_on_save",
         ]
 
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        image_path = get_image_path(
             "TestPythonDiceInterpreter_test_get_at_least_histogram.tiff",
         )
         image = interpreter.get_at_least_histogram(program)
@@ -179,10 +171,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         interpreter = PythonDiceInterpreter()
         program = ["10 * 1d4"]
 
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        image_path = get_image_path(
             "TestPythonDiceInterpreter_test_get_at_most_histogram.tiff",
         )
         image = interpreter.get_at_most_histogram(program)
@@ -300,7 +289,7 @@ class TestPythonDiceInterpreter(unittest.TestCase):
             {
                 1: 5,
                 2: 5,
-                3: 5,
+                3: 1,
                 4: 1,
             },
             probability_distribution.get_result_map(),
@@ -311,17 +300,108 @@ class TestPythonDiceInterpreter(unittest.TestCase):
         program = [
             "VAR roll_one = 1d3",
             "VAR roll_two = ((1d4) * (roll_one == 3)) + ((roll_one) * (roll_one != 3))",
-            "VAR roll_three = ((1d5) * (roll_two == 4)) + ((roll_two) * (roll_two != 3))",
+            "VAR roll_three = ((1d5) * (roll_two == 4)) + ((roll_two) * (roll_two != 4))",
             "roll_three",
         ]
         probability_distribution = interpreter.get_probability_distributions(program)["stdout"]
         self.assertEqual(
             {
-                1: 27,
-                2: 27,
+                1: 326,
+                2: 326,
                 3: 6,
                 4: 1,
                 5: 1,
             },
             probability_distribution.get_result_map(),
+        )
+
+    def test_probability_distribution_two_entangled_variables_renamed(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d2",
+            "VAR b = a + a",
+            "VAR c = a + b",
+            "VAR d = c >= ( 1d2 * b )",
+            "VAR e = d == a",
+        ]
+        probability_distribution_a = interpreter.get_probability_distributions(program)["a"]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        probability_distribution_c = interpreter.get_probability_distributions(program)["c"]
+        probability_distribution_d = interpreter.get_probability_distributions(program)["d"]
+        probability_distribution_e = interpreter.get_probability_distributions(program)["e"]
+
+        self.assertEqual(
+            {
+                1: 1,
+                2: 1,
+            },
+            probability_distribution_a.get_result_map(),
+        )
+        self.assertEqual(
+            {
+                2: 1,
+                4: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+        self.assertEqual(
+            {
+                3: 1,
+                6: 1,
+            },
+            probability_distribution_c.get_result_map(),
+        )
+        self.assertEqual(
+            {
+                0: 2,
+                1: 2,
+            },
+            probability_distribution_d.get_result_map(),
+        )
+        self.assertEqual(
+            {
+                0: 3,
+                1: 1,
+            },
+            probability_distribution_e.get_result_map(),
+        )
+
+    def test_probability_distribution_two_entangled_variables_simple(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 2d3",
+            "VAR b = a + a",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                4: 1,
+                6: 4,
+                8: 9,
+                10: 4,
+                12: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_two_entangled_variables_chain(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 2d3",
+            "VAR b = a + a",
+            "VAR a = b + a",
+            "VAR b = b + a",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                10: 1,
+                15: 32,
+                20: 243,
+                25: 32,
+                30: 1,
+            },
+            probability_distribution_b.get_result_map(),
         )

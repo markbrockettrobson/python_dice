@@ -5,25 +5,28 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.src.expression.abs_expression import AbsExpression
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
 class TestAbsExpression(unittest.TestCase):
     def setUp(self):
+        self._probability_distribution_factory = ProbabilityDistributionFactory()
         self._mock_syntax = mock.create_autospec(IDiceExpression)
         self._mock_syntax.roll.return_value = 2
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
         self._mock_syntax.__str__.return_value = "7d3"
         self._mock_syntax.estimated_cost.return_value = 21
-        self._mock_syntax.get_probability_distribution.return_value = ProbabilityDistribution({-5: 1, 1: 2, 4: 1})
+        self._mock_syntax.get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {-5: 1, 1: 2, 4: 1}
+        )
         self._mock_syntax.get_contained_variables.return_value = {"mock"}
 
         self._test_abs_operator = AbsExpression(self._mock_syntax)
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_abs_add_production_function(self):
-        AbsExpression.add_production_function(self._mock_parser_gen)
+        AbsExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : ABS OPEN_PARENTHESIS expression CLOSE_PARENTHESIS"""
         )

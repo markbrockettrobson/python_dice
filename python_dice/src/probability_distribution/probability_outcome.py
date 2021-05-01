@@ -7,6 +7,9 @@ from python_dice.interface.probability_distribution.i_probability_outcome import
 
 class ProbabilityOutcome(IProbabilityOutcome):
     def __init__(self, value: int, constraint_set: IConstraintSet):
+        if not isinstance(value, int):
+            raise TypeError("can not have a bool value for a probability outcome")
+
         self._value = value
         self._constraint_set = constraint_set
 
@@ -29,21 +32,27 @@ class ProbabilityOutcome(IProbabilityOutcome):
                 f"No {combination_function.__name__} between {ProbabilityOutcome.__name__} and {type(other)}."
             )
         if binary_values:
-            new_value = (
-                1
-                if combination_function(
-                    self._value_to_binary_value(self.value), self._value_to_binary_value(other.value)
-                )
-                else 0
+            new_value = combination_function(
+                self._value_to_binary_value(self.value), self._value_to_binary_value(other.value)
             )
         else:
             new_value = combination_function(self.value, other.value)
+
+        if isinstance(new_value, bool):
+            new_value = self._binary_to_int(new_value)
         new_constraint_set = self._constraint_set.combine_sets(other.constraint_set)
         return ProbabilityOutcome(value=new_value, constraint_set=new_constraint_set)
+
+    def is_possible(self) -> bool:
+        return self._constraint_set.is_possible()
 
     @staticmethod
     def _value_to_binary_value(value: int) -> int:
         return value > 0
+
+    @staticmethod
+    def _binary_to_int(value: bool) -> int:
+        return 1 if value else 0
 
     def __add__(self, other: object) -> IProbabilityOutcome:
         return self._combine(combination_function=operator.add, other=other)
@@ -99,3 +108,13 @@ class ProbabilityOutcome(IProbabilityOutcome):
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    def __hash__(self) -> int:
+        return operator.xor(
+            hash(ProbabilityOutcome.__name__), operator.xor(hash(self.value), hash(self.constraint_set))
+        )
+
+    def __eq__(self, other: object) -> bool:
+        if not isinstance(other, IProbabilityOutcome):
+            raise TypeError(f"No == between {ProbabilityOutcome.__name__} and {type(other)}.")
+        return self.value == other.value and self.constraint_set == other.constraint_set

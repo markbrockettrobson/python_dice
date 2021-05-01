@@ -4,7 +4,9 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
 
 
 class ConstantBinaryExpression(IDiceExpression):
@@ -12,16 +14,17 @@ class ConstantBinaryExpression(IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator,
+        parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
     ) -> typing.Callable:
         @parser_generator.production(ConstantBinaryExpression.TOKEN_RULE)
         def constant_binary(_, tokens) -> IDiceExpression:
-            return ConstantBinaryExpression(tokens[0].value)
+            return ConstantBinaryExpression(tokens[0].value, probability_distribution_factory)
 
         return constant_binary
 
-    def __init__(self, binary_string: str):
+    def __init__(self, binary_string: str, probability_distribution_factory: IProbabilityDistributionFactory):
         self._binary_string = binary_string
+        self._probability_distribution_factory = probability_distribution_factory
 
     def _get_value(self) -> int:
         return 1 if self._binary_string == "True" else 0
@@ -42,7 +45,7 @@ class ConstantBinaryExpression(IDiceExpression):
         return 2
 
     def get_probability_distribution(self) -> IProbabilityDistribution:
-        return ProbabilityDistribution({self._get_value(): 1})
+        return self._probability_distribution_factory.create({self._get_value(): 1})
 
     def get_contained_variables(
         self,

@@ -1,19 +1,22 @@
-import os
-import pathlib
-import sys
 import unittest
 
 from PIL import Image  # type: ignore
 
 from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.src.probability_distribution.probability_outcome_factory import ProbabilityOutcomeFactory
 from python_dice.test import pil_image_to_byte_array
 
-
 # pylint: disable=too-many-public-methods
+from python_dice.test.test_image.test_image_path_finder import get_image_path
+
+
 class TestProbabilityDistribution(unittest.TestCase):
     def setUp(self) -> None:
-        self._test_distribution_d4 = ProbabilityDistribution({1: 1, 2: 1, 3: 1, 4: 1})
-        self._test_distribution_2 = ProbabilityDistribution({2: 1})
+        self._probability_outcome_factory = ProbabilityOutcomeFactory()
+        self._test_distribution_d4 = ProbabilityDistribution(
+            self._probability_outcome_factory, {1: 1, 2: 1, 3: 1, 4: 1}
+        )
+        self._test_distribution_2 = ProbabilityDistribution(self._probability_outcome_factory, {2: 1})
 
     def test_probability_distribution_get_result_map(self):
         self.assertEqual({1: 1, 2: 1, 3: 1, 4: 1}, self._test_distribution_d4.get_result_map())
@@ -242,12 +245,14 @@ class TestProbabilityDistribution(unittest.TestCase):
                     _ = self._test_distribution_d4 >= test_type
 
     def test_probability_distribution_not_operator(self):
-        test_distribution_d4_less_one = ProbabilityDistribution({0: 1, 1: 1, 2: 1, 3: 1})
+        test_distribution_d4_less_one = ProbabilityDistribution(
+            self._probability_outcome_factory, {0: 1, 1: 1, 2: 1, 3: 1}
+        )
         test_distribution = test_distribution_d4_less_one.not_operator()
         self.assertEqual({0: 3, 1: 1}, test_distribution.get_result_map())
 
     def test_probability_distribution_and(self):
-        test_distribution_d2_less_one = ProbabilityDistribution({0: 1, 1: 1})
+        test_distribution_d2_less_one = ProbabilityDistribution(self._probability_outcome_factory, {0: 1, 1: 1})
         test_distribution = self._test_distribution_d4.__and__(test_distribution_d2_less_one)
         self.assertEqual({0: 4, 1: 4}, test_distribution.get_result_map())
 
@@ -259,7 +264,7 @@ class TestProbabilityDistribution(unittest.TestCase):
                     _ = self._test_distribution_d4.__and__(test_type)
 
     def test_probability_distribution_or(self):
-        test_distribution_d2_less_one = ProbabilityDistribution({0: 1, 1: 1})
+        test_distribution_d2_less_one = ProbabilityDistribution(self._probability_outcome_factory, {0: 1, 1: 1})
         test_distribution = test_distribution_d2_less_one.__or__(test_distribution_d2_less_one)
         self.assertEqual({0: 1, 1: 3}, test_distribution.get_result_map())
 
@@ -271,16 +276,14 @@ class TestProbabilityDistribution(unittest.TestCase):
                     _ = self._test_distribution_d4.__or__(test_type)
 
     def test_probability_distribution_abs(self):
-        test_distribution = ProbabilityDistribution({-2: 2, -1: 1, 0: 1, 1: 1, 2: 3})
+        test_distribution = ProbabilityDistribution(self._probability_outcome_factory, {-2: 2, -1: 1, 0: 1, 1: 1, 2: 3})
         abs_test_distribution = abs(test_distribution)
         self.assertEqual({0: 1, 1: 2, 2: 5}, abs_test_distribution.get_result_map())
 
     def test_get_histogram(self):
-        test_distribution = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 1})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution = ProbabilityDistribution(self._probability_outcome_factory, {1: 1, 2: 3, 3: 6, 4: 1})
+
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_histogram.tiff",
         )
         image = test_distribution.get_histogram()
@@ -291,11 +294,10 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_at_least_histogram(self):
-        test_distribution = ProbabilityDistribution({2: 1, 3: 2, 4: 4, 5: 8, 6: 4, 7: 2, 8: 1})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution = ProbabilityDistribution(
+            self._probability_outcome_factory, {2: 1, 3: 2, 4: 4, 5: 8, 6: 4, 7: 2, 8: 1}
+        )
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_at_least_histogram.tiff",
         )
         image = test_distribution.get_at_least_histogram()
@@ -306,11 +308,8 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_at_most_histogram(self):
-        test_distribution = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 1})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution = ProbabilityDistribution(self._probability_outcome_factory, {1: 1, 2: 3, 3: 6, 4: 1})
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_at_most_histogram.tiff",
         )
         image = test_distribution.get_at_most_histogram()
@@ -321,12 +320,13 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_compare_histogram(self):
-        test_distribution_one = ProbabilityDistribution({1: 2, 2: 3, 3: 6, 4: 1, 5: 1})
-        test_distribution_two = ProbabilityDistribution({0: 2, 1: 1, 2: 3, 3: 6, 4: 2})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution_one = ProbabilityDistribution(
+            self._probability_outcome_factory, {1: 2, 2: 3, 3: 6, 4: 1, 5: 1}
+        )
+        test_distribution_two = ProbabilityDistribution(
+            self._probability_outcome_factory, {0: 2, 1: 1, 2: 3, 3: 6, 4: 2}
+        )
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_compare_histogram.tiff",
         )
         image = test_distribution_one.get_compare_histogram(test_distribution_two)
@@ -337,13 +337,9 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_compare_at_least_histogram(self):
-
-        test_distribution_one = ProbabilityDistribution({1: 2, 2: 3, 3: 6, 4: 1})
-        test_distribution_two = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 7})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution_one = ProbabilityDistribution(self._probability_outcome_factory, {1: 2, 2: 3, 3: 6, 4: 1})
+        test_distribution_two = ProbabilityDistribution(self._probability_outcome_factory, {1: 1, 2: 3, 3: 6, 4: 7})
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_compare_at_least.tiff",
         )
         image = test_distribution_one.get_compare_at_least(test_distribution_two, "option 1", "option 2")
@@ -354,12 +350,9 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_compare_at_most_histogram(self):
-        test_distribution_one = ProbabilityDistribution({1: 2, 2: 3, 3: 16, 4: 1})
-        test_distribution_two = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 2})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution_one = ProbabilityDistribution(self._probability_outcome_factory, {1: 2, 2: 3, 3: 16, 4: 1})
+        test_distribution_two = ProbabilityDistribution(self._probability_outcome_factory, {1: 1, 2: 3, 3: 6, 4: 2})
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_compare_at_most.tiff",
         )
         image = test_distribution_one.get_compare_at_most(test_distribution_two, "option a", "option b")
@@ -370,12 +363,9 @@ class TestProbabilityDistribution(unittest.TestCase):
         )
 
     def test_get_compare(self):
-        test_distribution_one = ProbabilityDistribution({1: 2, 2: 3, 3: 16, 4: 1})
-        test_distribution_two = ProbabilityDistribution({1: 1, 2: 3, 3: 6, 4: 2})
-        image_path = pathlib.Path(
-            os.path.dirname(os.path.abspath(__file__)),
-            "../test_image",
-            "windows" if sys.platform.startswith("win") else "linux",
+        test_distribution_one = ProbabilityDistribution(self._probability_outcome_factory, {1: 2, 2: 3, 3: 16, 4: 1})
+        test_distribution_two = ProbabilityDistribution(self._probability_outcome_factory, {1: 1, 2: 3, 3: 6, 4: 2})
+        image_path = get_image_path(
             "TestProbabilityDistribution_test_get_compare.tiff",
         )
         image = test_distribution_one.get_compare(test_distribution_two, "option a", "option b")
@@ -383,4 +373,24 @@ class TestProbabilityDistribution(unittest.TestCase):
         self.assertEqual(
             pil_image_to_byte_array.image_to_byte_array(expected_image),
             pil_image_to_byte_array.image_to_byte_array(image),
+        )
+
+    def test_str(self):
+        test_distribution = ProbabilityDistribution(self._probability_outcome_factory, {1: 2, 2: 3, 3: 16, 4: 1})
+        self.assertEqual(
+            "ProbabilityDistribution, result_map={ProbabilityOutcome: value=1, constraint_set=ConstraintSet: {"
+            "NullConstraint}: 2, ProbabilityOutcome: value=2, constraint_set=ConstraintSet: {NullConstraint}: 3, "
+            "ProbabilityOutcome: value=3, constraint_set=ConstraintSet: {NullConstraint}: 16, ProbabilityOutcome: "
+            "value=4, constraint_set=ConstraintSet: {NullConstraint}: 1}",
+            str(test_distribution),
+        )
+
+    def test_repr(self):
+        test_distribution = ProbabilityDistribution(self._probability_outcome_factory, {1: 2, 2: 3, 3: 16, 4: 1})
+        self.assertEqual(
+            "ProbabilityDistribution, result_map={ProbabilityOutcome: value=1, constraint_set=ConstraintSet: {"
+            "NullConstraint}: 2, ProbabilityOutcome: value=2, constraint_set=ConstraintSet: {NullConstraint}: 3, "
+            "ProbabilityOutcome: value=3, constraint_set=ConstraintSet: {NullConstraint}: 16, ProbabilityOutcome: "
+            "value=4, constraint_set=ConstraintSet: {NullConstraint}: 1}",
+            repr(test_distribution),
         )

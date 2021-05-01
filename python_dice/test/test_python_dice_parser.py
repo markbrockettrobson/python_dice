@@ -19,8 +19,8 @@ class TestPythonDiceParser(unittest.TestCase):
         self._mock_pydice_lexer.lex.assert_called_once_with("215678284")
 
     # pylint: disable=maybe-no-member
-    def assert_distribution(self, token, expected_outcome, min_value, max_value):
-        for _ in range(1000):
+    def assert_distribution(self, token, expected_outcome, min_value, max_value, number_of_rolls=100):
+        for _ in range(number_of_rolls):
             self.assertIn(token.roll(), expected_outcome.keys())
         self.assertEqual(max_value, token.max())
         self.assertEqual(min_value, token.min())
@@ -115,16 +115,16 @@ class TestPythonDiceParser(unittest.TestCase):
     def test_parser_dice_full_test(self):
         token, _ = self._test_parser.parse("2d4 * d2 + 6d6 // 1d4")
         expected_outcome = {
-            8: 150534,
-            5: 5474,
-            4: 497,
             3: 7,
+            4: 497,
+            5: 5474,
+            6: 25810,
+            7: 73494,
+            8: 150534,
             9: 242121,
             10: 322235,
-            6: 25810,
             11: 369126,
             12: 382604,
-            7: 73494,
             13: 375640,
             14: 363690,
             15: 353106,

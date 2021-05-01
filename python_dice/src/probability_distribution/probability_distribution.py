@@ -7,12 +7,31 @@ from matplotlib import pyplot  # type: ignore
 from PIL import Image  # type: ignore
 
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_outcome import IProbabilityOutcome
+from python_dice.interface.probability_distribution.i_probability_outcome_factory import IProbabilityOutcomeFactory
 
 
 class ProbabilityDistribution(IProbabilityDistribution):
-    def __init__(self, result_map: typing.Optional[typing.Dict[int, int]] = None):
+    def __init__(
+        self,
+        probability_outcome_factory: IProbabilityOutcomeFactory,
+        result_map: typing.Optional[typing.Union[typing.Dict[IProbabilityOutcome, int], typing.Dict[int, int]]] = None,
+    ):
         self._outcome_count = 0
-        self._result_map: typing.Dict[int, int] = {} if result_map is None else result_map
+        self._probability_outcome_factory = probability_outcome_factory
+        self._result_map: typing.Dict[IProbabilityOutcome, int] = {}
+
+        def safe_add(key, value):
+            if key not in self._result_map:
+                self._result_map[key] = 0
+            self._result_map[key] += value
+
+        if result_map is not None:
+            for result_value, count in result_map.items():
+                if isinstance(result_value, int):
+                    safe_add(self._probability_outcome_factory.create_empty(value=result_value), count)
+                if isinstance(result_value, IProbabilityOutcome):
+                    safe_add(result_value, count)
         for value in self._result_map.values():
             self._outcome_count += value
 
@@ -162,17 +181,18 @@ class ProbabilityDistribution(IProbabilityDistribution):
         return image
 
     def max(self) -> int:
-        return max(self._result_map.keys())
+        return max(self.get_result_map().keys())
 
     def min(self) -> int:
-        return min(self._result_map.keys())
+        return min(self.get_result_map().keys())
 
     def contains_zero(self) -> bool:
-        return 0 in self._result_map and self._result_map[0] != 0
+        result_map = self.get_result_map()
+        return 0 in result_map and result_map != 0
 
     def average(self) -> float:
         total_values = 0
-        for item, value in self._result_map.items():
+        for item, value in self.get_result_map().items():
             total_values += item * value
         return total_values / self._outcome_count
 
@@ -199,10 +219,22 @@ class ProbabilityDistribution(IProbabilityDistribution):
         return at_most_dict
 
     def get_result_map(self) -> typing.Dict[int, int]:
+        new_result_map = {}
+
+        def safe_add(key, value):
+            if key not in new_result_map:
+                new_result_map[key] = 0
+            new_result_map[key] += value
+
+        for probability_outcome, count in self._result_map.items():
+            safe_add(probability_outcome.value, count)
+        return new_result_map
+
+    def get_constraint_result_map(self) -> typing.Dict[IProbabilityOutcome, int]:
         return self._result_map
 
     def get_dict_form(self) -> typing.Dict[int, float]:
-        return {key: value / self._outcome_count for key, value in self._result_map.items()}
+        return {key: value / self._outcome_count for key, value in self.get_result_map().items()}
 
     @staticmethod
     def _get_histogram_form(base_data: typing.Dict[int, float]) -> typing.Dict[int, float]:
@@ -216,9 +248,9 @@ class ProbabilityDistribution(IProbabilityDistribution):
 
     def _combine_distributions(
         self,
-        combination_function: typing.Callable[[int, int], int],
+        combination_function: typing.Callable[[IProbabilityOutcome, IProbabilityOutcome], IProbabilityOutcome],
         other: IProbabilityDistribution,
-    ) -> typing.Dict[int, int]:
+    ) -> typing.Dict[IProbabilityOutcome, int]:
         new_result_map = {}
 
         def safe_add(key, value):
@@ -227,91 +259,83 @@ class ProbabilityDistribution(IProbabilityDistribution):
             new_result_map[key] += value
 
         for this_key, this_value in self._result_map.items():
-            for other_key, other_value in other.get_result_map().items():
-                safe_add(combination_function(this_key, other_key), this_value * other_value)
+            for other_key, other_value in other.get_constraint_result_map().items():
+                new_outcome = combination_function(this_key, other_key)
+                if new_outcome.is_possible():
+                    safe_add(new_outcome, this_value * other_value)
         return new_result_map
 
     def __add__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __add__ between {ProbabilityDistribution} and {type(other)}")
         new_result_map = self._combine_distributions(operator.add, other)
-        return ProbabilityDistribution(new_result_map)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __sub__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __sub__ between {ProbabilityDistribution} and {type(other)}")
         new_result_map = self._combine_distributions(operator.sub, other)
-        return ProbabilityDistribution(new_result_map)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __mul__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __mul__ between {ProbabilityDistribution} and {type(other)}")
         new_result_map = self._combine_distributions(operator.mul, other)
-        return ProbabilityDistribution(new_result_map)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __floordiv__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __floordiv__ between {ProbabilityDistribution} and {type(other)}")
         new_result_map = self._combine_distributions(operator.floordiv, other)
-        return ProbabilityDistribution(new_result_map)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __equal__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __equal__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.eq(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(lambda x, y: x.__equal__(y), other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __not_equal__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __not_equal__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.ne(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(lambda x, y: x.__not_equal__(y), other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __lt__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __lt__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.lt(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(operator.lt, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __le__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __le__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.le(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(operator.le, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __gt__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __gt__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.gt(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(operator.gt, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __ge__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __ge__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(lambda a, b: 1 if operator.ge(a, b) else 0, other)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(operator.ge, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __and__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __and__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(
-            lambda a, b: 1 if operator.and_(self._value_to_binary_value(a), self._value_to_binary_value(b)) else 0,
-            other,
-        )
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(operator.and_, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __or__(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No __or__ between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = self._combine_distributions(
-            lambda a, b: 1 if operator.or_(self._value_to_binary_value(a), self._value_to_binary_value(b)) else 0,
-            other,
-        )
-        return ProbabilityDistribution(new_result_map)
-
-    @staticmethod
-    def _value_to_binary_value(value: int) -> bool:
-        return value > 0
+        new_result_map = self._combine_distributions(operator.or_, other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def not_operator(self) -> IProbabilityDistribution:
         new_result_map = {}
@@ -322,42 +346,20 @@ class ProbabilityDistribution(IProbabilityDistribution):
             new_result_map[key] += value
 
         for result_key, result_value in self._result_map.items():
-            if self._value_to_binary_value(result_key):
-                safe_add(0, result_value)
-            else:
-                safe_add(1, result_value)
-        return ProbabilityDistribution(new_result_map)
+            safe_add(result_key.not_operator(), result_value)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def max_operator(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No max_operator between {ProbabilityDistribution} and {type(other)}")
-        new_result_map = {}
-
-        def safe_add(key, value):
-            if key not in new_result_map:
-                new_result_map[key] = 0
-            new_result_map[key] += value
-
-        for result_key, result_value in self._result_map.items():
-            for other_result_key, other_result_value in other.get_result_map().items():
-                safe_add(max(result_key, other_result_key), result_value * other_result_value)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(lambda x, y: x.max_operator(y), other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def min_operator(self, other: object) -> IProbabilityDistribution:
         if not isinstance(other, IProbabilityDistribution):
             raise TypeError(f"No min_operator between {ProbabilityDistribution} and {type(other)}")
-
-        new_result_map = {}
-
-        def safe_add(key, value):
-            if key not in new_result_map:
-                new_result_map[key] = 0
-            new_result_map[key] += value
-
-        for result_key, result_value in self._result_map.items():
-            for other_result_key, other_result_value in other.get_result_map().items():
-                safe_add(min(result_key, other_result_key), result_value * other_result_value)
-        return ProbabilityDistribution(new_result_map)
+        new_result_map = self._combine_distributions(lambda x, y: x.min_operator(y), other)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
 
     def __abs__(self) -> IProbabilityDistribution:
         new_result_map = {}
@@ -369,4 +371,10 @@ class ProbabilityDistribution(IProbabilityDistribution):
 
         for result_key, result_value in self._result_map.items():
             safe_add(abs(result_key), result_value)
-        return ProbabilityDistribution(new_result_map)
+        return ProbabilityDistribution(self._probability_outcome_factory, new_result_map)
+
+    def __str__(self) -> str:
+        return f"{ProbabilityDistribution.__name__}, result_map={self._result_map}"
+
+    def __repr__(self) -> str:
+        return self.__str__()

@@ -5,6 +5,9 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
 
 
 class NotExpression(IDiceExpression):
@@ -13,13 +16,8 @@ class NotExpression(IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator,
+        parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
     ) -> typing.Callable:
-        """
-
-        :rtype: object
-        """
-
         @parser_generator.production(NotExpression.TOKEN_RULE)
         def not_operation(_, tokens) -> IDiceExpression:
             return NotExpression(tokens[1])

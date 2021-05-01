@@ -11,6 +11,9 @@ class ImpossibleConstraint(IImpossibleConstraint):
     def can_merge(self, other: IConstraint) -> bool:
         return True
 
+    def is_possible(self) -> bool:
+        return False
+
     def merge(self, other: IConstraint) -> IConstraint:
         return self
 

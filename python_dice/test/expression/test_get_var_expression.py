@@ -7,12 +7,13 @@ from python_dice.interface.probability_distribution.i_probability_distribution_s
     IProbabilityDistributionState,
 )
 from python_dice.src.expression.get_var_expression import GetVarExpression
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
 class TestGetVarExpression(unittest.TestCase):
     def setUp(self):
-        self._probability_distribution = ProbabilityDistribution({-5: 1, 1: 2, 4: 1})
+        self._probability_distribution_factory = ProbabilityDistributionFactory()
+        self._probability_distribution = self._probability_distribution_factory.create({-5: 1, 1: 2, 4: 1})
         self._test_name = "test_name"
 
         self._mock_state = mock.create_autospec(IProbabilityDistributionState, spec_set=True)
@@ -23,7 +24,7 @@ class TestGetVarExpression(unittest.TestCase):
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_get_var_add_production_function(self):
-        GetVarExpression.add_production_function(self._mock_parser_gen)
+        GetVarExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
         self._mock_parser_gen.production.assert_called_once_with("""expression : NAME""")
 
     def test_get_var_roll(self):

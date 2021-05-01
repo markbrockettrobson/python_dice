@@ -16,6 +16,10 @@ class IConstraint(abc.ABC):
         pass
 
     @abc.abstractmethod
+    def is_possible(self) -> bool:
+        pass
+
+    @abc.abstractmethod
     def __hash__(self) -> int:
         pass
 

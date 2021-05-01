@@ -4,7 +4,9 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
 
 
 class ConstantIntegerExpression(IDiceExpression):
@@ -12,16 +14,17 @@ class ConstantIntegerExpression(IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator,
+        parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
     ) -> typing.Callable:
         @parser_generator.production(ConstantIntegerExpression.TOKEN_RULE)
         def constant_integer(_, tokens) -> IDiceExpression:
-            return ConstantIntegerExpression(tokens[0].value)
+            return ConstantIntegerExpression(tokens[0].value, probability_distribution_factory)
 
         return constant_integer
 
-    def __init__(self, number: str):
+    def __init__(self, number: str, probability_distribution_factory: IProbabilityDistributionFactory):
         self._number = number
+        self._probability_distribution_factory = probability_distribution_factory
 
     def roll(self) -> int:
         return int(self._number)
@@ -39,7 +42,7 @@ class ConstantIntegerExpression(IDiceExpression):
         return 2
 
     def get_probability_distribution(self) -> IProbabilityDistribution:
-        return ProbabilityDistribution({int(self._number): 1})
+        return self._probability_distribution_factory.create({int(self._number): 1})
 
     def get_contained_variables(
         self,

@@ -23,4 +23,20 @@ steps:
          '-f',
          'continuous_integration/36_pytest.dockerfile' ]
   timeout: 10m
-timeout: 20m
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build',
+         '-t',
+         'gcr.io/python_dice/3_6_13_alpine3_13',
+         '.',
+         '-f',
+         'continuous_integration/3_6_13_alpine3_13.dockerfile' ]
+  timeout: 10m
+- name: 'gcr.io/cloud-builders/docker'
+  args: [ 'build',
+         '-t',
+         'gcr.io/python_dice/3_8_9_windowsservercore_1809',
+         '.',
+         '-f',
+         'continuous_integration/3_8_9_windowsservercore_1809.dockerfile' ]
+  timeout: 10m
+timeout: 30m

@@ -4,8 +4,13 @@ from typing import SupportsAbs
 
 from PIL import Image  # type: ignore
 
+from python_dice.interface.probability_distribution.i_probability_outcome import IProbabilityOutcome
 
-class IProbabilityDistribution(abc.ABC, SupportsAbs):
+
+class IProbabilityDistribution(
+    abc.ABC,
+    SupportsAbs,
+):
     @abc.abstractmethod
     def get_dict_form(self) -> typing.Dict[int, float]:
         """
@@ -20,6 +25,13 @@ class IProbabilityDistribution(abc.ABC, SupportsAbs):
 
         :return: a dict mapping an outcome of the program to the number of ways to achieve that outcome
                  <typing.Dict[int, int]>
+        """
+
+    def get_constraint_result_map(self) -> typing.Dict[IProbabilityOutcome, int]:
+        """
+
+        :return: a dict mapping an outcome of the program to the number of ways to achieve that outcome
+                 <typing.Dict[IProbabilityOutcome, int]>
         """
 
     @abc.abstractmethod
@@ -198,4 +210,12 @@ class IProbabilityDistribution(abc.ABC, SupportsAbs):
 
     @abc.abstractmethod
     def min_operator(self, other: object) -> "IProbabilityDistribution":
+        pass
+
+    @abc.abstractmethod
+    def __str__(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def __repr__(self) -> str:
         pass

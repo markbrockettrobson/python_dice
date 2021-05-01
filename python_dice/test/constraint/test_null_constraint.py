@@ -20,6 +20,10 @@ class TestNullConstraint(unittest.TestCase):
         merged_constraint = mock.create_autospec(IConstraint)
         self.assertTrue(constraint.can_merge(merged_constraint))
 
+    def test_is_possible(self):
+        constraint = NullConstraint()
+        self.assertEqual(True, constraint.is_possible())
+
     def test_merge_constraint(self):
         constraint = NullConstraint()
         merge_constraint = mock.create_autospec(IConstraint)

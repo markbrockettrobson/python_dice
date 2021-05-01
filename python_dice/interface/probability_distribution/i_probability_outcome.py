@@ -16,6 +16,10 @@ class IProbabilityOutcome(abc.ABC, SupportsAbs):
         pass
 
     @abc.abstractmethod
+    def is_possible(self) -> bool:
+        pass
+
+    @abc.abstractmethod
     def __add__(self, other: object) -> "IProbabilityOutcome":
         pass
 
@@ -81,4 +85,12 @@ class IProbabilityOutcome(abc.ABC, SupportsAbs):
 
     @abc.abstractmethod
     def __repr__(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def __hash__(self) -> int:
+        pass
+
+    @abc.abstractmethod
+    def __eq__(self, other: object) -> bool:
         pass

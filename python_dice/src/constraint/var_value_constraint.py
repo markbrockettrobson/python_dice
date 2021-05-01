@@ -25,6 +25,9 @@ class VarValueConstraint(IVarValueConstraint):
                 return False
         return True
 
+    def is_possible(self) -> bool:
+        return len(self._values) > 0
+
     def can_merge(self, other: IConstraint) -> bool:
         if isinstance(other, IVarValueConstraint):
             return other.name == self._name

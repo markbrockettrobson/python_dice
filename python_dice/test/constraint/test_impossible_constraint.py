@@ -25,6 +25,10 @@ class TestImpossibleConstraint(unittest.TestCase):
         merge_constraint = mock.create_autospec(IConstraint)
         self.assertEqual(constraint, constraint.merge(merge_constraint))
 
+    def test_is_possible(self):
+        constraint = ImpossibleConstraint()
+        self.assertEqual(False, constraint.is_possible())
+
     def test_eq_true(self):
         constraint = ImpossibleConstraint()
         second_constraint = ImpossibleConstraint()

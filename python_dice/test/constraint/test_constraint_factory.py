@@ -10,7 +10,7 @@ from python_dice.interface.constraint.i_var_value_constraint import IVarValueCon
 from python_dice.src.constraint.constraint_factory import ConstraintFactory
 
 
-class TestVarValueConstraint(unittest.TestCase):
+class TestConstraintFactory(unittest.TestCase):
     def test_impossible_constraint(self):
         constraint_factory = ConstraintFactory()
         self.assertIsInstance(constraint_factory.impossible_constraint, IImpossibleConstraint)

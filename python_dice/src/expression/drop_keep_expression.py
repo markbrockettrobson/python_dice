@@ -6,10 +6,12 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
 from python_dice.src.expression.constant_integer_expression import ConstantIntegerExpression
 from python_dice.src.expression.dice_expression import DiceExpression
 from python_dice.src.expression.dice_expression_helper import get_single_dice_outcome_map
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
 
 
 class DropKeepExpression(IDiceExpression):
@@ -17,34 +19,37 @@ class DropKeepExpression(IDiceExpression):
 
     @staticmethod
     def add_production_function(
-        parser_generator: rply.ParserGenerator,
+        parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
     ) -> typing.Callable:
         @parser_generator.production(DropKeepExpression.TOKEN_RULE)
         def drop_keep(_, tokens) -> IDiceExpression:
-            return DropKeepExpression(tokens[0].value)
+            return DropKeepExpression(tokens[0].value, probability_distribution_factory)
 
         return drop_keep
 
-    def __init__(self, string_form: str):
+    def __init__(self, string_form: str, probability_distribution_factory: IProbabilityDistributionFactory):
         self._string_form = string_form
         self._number_of_dice = self._get_number_of_dice()
         self._single_dice_outcome_map = get_single_dice_outcome_map(re.split(r"[dk]", self._string_form)[1])
         self._number_to_keep_or_drop = self._get_number_to_keep_or_drop()
         self._simplified_form = None
+        self._probability_distribution_factory = probability_distribution_factory
 
         if self._is_keep():
             if self._number_of_dice <= self._number_to_keep_or_drop:
                 self._simplified_form = DiceExpression(
-                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string())
+                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string()),
+                    self._probability_distribution_factory,
                 )
             elif self._number_to_keep_or_drop == 0:
-                self._simplified_form = ConstantIntegerExpression("0")
+                self._simplified_form = ConstantIntegerExpression("0", self._probability_distribution_factory)
         else:
             if self._number_of_dice <= self._number_to_keep_or_drop:
-                self._simplified_form = ConstantIntegerExpression("0")
+                self._simplified_form = ConstantIntegerExpression("0", self._probability_distribution_factory)
             elif self._number_to_keep_or_drop == 0:
                 self._simplified_form = DiceExpression(
-                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string())
+                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string()),
+                    self._probability_distribution_factory,
                 )
 
     def _get_number_of_dice(self) -> int:
@@ -98,7 +103,7 @@ class DropKeepExpression(IDiceExpression):
             return self._simplified_form.estimated_cost()
 
         if self._is_keep():
-            return (self._number_of_dice * (self._number_to_keep_or_drop)) * len(self._single_dice_outcome_map.values())
+            return (self._number_of_dice * self._number_to_keep_or_drop) * len(self._single_dice_outcome_map.values())
         return (self._number_of_dice * (self._number_of_dice - self._number_to_keep_or_drop)) * len(
             self._single_dice_outcome_map.values()
         )
@@ -120,7 +125,7 @@ class DropKeepExpression(IDiceExpression):
         )
 
         out_come_map = DropKeepExpression._collapse_outcomes(current)
-        return ProbabilityDistribution(out_come_map)
+        return self._probability_distribution_factory.create(out_come_map)
 
     @staticmethod
     def _build_dice_dict(number_of_dice: int, dice_outcome_map: typing.Dict[int, int]) -> typing.Dict[str, int]:

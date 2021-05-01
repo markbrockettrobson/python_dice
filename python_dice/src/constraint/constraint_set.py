@@ -1,3 +1,4 @@
+import operator
 import typing
 
 from python_dice.interface.constraint.i_constraint import IConstraint
@@ -6,18 +7,14 @@ from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 
 
 class ConstraintSet(IConstraintSet):
-    def __init__(self, constraint_merger: IConstraintMerger):
+    def __init__(self, constraints_set: typing.Set[IConstraint], constraint_merger: IConstraintMerger):
         self._constraints_set: typing.Set[IConstraint] = set()
         self._constraint_merger = constraint_merger
 
-    @classmethod
-    def build_from_set(
-        cls, constraints_set: typing.Set[IConstraint], constraint_merger: IConstraintMerger
-    ) -> IConstraintSet:
-        new_set = ConstraintSet(constraint_merger)
+        if len(constraints_set) == 0:
+            raise ValueError("can not build an empty constraint set. use a null constraint.")
         for constraint in constraints_set:
-            new_set.add_constraint(constraint)
-        return new_set
+            self.add_constraint(constraint)
 
     @property
     def constraints(self) -> typing.Set[IConstraint]:
@@ -34,9 +31,15 @@ class ConstraintSet(IConstraintSet):
                 return False
         return True
 
+    def is_possible(self) -> bool:
+        for constraint in self._constraints_set:
+            if not constraint.is_possible():
+                return False
+        return True
+
     def combine_sets(self, constraint_set: IConstraintSet) -> IConstraintSet:
         new_set = self._constraints_set.union(constraint_set.constraints)
-        return ConstraintSet.build_from_set(new_set, self._constraint_merger)
+        return ConstraintSet(new_set, self._constraint_merger)
 
     def __eq__(self, other: object) -> bool:
         return str(self) == str(other)
@@ -49,3 +52,9 @@ class ConstraintSet(IConstraintSet):
 
     def __repr__(self) -> str:
         return self.__str__()
+
+    def __hash__(self) -> int:
+        current_hash = hash(ConstraintSet.__name__)
+        for constraint in self._constraints_set:
+            current_hash = operator.xor(current_hash, hash(constraint))
+        return current_hash

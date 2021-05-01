@@ -29,10 +29,24 @@ class TestProbabilityOutcome(unittest.TestCase):
         probability_outcome = ProbabilityOutcome(value=int_value, constraint_set=self._constraint_sets[0])
         self.assertEqual(int_value, probability_outcome.value)
 
+    def test_type_error_on_non_int_value(self):
+        for name, value in self._non_probability_outcome.items():
+            if name == "int":
+                continue
+            with self.subTest(name):
+                with self.assertRaises(TypeError):
+                    _ = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+
     @hypothesis.given(strategies.integers(min_value=0, max_value=2))
     def test_constraint_set(self, index: int):
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[index])
         self.assertEqual(self._constraint_sets[index], probability_outcome.constraint_set)
+
+    @hypothesis.given(strategies.booleans())
+    def test_is_possible(self, constraint_is_possible: bool):
+        self._constraint_sets[0].is_possible.return_value = constraint_is_possible
+        probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[0])
+        self.assertEqual(constraint_is_possible, probability_outcome.is_possible())
 
     @hypothesis.given(strategies.integers(), strategies.integers())
     def test_add(self, value_one: int, value_two: int):
@@ -298,3 +312,50 @@ class TestProbabilityOutcome(unittest.TestCase):
         self.assertEqual(
             f"ProbabilityOutcome: value={value}, constraint_set={self._constraint_sets[1]}", repr(probability_outcome)
         )
+
+    @hypothesis.given(strategies.integers())
+    def test_hash_the_same(self, value):
+        probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        self.assertEqual(hash(probability_outcome_one), hash(probability_outcome_two))
+
+    @hypothesis.given(strategies.integers())
+    def test_hash_not_the_same_constraint_set(self, value):
+        probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
+        self.assertNotEqual(hash(probability_outcome_one), hash(probability_outcome_two))
+
+    @hypothesis.given(strategies.lists(strategies.integers(), min_size=2, max_size=2, unique=True))
+    def test_hash_not_the_same_value(self, values):
+        probability_outcome_one = ProbabilityOutcome(value=values[0], constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=values[1], constraint_set=self._constraint_sets[0])
+        self.assertNotEqual(hash(probability_outcome_one), hash(probability_outcome_two))
+
+    @hypothesis.given(strategies.integers())
+    def test_eq_true(self, value):
+        probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        self.assertEqual(probability_outcome_one, probability_outcome_two)
+
+    def test_eq_true_same_object(self):
+        probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[0])
+        self.assertEqual(probability_outcome, probability_outcome)
+
+    @hypothesis.given(strategies.lists(strategies.integers(), min_size=2, max_size=2, unique=True))
+    def test_eq_false_value(self, values):
+        probability_outcome_one = ProbabilityOutcome(value=values[0], constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=values[1], constraint_set=self._constraint_sets[0])
+        self.assertNotEqual(probability_outcome_one, probability_outcome_two)
+
+    @hypothesis.given(strategies.integers())
+    def test_eq_false_constraint_set(self, value):
+        probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
+        probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
+        self.assertNotEqual(probability_outcome_one, probability_outcome_two)
+
+    def test_eq_error_on_non_probability_outcome(self):
+        probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[1])
+        for name, value in self._non_probability_outcome.items():
+            with self.subTest(name):
+                with self.assertRaises(TypeError):
+                    _ = probability_outcome == value

@@ -4,15 +4,17 @@ import unittest.mock as mock
 import rply  # type: ignore
 
 from python_dice.src.expression.constant_integer_expression import ConstantIntegerExpression
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
 class TestConstantIntegerExpression(unittest.TestCase):
     def setUp(self):
-        self._test_constant_integers = ConstantIntegerExpression("14")
+        self._probability_distribution_factory = ProbabilityDistributionFactory()
+        self._test_constant_integers = ConstantIntegerExpression("14", self._probability_distribution_factory)
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_constant_integer_add_production_function(self):
-        ConstantIntegerExpression.add_production_function(self._mock_parser_gen)
+        ConstantIntegerExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
         self._mock_parser_gen.production.assert_called_once_with("""expression : CONSTANT_INTEGER""")
 
     def test_constant_integer_roll(self):

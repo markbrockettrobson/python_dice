@@ -11,6 +11,9 @@ class NullConstraint(INullConstraint):
     def can_merge(self, other: IConstraint) -> bool:
         return True
 
+    def is_possible(self) -> bool:
+        return True
+
     def merge(self, other: IConstraint) -> IConstraint:
         return other
 

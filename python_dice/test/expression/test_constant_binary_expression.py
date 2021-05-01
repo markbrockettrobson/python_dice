@@ -4,16 +4,18 @@ import unittest.mock as mock
 import rply  # type: ignore
 
 from python_dice.src.expression.constant_binary_expression import ConstantBinaryExpression
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestConstantIntegerExpression(unittest.TestCase):
+class TestConstantBinaryExpression(unittest.TestCase):
     def setUp(self):
-        self._test_constant_binary_true = ConstantBinaryExpression("True")
-        self._test_constant_binary_false = ConstantBinaryExpression("False")
+        self._probability_distribution_factory = ProbabilityDistributionFactory()
+        self._test_constant_binary_true = ConstantBinaryExpression("True", self._probability_distribution_factory)
+        self._test_constant_binary_false = ConstantBinaryExpression("False", self._probability_distribution_factory)
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_constant_binary_add_production_function(self):
-        ConstantBinaryExpression.add_production_function(self._mock_parser_gen)
+        ConstantBinaryExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
         self._mock_parser_gen.production.assert_called_once_with("""expression : CONSTANT_BINARY""")
 
     def test_constant_binary_roll(self):

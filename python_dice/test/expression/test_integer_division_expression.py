@@ -5,18 +5,22 @@ import rply  # type: ignore
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.src.expression.integer_division_expression import IntegerDivisionExpression
-from python_dice.src.probability_distribution.probability_distribution import ProbabilityDistribution
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
 class TestIntegerDivisionExpression(unittest.TestCase):
     def setUp(self):
+        self._probability_distribution_factory = ProbabilityDistributionFactory()
+
         self._mock_syntax = [mock.create_autospec(IDiceExpression) for _ in range(4)]
         self._mock_syntax[0].roll.return_value = 10
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 201
         self._mock_syntax[0].__str__.return_value = "7"
         self._mock_syntax[0].estimated_cost.return_value = 7
-        self._mock_syntax[0].get_probability_distribution.return_value = ProbabilityDistribution({201: 1, -10: 1})
+        self._mock_syntax[0].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {201: 1, -10: 1}
+        )
         self._mock_syntax[0].get_contained_variables.return_value = {"mock one"}
 
         self._mock_syntax[1].roll.return_value = 3
@@ -24,16 +28,22 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self._mock_syntax[1].min.return_value = 2
         self._mock_syntax[1].__str__.return_value = "2"
         self._mock_syntax[1].estimated_cost.return_value = 9
-        self._mock_syntax[1].get_probability_distribution.return_value = ProbabilityDistribution({2: 1, -2: 1})
+        self._mock_syntax[1].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {2: 1, -2: 1}
+        )
         self._mock_syntax[1].get_contained_variables.return_value = {"mock two"}
 
-        self._mock_syntax[2].get_probability_distribution.return_value = ProbabilityDistribution({10: 1, 12: 2})
-        self._mock_syntax[3].get_probability_distribution.return_value = ProbabilityDistribution({2: 1, 3: 2, 0: 10})
+        self._mock_syntax[2].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {10: 1, 12: 2}
+        )
+        self._mock_syntax[3].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {2: 1, 3: 2, 0: 10}
+        )
         self._test_integer_division = IntegerDivisionExpression(self._mock_syntax[0], self._mock_syntax[1])
         self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
 
     def test_integer_division_add_production_function(self):
-        IntegerDivisionExpression.add_production_function(self._mock_parser_gen)
+        IntegerDivisionExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
         self._mock_parser_gen.production.assert_called_once_with(
             """expression : expression INTEGER_DIVISION expression"""
         )
@@ -67,8 +77,12 @@ class TestIntegerDivisionExpression(unittest.TestCase):
         self.assertEqual(16, self._test_integer_division.estimated_cost())
 
     def test_integer_division_get_probability_distribution(self):
-        self._mock_syntax[0].get_probability_distribution.return_value = ProbabilityDistribution({10: 1, 12: 2, 0: 1})
-        self._mock_syntax[1].get_probability_distribution.return_value = ProbabilityDistribution({2: 1, 3: 2})
+        self._mock_syntax[0].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {10: 1, 12: 2, 0: 1}
+        )
+        self._mock_syntax[1].get_probability_distribution.return_value = self._probability_distribution_factory.create(
+            {2: 1, 3: 2}
+        )
         self.assertEqual(
             {5: 1, 6: 2, 3: 2, 4: 4, 0: 3},
             self._test_integer_division.get_probability_distribution().get_result_map(),

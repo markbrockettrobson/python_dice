@@ -84,6 +84,18 @@ class TestVarValueConstraint(unittest.TestCase):
 
     @hypothesis.given(
         name=strategies.text(),
+        int_set=strategies.sets(strategies.integers()),
+    )
+    def test_is_possible(
+        self,
+        name: str,
+        int_set: typing.Set[int],
+    ):
+        constraint = VarValueConstraint(name=name, values=int_set, constraint_factory=self._mock_constraint_factory)
+        self.assertEqual(len(int_set) > 0, constraint.is_possible())
+
+    @hypothesis.given(
+        name=strategies.text(),
         int_set_one=strategies.sets(strategies.integers()),
         int_set_two=strategies.sets(strategies.integers(), min_size=1),
     )

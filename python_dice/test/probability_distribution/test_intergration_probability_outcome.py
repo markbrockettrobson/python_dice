@@ -25,9 +25,9 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         ]
 
         self._constraint_sets = [
-            ConstraintSet.build_from_set({self._constraints[i] for i in {1, 5}}, self._constraint_merger),
-            ConstraintSet.build_from_set({self._constraints[i] for i in {0, 3}}, self._constraint_merger),
-            ConstraintSet.build_from_set({self._constraints[i] for i in {3}}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in {1, 5}}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in {0, 3}}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in {3}}, self._constraint_merger),
         ]
 
         self._non_probability_outcome = {
@@ -114,7 +114,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one.__equal__(probability_outcome_two)
-        self.assertEqual(1 if 1234567890 == 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(0, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_equal_non_probability_outcome(self):
@@ -129,7 +129,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one.__not_equal__(probability_outcome_two)
-        self.assertEqual(1 if 1234567890 != 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(1, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_not_equal_non_probability_outcome(self):
@@ -159,7 +159,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one <= probability_outcome_two
-        self.assertEqual(1 if 1234567890 <= 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(0, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_le_non_probability_outcome(self):
@@ -174,7 +174,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one > probability_outcome_two
-        self.assertEqual(1 if 1234567890 > 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(1, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_gt_non_probability_outcome(self):
@@ -189,7 +189,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one >= probability_outcome_two
-        self.assertEqual(1 if 1234567890 >= 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(1, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_ge_non_probability_outcome(self):
