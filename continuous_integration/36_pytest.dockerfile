@@ -5,11 +5,13 @@ WORKDIR /usr/pydice
 
 COPY requirements.txt ./
 
-RUN pip install --no-cache-dir -r requirements.txt
+RUN python -m pip install --no-cache-dir -r requirements.txt
 
-COPY .coveragerc ./
-COPY pylintrc ./
 COPY setup.py ./
+COPY run_formatter_and_tests.py ./
+COPY pyproject.toml ./
 COPY python_dice ./python_dice
 
-RUN python -m pytest python_dice
+RUN python -m pytest .
+
+#docker build -t 36_pytest -f continuous_integration/36_pytest.dockerfile .

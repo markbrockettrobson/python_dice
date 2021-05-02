@@ -2,7 +2,7 @@ import timeit
 import typing
 import unittest
 
-import python_dice.src.python_dice_interpreter as python_dice_interpreter
+from python_dice.src.python_dice_interpreter import PythonDiceInterpreter
 
 
 class TestCost(unittest.TestCase):
@@ -127,10 +127,10 @@ class TestCost(unittest.TestCase):
 
         costs_and_times = {}
         for index, program in enumerate(programs):
-            interpreter = python_dice_interpreter.PythonDiceInterpreter()
+            interpreter = PythonDiceInterpreter()
             cost = interpreter.get_estimated_cost(program)
 
-            interpreter = python_dice_interpreter.PythonDiceInterpreter()
+            interpreter = PythonDiceInterpreter()
             start = timeit.default_timer()
 
             interpreter.get_probability_distributions(program)

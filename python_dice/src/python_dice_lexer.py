@@ -1,15 +1,15 @@
 import typing
 
-import rply
+import rply  # type: ignore
 
-import python_dice.interface.i_python_dice_lexer as i_pydice_lexer
-import python_dice.src.python_dice_syntax_objects as pydice_syntax_objects
+from python_dice.interface.i_python_dice_lexer import IPythonDiceLexer
+from python_dice.src.python_dice_syntax_objects import LEXER_SYNTAX
 
 
-class PythonDiceLexer(i_pydice_lexer.IPythonDiceLexer):
+class PythonDiceLexer(IPythonDiceLexer):
     def __init__(self):
         partial_lexer = rply.LexerGenerator()
-        for syntax in pydice_syntax_objects.LEXER_SYNTAX:
+        for syntax in LEXER_SYNTAX:
             partial_lexer.add(syntax.get_token_name(), syntax.get_token_regex())
         # Ignore spaces
         partial_lexer.ignore(r"\s+")
@@ -30,9 +30,7 @@ class PythonDiceLexer(i_pydice_lexer.IPythonDiceLexer):
             sub_string_start = max(0, source_column_number - 50)
             sub_string_end = min(len(input_text), source_column_number + 50)
 
-            sub_string = input_lines[current_line_index][
-                sub_string_start:sub_string_end
-            ]
+            sub_string = input_lines[current_line_index][sub_string_start:sub_string_end]
             arrow_line = "-" * (source_column_number - sub_string_start) + "^"
             message = f"{sub_string}\n{arrow_line}"
 

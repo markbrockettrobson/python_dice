@@ -1,8 +1,10 @@
 import abc
 import typing
 
-import python_dice.interface.i_probability_state as i_probability_state
-import python_dice.interface.python_dice_expression.i_dice_expression as i_dice_expression
+from python_dice.interface.expression.i_dice_expression import IDiceExpression
+from python_dice.interface.probability_distribution.i_probability_distribution_state import (
+    IProbabilityDistributionState,
+)
 
 
 class IPythonDiceParser(abc.ABC):
@@ -10,11 +12,8 @@ class IPythonDiceParser(abc.ABC):
     def parse(
         self,
         input_text: str,
-        state: i_probability_state.IProbabilityDistributionState = None,
-    ) -> typing.Tuple[
-        i_dice_expression.IDiceExpression,
-        i_probability_state.IProbabilityDistributionState,
-    ]:
+        state: IProbabilityDistributionState = None,
+    ) -> typing.Tuple[IDiceExpression, IProbabilityDistributionState,]:
         """
 
         :return: output of pydice program

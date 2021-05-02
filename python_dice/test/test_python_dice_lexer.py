@@ -1,17 +1,16 @@
 import unittest
 
-import python_dice.src.python_dice_lexer as pydice_lexer
+from python_dice.src.python_dice_lexer import PythonDiceLexer
 
 
+# pylint: disable=too-many-public-methods
 class TestPythonDiceLexer(unittest.TestCase):
     def setUp(self):
-        self._test_lexer = pydice_lexer.PythonDiceLexer()
+        self._test_lexer = PythonDiceLexer()
 
     def test_lexer_error_single_line(self):
         try:
-            self._test_lexer.lex(
-                "2d2k1 * (4d[3*1,2-3,7]d1 + 1d[1,2,-3--8]) // d%kk4 + 1d3"
-            )
+            self._test_lexer.lex("2d2k1 * (4d[3*1,2-3,7]d1 + 1d[1,2,-3--8]) // d%kk4 + 1d3")
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
             self.assertEqual(
@@ -22,9 +21,7 @@ class TestPythonDiceLexer(unittest.TestCase):
 
     def test_lexer_error_multi_line(self):
         try:
-            self._test_lexer.lex(
-                "VAR apple = 1d4 - 1\nVAR banana = 1d8 / 2\nVAR orange = 1d8 // 2"
-            )
+            self._test_lexer.lex("VAR apple = 1d4 - 1\nVAR banana = 1d8 / 2\nVAR orange = 1d8 // 2")
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
             self.assertEqual("VAR banana = 1d8 / 2\n-----------------^", str(inst))
@@ -32,10 +29,7 @@ class TestPythonDiceLexer(unittest.TestCase):
     def test_lexer_error_end_of_line(self):
         try:
             self._test_lexer.lex(
-                "VAR apple = 1d4 - 1\n"
-                "VAR orange = 1d8 // 2\n"
-                "VAR banana = 1d8 /\n"
-                "VAR grape = 5d8 ** 2\n"
+                "VAR apple = 1d4 - 1\n" "VAR orange = 1d8 // 2\n" "VAR banana = 1d8 /\n" "VAR grape = 5d8 ** 2\n"
             )
             raise Exception("no exception raised")
         except Exception as inst:  # pylint: disable=broad-except
@@ -234,9 +228,7 @@ class TestPythonDiceLexer(unittest.TestCase):
             ],
             [token.name for token in tokens],
         )
-        self.assertEqual(
-            ["!", "(", "!", "d4", "+", "True", ")"], [token.value for token in tokens]
-        )
+        self.assertEqual(["!", "(", "!", "d4", "+", "True", ")"], [token.value for token in tokens])
 
     def test_lex_equals(self):
         tokens = self._test_lexer.lex("d4 == True")
@@ -263,9 +255,7 @@ class TestPythonDiceLexer(unittest.TestCase):
             ["DICE", "BINARY_OPERATOR", "CONSTANT_BINARY", "BINARY_OPERATOR", "DICE"],
             [token.name for token in tokens],
         )
-        self.assertEqual(
-            ["d4", "<", "True", "<=", "1d3"], [token.value for token in tokens]
-        )
+        self.assertEqual(["d4", "<", "True", "<=", "1d3"], [token.value for token in tokens])
 
     def test_lex_greater_than(self):
         tokens = self._test_lexer.lex("d4 > True >= 1d3")
@@ -274,9 +264,7 @@ class TestPythonDiceLexer(unittest.TestCase):
             ["DICE", "BINARY_OPERATOR", "CONSTANT_BINARY", "BINARY_OPERATOR", "DICE"],
             [token.name for token in tokens],
         )
-        self.assertEqual(
-            ["d4", ">", "True", ">=", "1d3"], [token.value for token in tokens]
-        )
+        self.assertEqual(["d4", ">", "True", ">=", "1d3"], [token.value for token in tokens])
 
     def test_lex_and(self):
         tokens = self._test_lexer.lex("d4 AND True")
@@ -310,9 +298,7 @@ class TestPythonDiceLexer(unittest.TestCase):
             ],
             [token.name for token in tokens],
         )
-        self.assertEqual(
-            ["MAX", "(", "d4", ",", "3", ")"], [token.value for token in tokens]
-        )
+        self.assertEqual(["MAX", "(", "d4", ",", "3", ")"], [token.value for token in tokens])
 
     def test_lex_min(self):
         tokens = self._test_lexer.lex("MIN(4, 1d6)")
@@ -328,9 +314,7 @@ class TestPythonDiceLexer(unittest.TestCase):
             ],
             [token.name for token in tokens],
         )
-        self.assertEqual(
-            ["MIN", "(", "4", ",", "1d6", ")"], [token.value for token in tokens]
-        )
+        self.assertEqual(["MIN", "(", "4", ",", "1d6", ")"], [token.value for token in tokens])
 
     def test_lex_abs(self):
         tokens = self._test_lexer.lex("ABS(1d6)")
@@ -344,9 +328,7 @@ class TestPythonDiceLexer(unittest.TestCase):
     def test_lex_var(self):
         tokens = self._test_lexer.lex("VAR apple = d4")
 
-        self.assertEqual(
-            ["VAR", "NAME", "ASSIGNMENT", "DICE"], [token.name for token in tokens]
-        )
+        self.assertEqual(["VAR", "NAME", "ASSIGNMENT", "DICE"], [token.name for token in tokens])
         self.assertEqual(["VAR", "apple", "=", "d4"], [token.value for token in tokens])
 
     def test_lex_drop(self):
@@ -370,9 +352,7 @@ class TestPythonDiceLexer(unittest.TestCase):
     def test_lex_fate_dice(self):
         tokens = self._test_lexer.lex("4 + 2dF")
 
-        self.assertEqual(
-            ["CONSTANT_INTEGER", "ADD", "DICE"], [token.name for token in tokens]
-        )
+        self.assertEqual(["CONSTANT_INTEGER", "ADD", "DICE"], [token.name for token in tokens])
         self.assertEqual(["4", "+", "2dF"], [token.value for token in tokens])
 
     def test_lex_custom_dice(self):

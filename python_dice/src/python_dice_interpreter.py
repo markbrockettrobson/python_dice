@@ -1,28 +1,45 @@
 import typing
 
-import PIL.Image as Image
+from PIL import Image  # type: ignore
 
-import python_dice.interface.i_probability_distribution as i_probability_distribution
-import python_dice.interface.i_probability_state as i_probability_state
-import python_dice.interface.i_python_dice_interpreter as i_python_dice_interpreter
-import python_dice.interface.i_python_dice_parser as i_python_dice_parser
-import python_dice.src.probability_distribution as probability_distribution
-import python_dice.src.probability_state as probability_state
-import python_dice.src.python_dice_parser as python_dice_parser
+from python_dice.interface.i_python_dice_interpreter import IPythonDiceInterpreter
+from python_dice.interface.i_python_dice_parser import IPythonDiceParser
+from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
+from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
+    IProbabilityDistributionFactory,
+)
+from python_dice.interface.probability_distribution.i_probability_distribution_state import (
+    IProbabilityDistributionState,
+)
+from python_dice.interface.probability_distribution.i_probability_distribution_state_factory import (
+    IProbabilityDistributionStateFactory,
+)
+from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
+from python_dice.src.probability_distribution.probability_distribution_state_factory import (
+    ProbabilityDistributionStateFactory,
+)
+from python_dice.src.python_dice_parser import PythonDiceParser
 
 
-class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
+class PythonDiceInterpreter(IPythonDiceInterpreter):
     def __init__(
         self,
-        parser: i_python_dice_parser.IPythonDiceParser = None,
-        starting_state: i_probability_state.IProbabilityDistributionState = None,
+        parser: typing.Optional[IPythonDiceParser] = None,
+        starting_state: typing.Optional[IProbabilityDistributionState] = None,
+        probability_distribution_state_factory: typing.Optional[IProbabilityDistributionStateFactory] = None,
+        probability_distribution_factory: typing.Optional[IProbabilityDistributionFactory] = None,
     ):
         if parser is None:
-            parser = python_dice_parser.PythonDiceParser()
+            parser = PythonDiceParser()
+        if probability_distribution_state_factory is None:
+            probability_distribution_state_factory = ProbabilityDistributionStateFactory()
+        if probability_distribution_factory is None:
+            probability_distribution_factory = ProbabilityDistributionFactory()
         if starting_state is None:
-            starting_state = probability_state.ProbabilityState()
+            starting_state = probability_distribution_state_factory.create_new_empty_set()
         self._parser = parser
         self._state = starting_state
+        self._probability_distribution_factory = probability_distribution_factory
 
     def roll(self, input_text: typing.List[str]) -> typing.Dict[str, int]:
         return_dict = {}
@@ -62,9 +79,7 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return {key: value.get_dict_form() for key, value in return_dict.items()}
 
-    def get_probability_distributions(
-        self, input_text: typing.List[str]
-    ) -> typing.Dict[str, i_probability_distribution.IProbabilityDistribution]:
+    def get_probability_distributions(self, input_text: typing.List[str]) -> typing.Dict[str, IProbabilityDistribution]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -83,21 +98,21 @@ class PythonDiceInterpreter(i_python_dice_interpreter.IPythonDiceInterpreter):
         return {key: value.average() for key, value in return_dict.items()}
 
     def get_histogram(self, input_text: typing.List[str]) -> Image:
-        stdout = probability_distribution.ProbabilityDistribution()
+        stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_histogram()
 
     def get_at_least_histogram(self, input_text: typing.List[str]) -> Image:
-        stdout = probability_distribution.ProbabilityDistribution()
+        stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_at_least_histogram()
 
     def get_at_most_histogram(self, input_text: typing.List[str]) -> Image:
-        stdout = probability_distribution.ProbabilityDistribution()
+        stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()

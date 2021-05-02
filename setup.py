@@ -1,11 +1,11 @@
-import setuptools
+import setuptools  # type: ignore
 
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
 
 setuptools.setup(
     name="python_dice",
-    version="1.4.5",
+    version="2.0.0",
     author="Mark Brockett Robson",
     author_email="mark.brockett.robson@gmail.com",
     description="a statistical dice library for python",
@@ -15,11 +15,15 @@ setuptools.setup(
     packages=[
         "python_dice",
         "python_dice.interface",
-        "python_dice.interface.python_dice_expression",
-        "python_dice.interface.python_dice_syntax",
+        "python_dice.interface.constraint",
+        "python_dice.interface.expression",
+        "python_dice.interface.syntax",
+        "python_dice.interface.probability_distribution",
         "python_dice.src",
-        "python_dice.src.python_dice_expression",
-        "python_dice.src.python_dice_syntax",
+        "python_dice.src.constraint",
+        "python_dice.src.expression",
+        "python_dice.src.syntax",
+        "python_dice.src.probability_distribution",
     ],
     classifiers=[
         "Programming Language :: Python :: 3",
