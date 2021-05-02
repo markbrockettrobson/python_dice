@@ -1,16 +1,12 @@
 import abc
 import typing
-from typing import SupportsAbs
 
 from PIL import Image  # type: ignore
 
 from python_dice.interface.probability_distribution.i_probability_outcome import IProbabilityOutcome
 
 
-class IProbabilityDistribution(
-    abc.ABC,
-    SupportsAbs,
-):
+class IProbabilityDistribution(abc.ABC):
     @abc.abstractmethod
     def get_dict_form(self) -> typing.Dict[int, float]:
         """
@@ -218,4 +214,8 @@ class IProbabilityDistribution(
 
     @abc.abstractmethod
     def __repr__(self) -> str:
+        pass
+
+    @abc.abstractmethod
+    def __abs__(self) -> "IProbabilityOutcome":
         pass

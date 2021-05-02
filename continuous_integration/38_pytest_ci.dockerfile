@@ -16,5 +16,7 @@ COPY run_formatter_and_tests.py ./
 COPY pyproject.toml ./
 COPY python_dice ./python_dice
 
-RUN python run_formatter_and_tests.py
+RUN python -m pytest --black --isort --pylint --mypy --cov .
 RUN python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
+
+#DONT RUN DIRECTLY WITH CODCOV docker build -t 38_pytest_ci -f continuous_integration/38_pytest_ci.dockerfile .

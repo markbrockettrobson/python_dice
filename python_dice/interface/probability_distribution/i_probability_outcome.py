@@ -1,10 +1,8 @@
 import abc
-from typing import SupportsAbs
-
 from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 
 
-class IProbabilityOutcome(abc.ABC, SupportsAbs):
+class IProbabilityOutcome(abc.ABC):
     @property
     @abc.abstractmethod
     def value(self) -> int:
@@ -93,4 +91,8 @@ class IProbabilityOutcome(abc.ABC, SupportsAbs):
 
     @abc.abstractmethod
     def __eq__(self, other: object) -> bool:
+        pass
+
+    @abc.abstractmethod
+    def __abs__(self) -> "IProbabilityOutcome":
         pass
