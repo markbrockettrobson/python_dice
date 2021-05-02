@@ -10,7 +10,7 @@ RUN rm -rf ./python_dice
 RUN rm -f pylintrc
 
 RUN python -m venv venv
-RUN . venv/bin/activate && -m pip install --upgrade pip
+RUN . venv/bin/activate && python -m pip install --upgrade pip
 
 COPY requirements.txt ./
 COPY setup.py ./
