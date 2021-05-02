@@ -69,6 +69,7 @@ class TestConstraintSet(unittest.TestCase):
     @hypothesis.given(
         var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
     )
+    @hypothesis.settings(deadline=1000)
     def test_complies_true(self, var_values: typing.Dict[str, int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -85,6 +86,7 @@ class TestConstraintSet(unittest.TestCase):
         var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
         false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
     )
+    @hypothesis.settings(deadline=1000)
     def test_complies_false(self, var_values: typing.Dict[str, int], false_indies: typing.Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -102,6 +104,7 @@ class TestConstraintSet(unittest.TestCase):
     @hypothesis.given(
         false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
     )
+    @hypothesis.settings(deadline=1000)
     def test_is_possible_false(self, false_indies: typing.Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()

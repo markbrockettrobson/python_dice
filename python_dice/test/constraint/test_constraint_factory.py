@@ -20,6 +20,7 @@ class TestConstraintFactory(unittest.TestCase):
         self.assertIsInstance(constraint_factory.null_constraint, INullConstraint)
 
     @hypothesis.given(name=strategies.text(), int_set=strategies.sets(strategies.integers()))
+    @hypothesis.settings(deadline=1000)
     def test_var_value_constraint(self, name: str, int_set: typing.Set[int]):
         constraint_factory = ConstraintFactory()
         var_value_constraint = constraint_factory.var_value_constraint(name=name, values=int_set)

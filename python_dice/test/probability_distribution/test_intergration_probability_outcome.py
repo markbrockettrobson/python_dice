@@ -40,11 +40,13 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         }
 
     @hypothesis.given(strategies.integers())
+    @hypothesis.settings(deadline=1000)
     def test_value(self, int_value: int):
         probability_outcome = ProbabilityOutcome(value=int_value, constraint_set=self._constraint_sets[0])
         self.assertEqual(int_value, probability_outcome.value)
 
     @hypothesis.given(strategies.integers(min_value=0, max_value=2))
+    @hypothesis.settings(deadline=1000)
     def test_constraint_set(self, index: int):
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[index])
         self.assertEqual(self._constraint_sets[index], probability_outcome.constraint_set)
@@ -204,7 +206,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one.__and__(probability_outcome_two)
-        self.assertEqual(1 if 1234567890 and 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(1, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_and_non_probability_outcome(self):
@@ -219,7 +221,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         probability_outcome_two = ProbabilityOutcome(value=987654321, constraint_set=self._constraint_sets[1])
 
         new_probability_outcome = probability_outcome_one.__or__(probability_outcome_two)
-        self.assertEqual(1 if 1234567890 or 987654321 else 0, new_probability_outcome.value)
+        self.assertEqual(1, new_probability_outcome.value)
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     def test_or_non_probability_outcome(self):
@@ -230,6 +232,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
                     _ = probability_outcome.__or__(value)
 
     @hypothesis.given(strategies.integers())
+    @hypothesis.settings(deadline=1000)
     def test_not(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = probability_outcome.not_operator()
@@ -269,6 +272,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
                     _ = probability_outcome.min_operator(value)
 
     @hypothesis.given(strategies.integers())
+    @hypothesis.settings(deadline=1000)
     def test_abs(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = abs(probability_outcome)
@@ -278,6 +282,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         )
 
     @hypothesis.given(strategies.integers())
+    @hypothesis.settings(deadline=1000)
     def test_str(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(
@@ -285,6 +290,7 @@ class TestProbabilityOutcomeIntegration(unittest.TestCase):
         )
 
     @hypothesis.given(strategies.integers())
+    @hypothesis.settings(deadline=1000)
     def test_repr(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(

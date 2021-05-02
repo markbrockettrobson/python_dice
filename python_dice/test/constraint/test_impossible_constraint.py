@@ -11,6 +11,7 @@ from python_dice.src.constraint.impossible_constraint import ImpossibleConstrain
 
 class TestImpossibleConstraint(unittest.TestCase):
     @hypothesis.given(strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())))
+    @hypothesis.settings(deadline=1000)
     def test_complies(self, var_values: typing.Dict[str, int]):
         constraint = ImpossibleConstraint()
         self.assertTrue(constraint.complies(var_values=var_values))
