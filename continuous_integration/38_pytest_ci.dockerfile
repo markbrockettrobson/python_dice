@@ -20,7 +20,7 @@ COPY python_dice ./python_dice
 
 RUN . venv/bin/activate && python -m pip install --no-cache-dir -r requirements.txt
 RUN . venv/bin/activate && python -m pytest --black --isort --pylint --mypy --cov .
-RUN python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
+RUN . venv/bin/activate && python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
 
 #DONT RUN DIRECTLY WITH CODCOV docker build -t 38_pytest_ci -f continuous_integration/38_pytest_ci.dockerfile .
 #DONT RUN DIRECTLY WITH CODCOV docker run -it 38_pytest_ci bash
