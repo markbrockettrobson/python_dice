@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.min_max_syntax import MinMaxSyntax
 
 
-class TestMinMaxSyntax(unittest.TestCase):
+class TestMinMaxSyntax(TestCase):
     def test_min_max_get_token_name(self):
         self.assertEqual("MINMAX", MinMaxSyntax.get_token_name())
 

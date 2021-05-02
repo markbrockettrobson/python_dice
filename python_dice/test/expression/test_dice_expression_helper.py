@@ -1,9 +1,9 @@
-import unittest
+from unittest import TestCase
 
 from python_dice.src.expression import dice_expression_helper
 
 
-class TestDiceExpressionHelper(unittest.TestCase):
+class TestDiceExpressionHelper(TestCase):
     def test_numbered_dice(self):
         self.assertEqual(
             {1: 1, 2: 1, 3: 1, 4: 1, 5: 1, 6: 1},

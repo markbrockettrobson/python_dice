@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -8,11 +8,11 @@ from python_dice.src.expression.parentheses_enclosed_expression import Parenthes
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestParenthesisEnclosedExpression(unittest.TestCase):
+class TestParenthesisEnclosedExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
 
-        self._mock_syntax = mock.create_autospec(IDiceExpression)
+        self._mock_syntax = create_autospec(IDiceExpression)
         self._mock_syntax.roll.return_value = 10
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
@@ -24,7 +24,7 @@ class TestParenthesisEnclosedExpression(unittest.TestCase):
         self._mock_syntax.get_contained_variables.return_value = {"mock"}
 
         self._test_parentheses_enclosed_expression = ParenthesisEnclosedExpression(self._mock_syntax)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_add_add_production_function(self):
         ParenthesisEnclosedExpression.add_production_function(

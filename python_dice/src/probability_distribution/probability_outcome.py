@@ -1,5 +1,5 @@
 import operator
-import typing
+from typing import Callable
 
 from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 from python_dice.interface.probability_distribution.i_probability_outcome import IProbabilityOutcome
@@ -23,7 +23,7 @@ class ProbabilityOutcome(IProbabilityOutcome):
 
     def _combine(
         self,
-        combination_function: typing.Callable[[int, int], int],
+        combination_function: Callable[[int, int], int],
         other: object,
         binary_values: bool = False,
     ) -> IProbabilityOutcome:

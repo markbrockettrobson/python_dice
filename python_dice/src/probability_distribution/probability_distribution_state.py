@@ -1,5 +1,5 @@
 import copy
-import typing
+from typing import Dict
 
 from python_dice.interface.constraint.i_constraint_factory import IConstraintFactory
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
@@ -15,9 +15,9 @@ class ProbabilityDistributionState(IProbabilityDistributionState):
     def __init__(
         self, probability_distribution_factory: IProbabilityDistributionFactory, constraint_factory: IConstraintFactory
     ):
-        self._var: typing.Dict[str, IProbabilityDistribution] = {}
-        self._constants: typing.Dict[str, int] = {}
-        self._number_of_times_set: typing.Dict[str, int] = {}
+        self._var: Dict[str, IProbabilityDistribution] = {}
+        self._constants: Dict[str, int] = {}
+        self._number_of_times_set: Dict[str, int] = {}
         self._probability_distribution_factory = probability_distribution_factory
         self._constraint_factory = constraint_factory
 

@@ -1,11 +1,11 @@
 import os
 import subprocess
 import sys
-import typing
+from typing import Dict, List, Optional
 
 
 def main(run_formatters: bool = False):
-    def run_command(command: typing.List[str], env: typing.Optional[typing.Dict[str, str]] = None):
+    def run_command(command: List[str], env: Optional[Dict[str, str]] = None):
         joined_command = " ".join(command)
         working_env = os.environ.copy()
 

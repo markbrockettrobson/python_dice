@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -8,11 +8,11 @@ from python_dice.src.expression.integer_division_expression import IntegerDivisi
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestIntegerDivisionExpression(unittest.TestCase):
+class TestIntegerDivisionExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
 
-        self._mock_syntax = [mock.create_autospec(IDiceExpression) for _ in range(4)]
+        self._mock_syntax = [create_autospec(IDiceExpression) for _ in range(4)]
         self._mock_syntax[0].roll.return_value = 10
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 201
@@ -40,7 +40,7 @@ class TestIntegerDivisionExpression(unittest.TestCase):
             {2: 1, 3: 2, 0: 10}
         )
         self._test_integer_division = IntegerDivisionExpression(self._mock_syntax[0], self._mock_syntax[1])
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_integer_division_add_production_function(self):
         IntegerDivisionExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

@@ -1,22 +1,20 @@
-import typing
+from typing import Set, Tuple
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_constraint_merger import IConstraintMerger
 
 
 class ConstraintMerger(IConstraintMerger):
-    def merge_constraints(self, constraint_set: typing.Set[IConstraint]) -> typing.Set[IConstraint]:
+    def merge_constraints(self, constraint_set: Set[IConstraint]) -> Set[IConstraint]:
         return ConstraintMerger.__merge_new_constraints(constraint_set, set())
 
-    def merge_new_constraints(
-        self, constraint_set: typing.Set[IConstraint], new_constraint: IConstraint
-    ) -> typing.Set[IConstraint]:
+    def merge_new_constraints(self, constraint_set: Set[IConstraint], new_constraint: IConstraint) -> Set[IConstraint]:
         return ConstraintMerger.__merge_new_constraints({new_constraint}, constraint_set)
 
     @staticmethod
     def __merge_new_constraints(
-        new_constraints: typing.Set[IConstraint], constraint_set: typing.Set[IConstraint]
-    ) -> typing.Set[IConstraint]:
+        new_constraints: Set[IConstraint], constraint_set: Set[IConstraint]
+    ) -> Set[IConstraint]:
         values_to_merge = list(new_constraints.copy())
         clean_constraint_set = constraint_set.copy()
 
@@ -33,8 +31,8 @@ class ConstraintMerger(IConstraintMerger):
 
     @staticmethod
     def __merge_new_constraint(
-        new_constraint: IConstraint, constraint_set: typing.Set[IConstraint]
-    ) -> typing.Tuple[typing.Set[IConstraint], typing.Set[IConstraint]]:
+        new_constraint: IConstraint, constraint_set: Set[IConstraint]
+    ) -> Tuple[Set[IConstraint], Set[IConstraint]]:
         for constraint in constraint_set:
 
             if constraint.can_merge(new_constraint):

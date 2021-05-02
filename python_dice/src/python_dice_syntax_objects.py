@@ -1,4 +1,4 @@
-import typing
+from typing import List, Type
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
 from python_dice.interface.syntax.i_dice_syntax import IDiceSyntax
@@ -36,7 +36,7 @@ from python_dice.src.syntax.open_parenthesis_syntax import OpenParenthesisSyntax
 from python_dice.src.syntax.subtract_syntax import SubtractSyntax
 from python_dice.src.syntax.var_syntax import VarSyntax
 
-LEXER_SYNTAX: typing.List[typing.Type[IDiceSyntax]] = [
+LEXER_SYNTAX: List[Type[IDiceSyntax]] = [
     OpenParenthesisSyntax,
     CloseParenthesisSyntax,
     CommaSyntax,
@@ -57,7 +57,7 @@ LEXER_SYNTAX: typing.List[typing.Type[IDiceSyntax]] = [
     NameSyntax,
 ]
 
-PARSER_EXPRESSIONS: typing.List[typing.Type[IDiceExpression]] = [
+PARSER_EXPRESSIONS: List[Type[IDiceExpression]] = [
     ParenthesisEnclosedExpression,
     NotExpression,
     DropKeepExpression,

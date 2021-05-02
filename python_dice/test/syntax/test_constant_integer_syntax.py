@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.constant_integer_syntax import ConstantIntegerSyntax
 
 
-class TestConstantIntegerSyntax(unittest.TestCase):
+class TestConstantIntegerSyntax(TestCase):
     def test_constant_integers_get_token_name(self):
         self.assertEqual(
             "CONSTANT_INTEGER",

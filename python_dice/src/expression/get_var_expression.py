@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -18,7 +18,7 @@ class GetVarExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(GetVarExpression.TOKEN_RULE)
         def get_var(state, tokens) -> IDiceExpression:
             return GetVarExpression(state, tokens[0].value)
@@ -49,5 +49,5 @@ class GetVarExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return {self._name}

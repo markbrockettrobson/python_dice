@@ -1,4 +1,4 @@
-import unittest
+from unittest import TestCase
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -10,7 +10,7 @@ from python_dice.src.probability_distribution.probability_outcome import Probabi
 
 
 # pylint: disable=too-many-public-methods
-class TestProbabilityOutcomeIntegration(unittest.TestCase):
+class TestProbabilityOutcomeIntegration(TestCase):
     def setUp(self) -> None:
         self._constraint_merger = ConstraintMerger()
         self._constraint_factory = ConstraintFactory()

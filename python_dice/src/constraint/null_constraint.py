@@ -1,11 +1,11 @@
-import typing
+from typing import Dict
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_null_constraint import INullConstraint
 
 
 class NullConstraint(INullConstraint):
-    def complies(self, var_values: typing.Dict[str, int]) -> bool:
+    def complies(self, var_values: Dict[str, int]) -> bool:
         return True
 
     def can_merge(self, other: IConstraint) -> bool:

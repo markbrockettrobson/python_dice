@@ -1,7 +1,7 @@
 # Python dice ![logo](https://raw.githubusercontent.com/markbrockettrobson/python_dice/master/images/pythondice_logo_128x128.png)
 
 
-[![codecov](https://codecov.io/gh/markbrockettrobson/python_dice/branch/master/graph/badge.svg)](https://codecov.io/gh/markbrockettrobson/pydice)
+[![codecov](https://codecov.io/gh/markbrockettrobson/python_dice/branch/master/graph/badge.svg)](https://codecov.io/gh/markbrockettrobson/python_dice)
 [![black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 ![license](https://i.creativecommons.org/l/by-nc-sa/4.0/80x15.png)
 

@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.close_parenthesis_syntax import CloseParenthesisSyntax
 
 
-class TestCloseParenthesisSyntax(unittest.TestCase):
+class TestCloseParenthesisSyntax(TestCase):
     def test_close_parenthesis_get_token_name(self):
         self.assertEqual(
             "CLOSE_PARENTHESIS",

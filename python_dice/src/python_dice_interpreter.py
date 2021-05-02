@@ -1,4 +1,4 @@
-import typing
+from typing import Dict, List, Optional
 
 from PIL import Image  # type: ignore
 
@@ -24,10 +24,10 @@ from python_dice.src.python_dice_parser import PythonDiceParser
 class PythonDiceInterpreter(IPythonDiceInterpreter):
     def __init__(
         self,
-        parser: typing.Optional[IPythonDiceParser] = None,
-        starting_state: typing.Optional[IProbabilityDistributionState] = None,
-        probability_distribution_state_factory: typing.Optional[IProbabilityDistributionStateFactory] = None,
-        probability_distribution_factory: typing.Optional[IProbabilityDistributionFactory] = None,
+        parser: Optional[IPythonDiceParser] = None,
+        starting_state: Optional[IProbabilityDistributionState] = None,
+        probability_distribution_state_factory: Optional[IProbabilityDistributionStateFactory] = None,
+        probability_distribution_factory: Optional[IProbabilityDistributionFactory] = None,
     ):
         if parser is None:
             parser = PythonDiceParser()
@@ -41,7 +41,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
         self._state = starting_state
         self._probability_distribution_factory = probability_distribution_factory
 
-    def roll(self, input_text: typing.List[str]) -> typing.Dict[str, int]:
+    def roll(self, input_text: List[str]) -> Dict[str, int]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -50,7 +50,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return return_dict
 
-    def max(self, input_text: typing.List[str]) -> typing.Dict[str, int]:
+    def max(self, input_text: List[str]) -> Dict[str, int]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -59,7 +59,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return return_dict
 
-    def min(self, input_text: typing.List[str]) -> typing.Dict[str, int]:
+    def min(self, input_text: List[str]) -> Dict[str, int]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -68,9 +68,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return return_dict
 
-    def get_probability_distributions_dict(
-        self, input_text: typing.List[str]
-    ) -> typing.Dict[str, typing.Dict[int, float]]:
+    def get_probability_distributions_dict(self, input_text: List[str]) -> Dict[str, Dict[int, float]]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -79,7 +77,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return {key: value.get_dict_form() for key, value in return_dict.items()}
 
-    def get_probability_distributions(self, input_text: typing.List[str]) -> typing.Dict[str, IProbabilityDistribution]:
+    def get_probability_distributions(self, input_text: List[str]) -> Dict[str, IProbabilityDistribution]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -88,7 +86,7 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return {key: return_dict[key] for key in return_dict.keys()}
 
-    def get_average(self, input_text: typing.List[str]) -> typing.Dict[str, float]:
+    def get_average(self, input_text: List[str]) -> Dict[str, float]:
         return_dict = {}
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
@@ -97,28 +95,28 @@ class PythonDiceInterpreter(IPythonDiceInterpreter):
             return_dict["stdout"] = stdout
         return {key: value.average() for key, value in return_dict.items()}
 
-    def get_histogram(self, input_text: typing.List[str]) -> Image:
+    def get_histogram(self, input_text: List[str]) -> Image:
         stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_histogram()
 
-    def get_at_least_histogram(self, input_text: typing.List[str]) -> Image:
+    def get_at_least_histogram(self, input_text: List[str]) -> Image:
         stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_at_least_histogram()
 
-    def get_at_most_histogram(self, input_text: typing.List[str]) -> Image:
+    def get_at_most_histogram(self, input_text: List[str]) -> Image:
         stdout: IProbabilityDistribution = self._probability_distribution_factory.create()
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)
             stdout = token.get_probability_distribution()
         return stdout.get_at_most_histogram()
 
-    def get_estimated_cost(self, input_text: typing.List[str]) -> int:
+    def get_estimated_cost(self, input_text: List[str]) -> int:
         total_cost = 0
         for line in input_text:
             token, _ = self._parser.parse(line, state=self._state)

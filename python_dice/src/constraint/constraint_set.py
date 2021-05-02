@@ -1,5 +1,5 @@
 import operator
-import typing
+from typing import Dict, Set
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_constraint_merger import IConstraintMerger
@@ -7,8 +7,8 @@ from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 
 
 class ConstraintSet(IConstraintSet):
-    def __init__(self, constraints_set: typing.Set[IConstraint], constraint_merger: IConstraintMerger):
-        self._constraints_set: typing.Set[IConstraint] = set()
+    def __init__(self, constraints_set: Set[IConstraint], constraint_merger: IConstraintMerger):
+        self._constraints_set: Set[IConstraint] = set()
         self._constraint_merger = constraint_merger
 
         if len(constraints_set) == 0:
@@ -17,7 +17,7 @@ class ConstraintSet(IConstraintSet):
             self.add_constraint(constraint)
 
     @property
-    def constraints(self) -> typing.Set[IConstraint]:
+    def constraints(self) -> Set[IConstraint]:
         return self._constraints_set.copy()
 
     def add_constraint(self, constraint: IConstraint):
@@ -25,7 +25,7 @@ class ConstraintSet(IConstraintSet):
             constraint_set=self._constraints_set, new_constraint=constraint
         )
 
-    def complies(self, var_values: typing.Dict[str, int]) -> bool:
+    def complies(self, var_values: Dict[str, int]) -> bool:
         for constraint in self._constraints_set:
             if not constraint.complies(var_values=var_values):
                 return False

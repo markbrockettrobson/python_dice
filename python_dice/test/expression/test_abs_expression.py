@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -8,10 +8,10 @@ from python_dice.src.expression.abs_expression import AbsExpression
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestAbsExpression(unittest.TestCase):
+class TestAbsExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
-        self._mock_syntax = mock.create_autospec(IDiceExpression)
+        self._mock_syntax = create_autospec(IDiceExpression)
         self._mock_syntax.roll.return_value = 2
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
@@ -23,7 +23,7 @@ class TestAbsExpression(unittest.TestCase):
         self._mock_syntax.get_contained_variables.return_value = {"mock"}
 
         self._test_abs_operator = AbsExpression(self._mock_syntax)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_abs_add_production_function(self):
         AbsExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

@@ -1,10 +1,10 @@
-import unittest
+from unittest import TestCase
 
 from python_dice.src.python_dice_lexer import PythonDiceLexer
 
 
 # pylint: disable=too-many-public-methods
-class TestPythonDiceLexer(unittest.TestCase):
+class TestPythonDiceLexer(TestCase):
     def setUp(self):
         self._test_lexer = PythonDiceLexer()
 

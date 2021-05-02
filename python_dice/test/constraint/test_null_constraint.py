@@ -1,6 +1,6 @@
-import typing
-import unittest
-import unittest.mock as mock
+from typing import Dict
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -9,16 +9,16 @@ from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.src.constraint.null_constraint import NullConstraint
 
 
-class TestNullConstraint(unittest.TestCase):
+class TestNullConstraint(TestCase):
     @hypothesis.given(strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())))
     @hypothesis.settings(deadline=1000)
-    def test_complies(self, var_values: typing.Dict[str, int]):
+    def test_complies(self, var_values: Dict[str, int]):
         constraint = NullConstraint()
         self.assertTrue(constraint.complies(var_values=var_values))
 
     def test_can_merge_constraint(self):
         constraint = NullConstraint()
-        merged_constraint = mock.create_autospec(IConstraint)
+        merged_constraint = create_autospec(IConstraint)
         self.assertTrue(constraint.can_merge(merged_constraint))
 
     def test_is_possible(self):
@@ -27,7 +27,7 @@ class TestNullConstraint(unittest.TestCase):
 
     def test_merge_constraint(self):
         constraint = NullConstraint()
-        merge_constraint = mock.create_autospec(IConstraint)
+        merge_constraint = create_autospec(IConstraint)
         self.assertEqual(merge_constraint, constraint.merge(merge_constraint))
 
     def test_eq_true(self):
@@ -37,7 +37,7 @@ class TestNullConstraint(unittest.TestCase):
 
     def test_eq_false(self):
         constraint = NullConstraint()
-        second_constraint = mock.create_autospec(IConstraint)
+        second_constraint = create_autospec(IConstraint)
         second_constraint.__str__.return_value = "Mock str"
         self.assertNotEqual(constraint, second_constraint)
 

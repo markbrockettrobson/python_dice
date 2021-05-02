@@ -1,99 +1,99 @@
-import abc
+from abc import ABC, abstractmethod
 
 from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 
 
-class IProbabilityOutcome(abc.ABC):
+class IProbabilityOutcome(ABC):
     @property
-    @abc.abstractmethod
+    @abstractmethod
     def value(self) -> int:
         pass
 
     @property
-    @abc.abstractmethod
+    @abstractmethod
     def constraint_set(self) -> IConstraintSet:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def is_possible(self) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __add__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __sub__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __mul__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __floordiv__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __equal__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __not_equal__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __lt__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __le__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __gt__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __ge__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __and__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __or__(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def not_operator(self) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def max_operator(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def min_operator(self, other: object) -> "IProbabilityOutcome":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __str__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __repr__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __hash__(self) -> int:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __eq__(self, other: object) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __abs__(self) -> "IProbabilityOutcome":
         pass

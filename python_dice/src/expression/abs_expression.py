@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -16,7 +16,7 @@ class AbsExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(AbsExpression.TOKEN_RULE)
         def abs_operation(_, tokens) -> IDiceExpression:
             return AbsExpression(tokens[2])
@@ -46,5 +46,5 @@ class AbsExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return self._expression.get_contained_variables()

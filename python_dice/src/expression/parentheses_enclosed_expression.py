@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -15,7 +15,7 @@ class ParenthesisEnclosedExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(ParenthesisEnclosedExpression.RULE)
         def parenthesis_enclosed(_, tokens) -> IDiceExpression:
             return ParenthesisEnclosedExpression(tokens[1])
@@ -45,5 +45,5 @@ class ParenthesisEnclosedExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return self._expression.get_contained_variables()

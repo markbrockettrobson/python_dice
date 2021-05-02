@@ -1,5 +1,5 @@
 import math
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -17,7 +17,7 @@ class NotExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(NotExpression.TOKEN_RULE)
         def not_operation(_, tokens) -> IDiceExpression:
             return NotExpression(tokens[1])
@@ -47,5 +47,5 @@ class NotExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return self._expression.get_contained_variables()

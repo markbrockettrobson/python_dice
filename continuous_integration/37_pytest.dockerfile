@@ -4,8 +4,8 @@ RUN mkdir /usr/pydice
 WORKDIR /usr/pydice
 
 COPY requirements.txt ./
-
-RUN python -m pip install --no-cache-dir -r requirements.txt
+COPY requirements_test.txt ./
+RUN python -m pip install --no-cache-dir -r requirements_test.txt
 
 COPY setup.py ./
 COPY run_formatter_and_tests.py ./

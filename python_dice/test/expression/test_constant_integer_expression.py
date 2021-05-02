@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -7,11 +7,11 @@ from python_dice.src.expression.constant_integer_expression import ConstantInteg
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestConstantIntegerExpression(unittest.TestCase):
+class TestConstantIntegerExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
         self._test_constant_integers = ConstantIntegerExpression("14", self._probability_distribution_factory)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_constant_integer_add_production_function(self):
         ConstantIntegerExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

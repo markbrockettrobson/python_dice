@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.constant_binary_syntax import ConstantBinarySyntax
 
 
-class TestConstantBinarySyntax(unittest.TestCase):
+class TestConstantBinarySyntax(TestCase):
     def test_constant_binary_get_token_name(self):
         self.assertEqual(
             "CONSTANT_BINARY",

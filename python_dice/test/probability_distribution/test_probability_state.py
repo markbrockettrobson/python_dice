@@ -1,4 +1,4 @@
-import unittest
+from unittest import TestCase
 
 from python_dice.src.constraint.constraint_factory import ConstraintFactory
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
@@ -6,7 +6,7 @@ from python_dice.src.probability_distribution.probability_distribution_state imp
 from python_dice.src.probability_distribution.probability_outcome_factory import ProbabilityOutcomeFactory
 
 
-class TestProbabilityState(unittest.TestCase):
+class TestProbabilityState(TestCase):
     def setUp(self) -> None:
         self._probability_distribution_factory = ProbabilityDistributionFactory()
         self._probability_outcome_factory = ProbabilityOutcomeFactory()

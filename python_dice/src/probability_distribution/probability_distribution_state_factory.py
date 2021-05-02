@@ -1,4 +1,4 @@
-import typing
+from typing import Optional
 
 from python_dice.interface.constraint.i_constraint_factory import IConstraintFactory
 from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
@@ -18,8 +18,8 @@ from python_dice.src.probability_distribution.probability_distribution_state imp
 class ProbabilityDistributionStateFactory(IProbabilityDistributionStateFactory):
     def __init__(
         self,
-        probability_distribution_factory: typing.Optional[IProbabilityDistributionFactory] = None,
-        constraint_factory: typing.Optional[IConstraintFactory] = None,
+        probability_distribution_factory: Optional[IProbabilityDistributionFactory] = None,
+        constraint_factory: Optional[IConstraintFactory] = None,
     ):
         if probability_distribution_factory is None:
             probability_distribution_factory = ProbabilityDistributionFactory()

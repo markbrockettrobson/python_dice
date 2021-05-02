@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.integer_division_syntax import IntegerDivisionSyntax
 
 
-class TestIntegerDivisionSyntax(unittest.TestCase):
+class TestIntegerDivisionSyntax(TestCase):
     def test_integer_division_get_token_name(self):
         self.assertEqual(
             "INTEGER_DIVISION",

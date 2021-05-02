@@ -1,4 +1,4 @@
-import typing
+from typing import List
 
 import rply  # type: ignore
 
@@ -15,7 +15,7 @@ class PythonDiceLexer(IPythonDiceLexer):
         partial_lexer.ignore(r"\s+")
         self._lexer = partial_lexer.build()
 
-    def lex(self, input_text: str) -> typing.List[rply.Token]:
+    def lex(self, input_text: str) -> List[rply.Token]:
         try:
             return list(self._lexer.lex(input_text))
         except rply.errors.LexingError as exception:

@@ -1,11 +1,11 @@
-import abc
+from abc import ABC, abstractmethod
 
 import rply  # type: ignore
 
 
-class IDiceSyntax(abc.ABC, rply.token.BaseBox):
+class IDiceSyntax(ABC, rply.token.BaseBox):
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_token_name() -> str:
         """
 
@@ -14,7 +14,7 @@ class IDiceSyntax(abc.ABC, rply.token.BaseBox):
         """
 
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def get_token_regex() -> str:
         """
 

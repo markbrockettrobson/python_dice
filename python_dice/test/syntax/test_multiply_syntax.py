@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.multiply_syntax import MultiplySyntax
 
 
-class TestMultiplySyntax(unittest.TestCase):
+class TestMultiplySyntax(TestCase):
     def test_multiply_get_token_name(self):
         self.assertEqual("MULTIPLY", MultiplySyntax.get_token_name())
 

@@ -1,4 +1,4 @@
-import typing
+from typing import Dict, Set
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_constraint_factory import IConstraintFactory
@@ -6,7 +6,7 @@ from python_dice.interface.constraint.i_var_value_constraint import IVarValueCon
 
 
 class VarValueConstraint(IVarValueConstraint):
-    def __init__(self, name: str, values: typing.Set[int], constraint_factory: IConstraintFactory):
+    def __init__(self, name: str, values: Set[int], constraint_factory: IConstraintFactory):
         self._name = name
         self._values = values
         self._constraint_factory = constraint_factory
@@ -16,10 +16,10 @@ class VarValueConstraint(IVarValueConstraint):
         return self._name
 
     @property
-    def values(self) -> typing.Set[int]:
+    def values(self) -> Set[int]:
         return self._values
 
-    def complies(self, var_values: typing.Dict[str, int]) -> bool:
+    def complies(self, var_values: Dict[str, int]) -> bool:
         if self._name in var_values:
             if var_values[self._name] not in self._values:
                 return False

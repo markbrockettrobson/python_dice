@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.drop_keep_syntax import DropKeepSyntax
 
 
-class TestDropKeepSyntax(unittest.TestCase):
+class TestDropKeepSyntax(TestCase):
     def test_drop_keep_get_token_name(self):
         self.assertEqual("DROP_KEEP_DICE", DropKeepSyntax.get_token_name())
 

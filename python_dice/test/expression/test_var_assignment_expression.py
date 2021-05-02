@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -12,11 +12,11 @@ from python_dice.src.expression.var_assignment_expression import VarAssignmentEx
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestVarAssignmentExpression(unittest.TestCase):
+class TestVarAssignmentExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
 
-        self._mock_syntax = mock.create_autospec(IDiceExpression)
+        self._mock_syntax = create_autospec(IDiceExpression)
         self._mock_syntax.roll.return_value = 2
         self._mock_syntax.max.return_value = 8
         self._mock_syntax.min.return_value = 6
@@ -28,10 +28,10 @@ class TestVarAssignmentExpression(unittest.TestCase):
         self._mock_syntax.get_contained_variables.return_value = {"mock"}
         self._test_name = "test_name"
 
-        self._mock_state = mock.create_autospec(IProbabilityDistributionState, spec_set=True)
+        self._mock_state = create_autospec(IProbabilityDistributionState, spec_set=True)
 
         self._test_assignment_expression = VarAssignmentExpression(self._mock_state, self._test_name, self._mock_syntax)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_var_assignment_add_production_function(self):
         VarAssignmentExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)
@@ -57,7 +57,7 @@ class TestVarAssignmentExpression(unittest.TestCase):
         self.assertEqual(45 + 2, self._test_assignment_expression.estimated_cost())
 
     def test_var_get_probability_distribution(self):
-        mock_probability_distribution = mock.create_autospec(IProbabilityDistribution)
+        mock_probability_distribution = create_autospec(IProbabilityDistribution)
         self._mock_syntax.get_probability_distribution.return_value = mock_probability_distribution
         self.assertEqual(
             mock_probability_distribution,

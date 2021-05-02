@@ -1,5 +1,5 @@
 import re
-import typing
+from typing import Dict, Iterable
 
 
 def _find_range(value: str) -> range:
@@ -18,8 +18,8 @@ def _find_range(value: str) -> range:
     return range(min(range_start, range_end), max(range_start, range_end) + 1)
 
 
-def get_single_dice_outcome_map(dice_type_string: str) -> typing.Dict[int, int]:
-    range_values: typing.Iterable
+def get_single_dice_outcome_map(dice_type_string: str) -> Dict[int, int]:
+    range_values: Iterable
 
     def safe_add(dictionary, value, amount):
         if value not in dictionary:

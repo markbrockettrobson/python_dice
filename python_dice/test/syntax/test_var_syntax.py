@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.var_syntax import VarSyntax
 
 
-class TestVarSyntax(unittest.TestCase):
+class TestVarSyntax(TestCase):
     def test_var_syntax_get_token_name(self):
         self.assertEqual("VAR", VarSyntax.get_token_name())
 

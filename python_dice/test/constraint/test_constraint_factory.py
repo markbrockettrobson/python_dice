@@ -1,5 +1,5 @@
-import typing
-import unittest
+from typing import Set
+from unittest import TestCase
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -10,7 +10,7 @@ from python_dice.interface.constraint.i_var_value_constraint import IVarValueCon
 from python_dice.src.constraint.constraint_factory import ConstraintFactory
 
 
-class TestConstraintFactory(unittest.TestCase):
+class TestConstraintFactory(TestCase):
     def test_impossible_constraint(self):
         constraint_factory = ConstraintFactory()
         self.assertIsInstance(constraint_factory.impossible_constraint, IImpossibleConstraint)
@@ -21,7 +21,7 @@ class TestConstraintFactory(unittest.TestCase):
 
     @hypothesis.given(name=strategies.text(), int_set=strategies.sets(strategies.integers()))
     @hypothesis.settings(deadline=1000)
-    def test_var_value_constraint(self, name: str, int_set: typing.Set[int]):
+    def test_var_value_constraint(self, name: str, int_set: Set[int]):
         constraint_factory = ConstraintFactory()
         var_value_constraint = constraint_factory.var_value_constraint(name=name, values=int_set)
 

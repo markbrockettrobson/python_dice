@@ -1,0 +1,13 @@
+-r requirements.txt
+
+black>=20.8b1
+codecov>=2.0.15
+hypothesis==6.9.2
+pylint>=2.3.1
+pytest-black>=0.3.11
+pytest-cov>=2.7.1
+pytest-isort>=1.2.0
+pytest-mypy>=0.8.1
+pytest-pylint>=0.17.0
+pytest>=5.0.1
+twine>=3.2.0
