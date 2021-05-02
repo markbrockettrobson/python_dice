@@ -1,8 +1,8 @@
-import abc
+from abc import ABC, abstractmethod
 
 
-class IPythonDiceLexer(abc.ABC):
-    @abc.abstractmethod
+class IPythonDiceLexer(ABC):
+    @abstractmethod
     def lex(self, input_text: str):
         """
 

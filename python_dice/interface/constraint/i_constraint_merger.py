@@ -1,24 +1,24 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 
 
-class IConstraintMerger(abc.ABC):
-    @abc.abstractmethod
+class IConstraintMerger(ABC):
+    @abstractmethod
     def merge_constraints(self, constraint_set: typing.Set[IConstraint]) -> typing.Set[IConstraint]:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def merge_new_constraints(
         self, constraint_set: typing.Set[IConstraint], new_constraint: IConstraint
     ) -> typing.Set[IConstraint]:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __str__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __repr__(self) -> str:
         pass

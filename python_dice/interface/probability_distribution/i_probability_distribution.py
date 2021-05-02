@@ -1,4 +1,4 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 from PIL import Image  # type: ignore
@@ -6,8 +6,8 @@ from PIL import Image  # type: ignore
 from python_dice.interface.probability_distribution.i_probability_outcome import IProbabilityOutcome
 
 
-class IProbabilityDistribution(abc.ABC):
-    @abc.abstractmethod
+class IProbabilityDistribution(ABC):
+    @abstractmethod
     def get_dict_form(self) -> typing.Dict[int, float]:
         """
 
@@ -15,7 +15,7 @@ class IProbabilityDistribution(abc.ABC):
                 <typing.Dict[int, float]>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_result_map(self) -> typing.Dict[int, int]:
         """
 
@@ -23,6 +23,7 @@ class IProbabilityDistribution(abc.ABC):
                  <typing.Dict[int, int]>
         """
 
+    @abstractmethod
     def get_constraint_result_map(self) -> typing.Dict[IProbabilityOutcome, int]:
         """
 
@@ -30,7 +31,7 @@ class IProbabilityDistribution(abc.ABC):
                  <typing.Dict[IProbabilityOutcome, int]>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_histogram(self) -> Image:
         """
 
@@ -39,7 +40,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_at_least_histogram(self) -> Image:
         """
 
@@ -48,7 +49,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_at_most_histogram(self) -> Image:
         """
 
@@ -57,7 +58,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_compare_histogram(self, other_probability: "IProbabilityDistribution") -> Image:
         """
 
@@ -66,7 +67,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_compare(
         self,
         other_probability: "IProbabilityDistribution",
@@ -80,7 +81,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_compare_at_least(
         self,
         other_probability: "IProbabilityDistribution",
@@ -94,7 +95,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_compare_at_most(
         self,
         other_probability: "IProbabilityDistribution",
@@ -108,7 +109,7 @@ class IProbabilityDistribution(abc.ABC):
                  <Image>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def max(self) -> int:
         """
 
@@ -116,7 +117,7 @@ class IProbabilityDistribution(abc.ABC):
                   <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def min(self) -> int:
         """
 
@@ -124,7 +125,7 @@ class IProbabilityDistribution(abc.ABC):
                   <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def contains_zero(self) -> bool:
         """
 
@@ -132,7 +133,7 @@ class IProbabilityDistribution(abc.ABC):
                   <bool>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def average(self) -> float:
         """
 
@@ -140,82 +141,82 @@ class IProbabilityDistribution(abc.ABC):
                  <float>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def at_least(self) -> typing.Dict[int, float]:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def at_most(self) -> typing.Dict[int, float]:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __add__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __sub__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __mul__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __floordiv__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __equal__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __not_equal__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __lt__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __le__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __gt__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __ge__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __and__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __or__(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def not_operator(self) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def max_operator(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def min_operator(self, other: object) -> "IProbabilityDistribution":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __str__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __repr__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __abs__(self) -> "IProbabilityDistribution":
         pass

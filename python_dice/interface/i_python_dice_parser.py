@@ -1,4 +1,4 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 from python_dice.interface.expression.i_dice_expression import IDiceExpression
@@ -7,8 +7,8 @@ from python_dice.interface.probability_distribution.i_probability_distribution_s
 )
 
 
-class IPythonDiceParser(abc.ABC):
-    @abc.abstractmethod
+class IPythonDiceParser(ABC):
+    @abstractmethod
     def parse(
         self,
         input_text: str,

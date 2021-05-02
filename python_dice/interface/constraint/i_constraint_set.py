@@ -1,47 +1,47 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 
 
-class IConstraintSet(abc.ABC):
-    @abc.abstractmethod
+class IConstraintSet(ABC):
+    @abstractmethod
     def add_constraint(self, constraint: IConstraint):
         pass
 
     @property
-    @abc.abstractmethod
+    @abstractmethod
     def constraints(self) -> typing.Set[IConstraint]:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def complies(self, var_values: typing.Dict[str, int]) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def is_possible(self) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def combine_sets(self, constraint_set: "IConstraintSet") -> "IConstraintSet":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __eq__(self, other: object) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __ne__(self, other: object) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __str__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __repr__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __hash__(self) -> int:
         pass

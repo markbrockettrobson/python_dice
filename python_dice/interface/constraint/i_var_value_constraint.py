@@ -1,4 +1,4 @@
-import abc
+from abc import ABC
 import typing
 
 from python_dice.interface.constraint.i_constraint import IConstraint

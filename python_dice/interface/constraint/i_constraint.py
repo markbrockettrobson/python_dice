@@ -1,40 +1,40 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 
-class IConstraint(abc.ABC):
-    @abc.abstractmethod
+class IConstraint(ABC):
+    @abstractmethod
     def complies(self, var_values: typing.Dict[str, int]) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def can_merge(self, other: "IConstraint") -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def merge(self, other: "IConstraint") -> "IConstraint":
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def is_possible(self) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __hash__(self) -> int:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __eq__(self, other: object) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __ne__(self, other: object) -> bool:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __str__(self) -> str:
         pass
 
-    @abc.abstractmethod
+    @abstractmethod
     def __repr__(self) -> str:
         pass

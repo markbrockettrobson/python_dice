@@ -1,4 +1,4 @@
-import abc
+from abc import ABC, abstractmethod
 import typing
 
 import rply  # type: ignore
@@ -9,9 +9,9 @@ from python_dice.interface.probability_distribution.i_probability_distribution_f
 )
 
 
-class IDiceExpression(abc.ABC, rply.token.Token):
+class IDiceExpression(ABC, rply.token.Token):
     @staticmethod
-    @abc.abstractmethod
+    @abstractmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
     ) -> typing.Callable:
@@ -20,7 +20,7 @@ class IDiceExpression(abc.ABC, rply.token.Token):
         add a production rule to the parser generator
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def roll(self) -> int:
         """
 
@@ -28,7 +28,7 @@ class IDiceExpression(abc.ABC, rply.token.Token):
                  <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def max(self) -> int:
         """
 
@@ -36,7 +36,7 @@ class IDiceExpression(abc.ABC, rply.token.Token):
                  <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def min(self) -> int:
         """
 
@@ -44,7 +44,7 @@ class IDiceExpression(abc.ABC, rply.token.Token):
                  <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def estimated_cost(self) -> int:
         """
 
@@ -52,14 +52,14 @@ class IDiceExpression(abc.ABC, rply.token.Token):
                  <int>
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_probability_distribution(self) -> IProbabilityDistribution:
         """
 
         :return: the probability of the statement
         """
 
-    @abc.abstractmethod
+    @abstractmethod
     def get_contained_variables(
         self,
     ) -> typing.Set[str]:
