@@ -13,12 +13,13 @@ RUN python -m venv venv
 RUN . venv/bin/activate && python -m pip install --upgrade pip
 
 COPY requirements.txt ./
+COPY requirements_test.txt ./
 COPY setup.py ./
 COPY run_formatter_and_tests.py ./
 COPY pyproject.toml ./
 COPY python_dice ./python_dice
 
-RUN . venv/bin/activate && python -m pip install --no-cache-dir -r requirements.txt
+RUN . venv/bin/activate && python -m pip install --no-cache-dir -r requirements_test.txt
 RUN . venv/bin/activate && python -m pytest --black --isort --pylint --mypy --cov .
 RUN . venv/bin/activate && python -m codecov --token=808a466d-ee9a-43ff-b9eb-a863756030c7
 
