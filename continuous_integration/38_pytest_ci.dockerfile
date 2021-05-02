@@ -3,14 +3,14 @@ FROM python:3.8
 RUN mkdir /usr/localrepo
 WORKDIR /usr/localrepo
 
-RUN git clone https://github.com/markbrockettrobson/pydice.git
+RUN git clone https://github.com/markbrockettrobson/python_dice.git
 
 WORKDIR /usr/localrepo/pydice
 RUN rm -rf ./python_dice
 RUN rm pylintrc
 
 RUN python -m venv venv
-RUN venv/bin/python -m pip install --upgrade pip
+RUN . venv/bin/activate && -m pip install --upgrade pip
 
 COPY requirements.txt ./
 COPY setup.py ./
