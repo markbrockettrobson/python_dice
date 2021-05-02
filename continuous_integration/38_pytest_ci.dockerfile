@@ -7,7 +7,7 @@ RUN git clone https://github.com/markbrockettrobson/python_dice.git
 
 WORKDIR /usr/localrepo/pydice
 RUN rm -rf ./python_dice
-RUN rm pylintrc
+RUN rm -f pylintrc
 
 RUN python -m venv venv
 RUN . venv/bin/activate && -m pip install --upgrade pip
