@@ -1,15 +1,9 @@
-import subprocess
-
 import setuptools  # type: ignore
 
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
-try:
-    with open("requirements.txt", "r") as f:
-        required = f.read().splitlines()
-except:
-    print("could not find requirements.txt")
-    subprocess.run("ls")
+with open("requirements.txt", "r") as f:
+    required = f.read().splitlines()
 
 setuptools.setup(
     name="python_dice",
