@@ -150,7 +150,7 @@ class TestConstraintMerger(unittest.TestCase):
             strategies.integers(min_value=0, max_value=TEST_SIZE - 1), min_size=4, max_size=4, unique=True
         )
     )
-    @hypothesis.settings(deadline=1000)
+    @hypothesis.settings(deadline=2000)
     def test_merge_constraints_chain_merge(self, indexes: typing.List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -172,7 +172,7 @@ class TestConstraintMerger(unittest.TestCase):
             strategies.integers(min_value=0, max_value=TEST_SIZE - 1), min_size=5, max_size=5, unique=True
         )
     )
-    @hypothesis.settings(deadline=1000)
+    @hypothesis.settings(deadline=2000)
     def test_merge_new_constraints_chain_in_old_set(self, indexes: typing.List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -194,7 +194,7 @@ class TestConstraintMerger(unittest.TestCase):
             strategies.integers(min_value=0, max_value=TEST_SIZE - 1), min_size=4, max_size=4, unique=True
         )
     )
-    @hypothesis.settings(deadline=1000)
+    @hypothesis.settings(deadline=2000)
     def test_merge_new_constraints_chain_merge_in_new_value(self, indexes: typing.List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -221,7 +221,7 @@ class TestConstraintMerger(unittest.TestCase):
             strategies.integers(min_value=0, max_value=TEST_SIZE - 1), min_size=5, max_size=5, unique=True
         )
     )
-    @hypothesis.settings(deadline=1000)
+    @hypothesis.settings(deadline=2000)
     def test_merge_constraints_tree_merge(self, indexes: typing.List[int]):
         self.setUp()
         self._set_up_tree_merge(
@@ -248,7 +248,7 @@ class TestConstraintMerger(unittest.TestCase):
             strategies.integers(min_value=0, max_value=TEST_SIZE - 1), min_size=6, max_size=6, unique=True
         )
     )
-    @hypothesis.settings(deadline=1000)
+    @hypothesis.settings(deadline=2000)
     def test_merge_new_constraints_tree_in_old_set(self, indexes: typing.List[int]):
         self.setUp()
         self._set_up_tree_merge(
