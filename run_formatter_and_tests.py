@@ -12,18 +12,17 @@ def main(run_formatters: bool = False):
         if env is None:
             print(f"> {joined_command}")
             return subprocess.run(command, check=True, env=working_env, shell=True)
-        else:
-            for name, value in env.items():
-                working_env[name] = value
-            print(f"> {joined_command}  {env}")
-            return subprocess.run(command, check=True, env=working_env, shell=True)
+
+        for name, value in env.items():
+            working_env[name] = value
+        print(f"> {joined_command}  {env}")
+        return subprocess.run(command, check=True, env=working_env, shell=True)
 
     if run_formatters:
         run_command(["python", "-m", "black", "."])
         run_command(["python", "-m", "isort", "."])
         return run_command(["python", "-m", "pytest", "--black", "--isort", "--pylint", "--mypy", "--cov", "."])
-    else:
-        return run_command(["python", "-m", "pytest", "."])
+    return run_command(["python", "-m", "pytest", "."])
 
 
 if __name__ == "__main__":

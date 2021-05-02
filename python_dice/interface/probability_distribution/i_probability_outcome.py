@@ -1,4 +1,5 @@
 import abc
+
 from python_dice.interface.constraint.i_constraint_set import IConstraintSet
 
 

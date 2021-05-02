@@ -217,5 +217,5 @@ class IProbabilityDistribution(abc.ABC):
         pass
 
     @abc.abstractmethod
-    def __abs__(self) -> "IProbabilityOutcome":
+    def __abs__(self) -> "IProbabilityDistribution":
         pass
