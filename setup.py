@@ -1,9 +1,15 @@
+import subprocess
+
 import setuptools  # type: ignore
 
 with open("README.md", "r") as fh:
     LONG_DESCRIPTION = fh.read()
-with open("requirements.txt") as f:
-    required = f.read().splitlines()
+try:
+    with open("requirements.txt", "r") as f:
+        required = f.read().splitlines()
+except:
+    print("could not find requirements.txt")
+    subprocess.run("ls")
 
 setuptools.setup(
     name="python_dice",
@@ -33,5 +39,6 @@ setuptools.setup(
         "Operating System :: OS Independent",
     ],
     install_requires=required,
+    data_files=["requirements.txt", "requirements_test.txt"],
     python_requires=">=3.6",
 )
