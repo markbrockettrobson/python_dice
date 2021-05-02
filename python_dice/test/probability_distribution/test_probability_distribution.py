@@ -1,4 +1,4 @@
-import unittest
+from unittest import TestCase
 
 from PIL import Image  # type: ignore
 
@@ -10,7 +10,7 @@ from python_dice.test import pil_image_to_byte_array
 from python_dice.test.test_image.test_image_path_finder import get_image_path
 
 
-class TestProbabilityDistribution(unittest.TestCase):
+class TestProbabilityDistribution(TestCase):
     def setUp(self) -> None:
         self._probability_outcome_factory = ProbabilityOutcomeFactory()
         self._test_distribution_d4 = ProbabilityDistribution(

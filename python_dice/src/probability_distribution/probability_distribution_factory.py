@@ -1,4 +1,4 @@
-import typing
+from typing import Dict, Optional, Union
 
 from python_dice.interface.probability_distribution.i_probability_distribution import IProbabilityDistribution
 from python_dice.interface.probability_distribution.i_probability_distribution_factory import (
@@ -11,13 +11,13 @@ from python_dice.src.probability_distribution.probability_outcome_factory import
 
 
 class ProbabilityDistributionFactory(IProbabilityDistributionFactory):
-    def __init__(self, probability_outcome_factory: typing.Optional[IProbabilityOutcomeFactory] = None):
+    def __init__(self, probability_outcome_factory: Optional[IProbabilityOutcomeFactory] = None):
         if probability_outcome_factory is None:
             probability_outcome_factory = ProbabilityOutcomeFactory()
         self._probability_outcome_factory = probability_outcome_factory
 
     def create(
         self,
-        result_map: typing.Optional[typing.Union[typing.Dict[IProbabilityOutcome, int], typing.Dict[int, int]]] = None,
+        result_map: Optional[Union[Dict[IProbabilityOutcome, int], Dict[int, int]]] = None,
     ) -> IProbabilityDistribution:
         return ProbabilityDistribution(self._probability_outcome_factory, result_map)

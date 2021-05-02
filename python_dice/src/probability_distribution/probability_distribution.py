@@ -1,7 +1,7 @@
 import copy
 import io
 import operator
-import typing
+from typing import Callable, Dict, List, Optional, Union
 
 from matplotlib import pyplot  # type: ignore
 from PIL import Image  # type: ignore
@@ -15,11 +15,11 @@ class ProbabilityDistribution(IProbabilityDistribution):
     def __init__(
         self,
         probability_outcome_factory: IProbabilityOutcomeFactory,
-        result_map: typing.Optional[typing.Union[typing.Dict[IProbabilityOutcome, int], typing.Dict[int, int]]] = None,
+        result_map: Optional[Union[Dict[IProbabilityOutcome, int], Dict[int, int]]] = None,
     ):
         self._outcome_count = 0
         self._probability_outcome_factory = probability_outcome_factory
-        self._result_map: typing.Dict[IProbabilityOutcome, int] = {}
+        self._result_map: Dict[IProbabilityOutcome, int] = {}
 
         def safe_add(key, value):
             if key not in self._result_map:
@@ -128,8 +128,8 @@ class ProbabilityDistribution(IProbabilityDistribution):
 
     @staticmethod
     def _make_histogram(
-        x_values: typing.Union[typing.List[int], typing.List[float]],
-        y_values: typing.Union[typing.List[int], typing.List[float]],
+        x_values: Union[List[int], List[float]],
+        y_values: Union[List[int], List[float]],
         average: float = None,
     ) -> Image:
         x_values, y_values = (list(t) for t in zip(*sorted(zip(x_values, y_values))))
@@ -158,10 +158,10 @@ class ProbabilityDistribution(IProbabilityDistribution):
 
     @staticmethod
     def _make_line_plot(
-        x_values_one: typing.Union[typing.List[int], typing.List[float]],
-        y_values_one: typing.Union[typing.List[int], typing.List[float]],
-        x_values_two: typing.Union[typing.List[int], typing.List[float]],
-        y_values_two: typing.Union[typing.List[int], typing.List[float]],
+        x_values_one: Union[List[int], List[float]],
+        y_values_one: Union[List[int], List[float]],
+        x_values_two: Union[List[int], List[float]],
+        y_values_two: Union[List[int], List[float]],
         lable_one: str = "Distribution One",
         lable_two: str = "Distribution Two",
     ) -> Image:
@@ -196,7 +196,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
             total_values += item * value
         return total_values / self._outcome_count
 
-    def at_least(self) -> typing.Dict[int, float]:
+    def at_least(self) -> Dict[int, float]:
         at_least_dict = {}
         total_above: float = 1
         histogram_form = self._get_histogram_form(self.get_dict_form())
@@ -207,7 +207,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
             total_above -= histogram_form[value]
         return at_least_dict
 
-    def at_most(self) -> typing.Dict[int, float]:
+    def at_most(self) -> Dict[int, float]:
         at_most_dict = {}
         at_or_below: float = 0
         histogram_form = self._get_histogram_form(self.get_dict_form())
@@ -218,7 +218,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
             at_most_dict[value] = at_or_below / 1
         return at_most_dict
 
-    def get_result_map(self) -> typing.Dict[int, int]:
+    def get_result_map(self) -> Dict[int, int]:
         new_result_map = {}
 
         def safe_add(key, value):
@@ -230,14 +230,14 @@ class ProbabilityDistribution(IProbabilityDistribution):
             safe_add(probability_outcome.value, count)
         return new_result_map
 
-    def get_constraint_result_map(self) -> typing.Dict[IProbabilityOutcome, int]:
+    def get_constraint_result_map(self) -> Dict[IProbabilityOutcome, int]:
         return self._result_map
 
-    def get_dict_form(self) -> typing.Dict[int, float]:
+    def get_dict_form(self) -> Dict[int, float]:
         return {key: value / self._outcome_count for key, value in self.get_result_map().items()}
 
     @staticmethod
-    def _get_histogram_form(base_data: typing.Dict[int, float]) -> typing.Dict[int, float]:
+    def _get_histogram_form(base_data: Dict[int, float]) -> Dict[int, float]:
         base_data = copy.copy(base_data)
         item_list = [(key, base_data[key]) for key in base_data.keys()]
         item_list.sort(key=lambda tup: tup[0])
@@ -248,9 +248,9 @@ class ProbabilityDistribution(IProbabilityDistribution):
 
     def _combine_distributions(
         self,
-        combination_function: typing.Callable[[IProbabilityOutcome, IProbabilityOutcome], IProbabilityOutcome],
+        combination_function: Callable[[IProbabilityOutcome, IProbabilityOutcome], IProbabilityOutcome],
         other: IProbabilityDistribution,
-    ) -> typing.Dict[IProbabilityOutcome, int]:
+    ) -> Dict[IProbabilityOutcome, int]:
         new_result_map = {}
 
         def safe_add(key, value):

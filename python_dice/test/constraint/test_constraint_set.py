@@ -1,6 +1,6 @@
-import typing
-import unittest
-import unittest.mock as mock
+from typing import Dict, Set
+from unittest import TestCase
+from unittest.mock import Mock, call, create_autospec
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -10,10 +10,10 @@ from python_dice.interface.constraint.i_constraint_merger import IConstraintMerg
 from python_dice.src.constraint.constraint_set import ConstraintSet
 
 
-class TestConstraintSet(unittest.TestCase):
+class TestConstraintSet(TestCase):
     def setUp(self):
-        self._constraint_merger = mock.create_autospec(IConstraintMerger)
-        self._mock_constraints = [mock.create_autospec(IConstraint) for _ in range(10)]
+        self._constraint_merger = create_autospec(IConstraintMerger)
+        self._mock_constraints = [create_autospec(IConstraint) for _ in range(10)]
 
         for constraint in self._mock_constraints:
             constraint.complies.return_value = True
@@ -31,10 +31,10 @@ class TestConstraintSet(unittest.TestCase):
         constraint_set = ConstraintSet({self._mock_constraints[0]}, self._constraint_merger)
         for constraint in self._mock_constraints[1:4]:
             constraint_set.add_constraint(constraint)
-        calls = [mock.call(constraint_set=set(), new_constraint=self._mock_constraints[0])]
+        calls = [call(constraint_set=set(), new_constraint=self._mock_constraints[0])]
         calls.extend(
             [
-                mock.call(constraint_set={self._mock_constraints[-1]}, new_constraint=self._mock_constraints[index])
+                call(constraint_set={self._mock_constraints[-1]}, new_constraint=self._mock_constraints[index])
                 for index in range(1, 4)
             ]
         )
@@ -42,7 +42,7 @@ class TestConstraintSet(unittest.TestCase):
         self._constraint_merger.merge_new_constraints.assert_has_calls(calls)
 
     def test_constraints(self):
-        mock_set = mock.Mock()
+        mock_set = Mock()
         self._constraint_merger.merge_new_constraints.return_value = mock_set
 
         constraint_set = ConstraintSet({self._mock_constraints[0]}, self._constraint_merger)
@@ -70,7 +70,7 @@ class TestConstraintSet(unittest.TestCase):
         var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
     )
     @hypothesis.settings(deadline=1000)
-    def test_complies_true(self, var_values: typing.Dict[str, int]):
+    def test_complies_true(self, var_values: Dict[str, int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
 
@@ -87,7 +87,7 @@ class TestConstraintSet(unittest.TestCase):
         false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
     )
     @hypothesis.settings(deadline=1000)
-    def test_complies_false(self, var_values: typing.Dict[str, int], false_indies: typing.Set[int]):
+    def test_complies_false(self, var_values: Dict[str, int], false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
 
@@ -105,7 +105,7 @@ class TestConstraintSet(unittest.TestCase):
         false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
     )
     @hypothesis.settings(deadline=1000)
-    def test_is_possible_false(self, false_indies: typing.Set[int]):
+    def test_is_possible_false(self, false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
         for false_index in false_indies:

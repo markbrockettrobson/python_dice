@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.assignment_syntax import AssignmentSyntax
 
 
-class TestAssignmentSyntax(unittest.TestCase):
+class TestAssignmentSyntax(TestCase):
     def test_assignment_get_token_name(self):
         self.assertEqual("ASSIGNMENT", AssignmentSyntax.get_token_name())
 

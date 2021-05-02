@@ -1,15 +1,15 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 from python_dice.src.python_dice_lexer import PythonDiceLexer
 from python_dice.src.python_dice_parser import PythonDiceParser
 
 
 # pylint: disable=too-many-public-methods
-class TestPythonDiceParser(unittest.TestCase):
+class TestPythonDiceParser(TestCase):
     def setUp(self):
         self._test_parser = PythonDiceParser()
-        self._mock_pydice_lexer = mock.create_autospec(PythonDiceLexer)
+        self._mock_pydice_lexer = create_autospec(PythonDiceLexer)
         self._mock_token_iter = iter(PythonDiceLexer().lex("3"))
         self._mock_pydice_lexer.lex.return_value = self._mock_token_iter
 

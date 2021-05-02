@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -9,9 +9,9 @@ from python_dice.src.probability_distribution.probability_outcome import Probabi
 
 
 # pylint: disable=too-many-public-methods
-class TestProbabilityOutcome(unittest.TestCase):
+class TestProbabilityOutcome(TestCase):
     def setUp(self) -> None:
-        self._constraint_sets = [mock.create_autospec(IConstraintSet) for _ in range(3)]
+        self._constraint_sets = [create_autospec(IConstraintSet) for _ in range(3)]
         for constraint_set in self._constraint_sets:
             constraint_set.combine_sets.return_value = self._constraint_sets[2]
 

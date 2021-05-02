@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.subtract_syntax import SubtractSyntax
 
 
-class TestSubtractSyntax(unittest.TestCase):
+class TestSubtractSyntax(TestCase):
     def test_subtract_get_token_name(self):
         self.assertEqual("SUBTRACT", SubtractSyntax.get_token_name())
 

@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -17,7 +17,7 @@ class MinMaxExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(MinMaxExpression.TOKEN_RULE)
         def min_max(_, tokens) -> IDiceExpression:
             return MinMaxExpression(tokens[0].value, tokens[2], tokens[4])
@@ -60,5 +60,5 @@ class MinMaxExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return self._expression_one.get_contained_variables().union(self._expression_two.get_contained_variables())

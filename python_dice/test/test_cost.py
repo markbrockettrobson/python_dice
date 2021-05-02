@@ -1,14 +1,14 @@
 import timeit
-import typing
-import unittest
+from typing import List
+from unittest import TestCase
 
 from python_dice.src.python_dice_interpreter import PythonDiceInterpreter
 
 
-class TestCost(unittest.TestCase):
+class TestCost(TestCase):
     @staticmethod
     def do_not_run_test_estimated_cost_in_order():
-        programs: typing.List[typing.List[str]] = [
+        programs: List[List[str]] = [
             ["25d25"],
             ["25d30"],
             ["30d30"],

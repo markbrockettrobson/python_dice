@@ -1,6 +1,6 @@
 import random
 import re
-import typing
+from typing import Callable, Dict, List, Set
 
 import rply  # type: ignore
 
@@ -20,7 +20,7 @@ class DropKeepExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(DropKeepExpression.TOKEN_RULE)
         def drop_keep(_, tokens) -> IDiceExpression:
             return DropKeepExpression(tokens[0].value, probability_distribution_factory)
@@ -128,15 +128,15 @@ class DropKeepExpression(IDiceExpression):
         return self._probability_distribution_factory.create(out_come_map)
 
     @staticmethod
-    def _build_dice_dict(number_of_dice: int, dice_outcome_map: typing.Dict[int, int]) -> typing.Dict[str, int]:
-        def safe_add_to_dict(dictionary: typing.Dict[str, int], key: str, value: int) -> None:
+    def _build_dice_dict(number_of_dice: int, dice_outcome_map: Dict[int, int]) -> Dict[str, int]:
+        def safe_add_to_dict(dictionary: Dict[str, int], key: str, value: int) -> None:
             if key not in dictionary:
                 dictionary[key] = 0
             dictionary[key] += value
 
         current_dict = {"": 1}
         for _ in range(number_of_dice):
-            new_dict: typing.Dict[str, int] = {}
+            new_dict: Dict[str, int] = {}
             for dice_outcome, count in dice_outcome_map.items():
                 for old_key, old_value in current_dict.items():
                     new_key = DropKeepExpression._string_key_to_list(old_key)
@@ -151,13 +151,13 @@ class DropKeepExpression(IDiceExpression):
         return current_dict
 
     @staticmethod
-    def _string_key_to_list(string: str) -> typing.List[int]:
+    def _string_key_to_list(string: str) -> List[int]:
         if string == "":
             return []
         return [int(n) for n in string.split("|")]
 
     @staticmethod
-    def _int_list_to_string(values: typing.List[int]) -> str:
+    def _int_list_to_string(values: List[int]) -> str:
         values.sort()
         return "|".join([str(n) for n in values])
 
@@ -174,19 +174,19 @@ class DropKeepExpression(IDiceExpression):
 
     @staticmethod
     def _compute_iterations(
-        current: typing.Dict[str, int],
+        current: Dict[str, int],
         number_of_dice: int,
-        dice_outcome_map: typing.Dict[int, int],
+        dice_outcome_map: Dict[int, int],
         is_keep: bool,
-    ) -> typing.Dict[str, int]:
-        def safe_add_to_dict(dictionary: typing.Dict[str, int], key: str, value: int) -> None:
+    ) -> Dict[str, int]:
+        def safe_add_to_dict(dictionary: Dict[str, int], key: str, value: int) -> None:
             if key not in dictionary:
                 dictionary[key] = 0
             dictionary[key] += value
 
         current_dict = current
         for _ in range(number_of_dice):
-            new_dict: typing.Dict[str, int] = {}
+            new_dict: Dict[str, int] = {}
             for dice_outcome, count in dice_outcome_map.items():
                 for old_key, old_value in current_dict.items():
                     new_key = DropKeepExpression._update_key_list(old_key, dice_outcome, is_keep)
@@ -195,13 +195,13 @@ class DropKeepExpression(IDiceExpression):
         return current_dict
 
     @staticmethod
-    def _collapse_outcomes(outcomes: typing.Dict[str, int]) -> typing.Dict[int, int]:
-        def safe_add_to_dict(dictionary: typing.Dict[int, int], key: int, value: int) -> None:
+    def _collapse_outcomes(outcomes: Dict[str, int]) -> Dict[int, int]:
+        def safe_add_to_dict(dictionary: Dict[int, int], key: int, value: int) -> None:
             if key not in dictionary:
                 dictionary[key] = 0
             dictionary[key] += value
 
-        new_dict: typing.Dict[int, int] = {}
+        new_dict: Dict[int, int] = {}
         for current_key, current_value in outcomes.items():
             total = sum(DropKeepExpression._string_key_to_list(current_key))
             safe_add_to_dict(new_dict, total, current_value)
@@ -209,5 +209,5 @@ class DropKeepExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return set()

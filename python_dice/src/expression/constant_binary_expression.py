@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -15,7 +15,7 @@ class ConstantBinaryExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(ConstantBinaryExpression.TOKEN_RULE)
         def constant_binary(_, tokens) -> IDiceExpression:
             return ConstantBinaryExpression(tokens[0].value, probability_distribution_factory)
@@ -49,5 +49,5 @@ class ConstantBinaryExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return set()

@@ -1,4 +1,4 @@
-import typing
+from typing import Optional, Tuple
 
 import rply  # type: ignore
 
@@ -26,9 +26,9 @@ from python_dice.src.python_dice_syntax_objects import LEXER_SYNTAX, PARSER_EXPR
 class PythonDiceParser(IPythonDiceParser):
     def __init__(
         self,
-        lexer: typing.Optional[IPythonDiceLexer] = None,
-        probability_distribution_factory: typing.Optional[IProbabilityDistributionFactory] = None,
-        probability_distribution_state_factory: typing.Optional[IProbabilityDistributionStateFactory] = None,
+        lexer: Optional[IPythonDiceLexer] = None,
+        probability_distribution_factory: Optional[IProbabilityDistributionFactory] = None,
+        probability_distribution_state_factory: Optional[IProbabilityDistributionStateFactory] = None,
     ):
         if lexer is None:
             lexer = PythonDiceLexer()
@@ -60,7 +60,7 @@ class PythonDiceParser(IPythonDiceParser):
         self,
         input_text: str,
         state: IProbabilityDistributionState = None,
-    ) -> typing.Tuple[IDiceExpression, IProbabilityDistributionState,]:
+    ) -> Tuple[IDiceExpression, IProbabilityDistributionState,]:
         if state is None:
             state = self._probability_distribution_state_factory.create_new_empty_set()
         return self._parser.parse(iter(self._lexer.lex(input_text)), state=state), state

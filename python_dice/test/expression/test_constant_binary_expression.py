@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -7,12 +7,12 @@ from python_dice.src.expression.constant_binary_expression import ConstantBinary
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestConstantBinaryExpression(unittest.TestCase):
+class TestConstantBinaryExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
         self._test_constant_binary_true = ConstantBinaryExpression("True", self._probability_distribution_factory)
         self._test_constant_binary_false = ConstantBinaryExpression("False", self._probability_distribution_factory)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_constant_binary_add_production_function(self):
         ConstantBinaryExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

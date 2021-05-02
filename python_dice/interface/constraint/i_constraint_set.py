@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import typing
+from typing import Dict, Set
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 
@@ -11,11 +11,11 @@ class IConstraintSet(ABC):
 
     @property
     @abstractmethod
-    def constraints(self) -> typing.Set[IConstraint]:
+    def constraints(self) -> Set[IConstraint]:
         pass
 
     @abstractmethod
-    def complies(self, var_values: typing.Dict[str, int]) -> bool:
+    def complies(self, var_values: Dict[str, int]) -> bool:
         pass
 
     @abstractmethod

@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.binary_operator_syntax import BinaryOperatorSyntax
 
 
-class TestBinaryOperatorSyntax(unittest.TestCase):
+class TestBinaryOperatorSyntax(TestCase):
     def test_binary_operator_syntax_get_token_name(self):
         self.assertEqual(
             "BINARY_OPERATOR",

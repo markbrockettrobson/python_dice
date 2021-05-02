@@ -1,4 +1,4 @@
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -15,7 +15,7 @@ class SubtractExpression(IDiceExpression):
     @staticmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         @parser_generator.production(SubtractExpression.TOKEN_RULE)
         def subtract(_, tokens) -> IDiceExpression:
             return SubtractExpression(tokens[0], tokens[2])
@@ -50,5 +50,5 @@ class SubtractExpression(IDiceExpression):
 
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         return self._expression_one.get_contained_variables().union(self._expression_two.get_contained_variables())

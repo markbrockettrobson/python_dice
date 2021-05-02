@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.not_syntax import NotSyntax
 
 
-class TestNotSyntax(unittest.TestCase):
+class TestNotSyntax(TestCase):
     def test_not_syntax_get_token_name(self):
         self.assertEqual("NOT", NotSyntax.get_token_name())
 

@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import typing
+from typing import Callable, Set
 
 import rply  # type: ignore
 
@@ -14,7 +14,7 @@ class IDiceExpression(ABC, rply.token.Token):
     @abstractmethod
     def add_production_function(
         parser_generator: rply.ParserGenerator, probability_distribution_factory: IProbabilityDistributionFactory
-    ) -> typing.Callable:
+    ) -> Callable:
         """
 
         add a production rule to the parser generator
@@ -62,7 +62,7 @@ class IDiceExpression(ABC, rply.token.Token):
     @abstractmethod
     def get_contained_variables(
         self,
-    ) -> typing.Set[str]:
+    ) -> Set[str]:
         """
 
         :return: the set of contained variables of the statement

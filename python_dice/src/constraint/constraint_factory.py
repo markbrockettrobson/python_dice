@@ -1,4 +1,4 @@
-import typing
+from typing import Set
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_constraint_factory import IConstraintFactory
@@ -21,5 +21,5 @@ class ConstraintFactory(IConstraintFactory):
     def null_constraint(self) -> IConstraint:
         return self.__null_constraint
 
-    def var_value_constraint(self, name: str, values: typing.Set[int]) -> IVarValueConstraint:
+    def var_value_constraint(self, name: str, values: Set[int]) -> IVarValueConstraint:
         return VarValueConstraint(name=name, values=values, constraint_factory=self)

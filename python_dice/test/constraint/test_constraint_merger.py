@@ -1,6 +1,6 @@
-import typing
-import unittest
-import unittest.mock as mock
+from typing import List
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import hypothesis
 import hypothesis.strategies as strategies
@@ -9,16 +9,16 @@ from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.src.constraint.constraint_merger import ConstraintMerger
 
 
-class TestConstraintMerger(unittest.TestCase):
+class TestConstraintMerger(TestCase):
     TEST_SIZE = 6
 
     def setUp(self):
-        self._mock_constraints = [mock.create_autospec(IConstraint) for _ in range(self.TEST_SIZE)]
+        self._mock_constraints = [create_autospec(IConstraint) for _ in range(self.TEST_SIZE)]
         for constraint in self._mock_constraints:
             constraint.can_merge.return_value = False
 
     def _set_up_single_merge(self, index_one: int, index_two: int):
-        self._merged_constraint = mock.create_autospec(IConstraint)
+        self._merged_constraint = create_autospec(IConstraint)
         self._merged_constraint.can_merge.return_value = False
 
         self._mock_constraints[index_one].can_merge.side_effect = (
@@ -27,7 +27,7 @@ class TestConstraintMerger(unittest.TestCase):
         self._mock_constraints[index_one].merge.return_value = self._merged_constraint
 
     def _set_up_chain_merge(self, index_one: int, index_two: int, index_three: int, index_four: int):
-        self._merged_constraints = [mock.create_autospec(IConstraint) for _ in range(3)]
+        self._merged_constraints = [create_autospec(IConstraint) for _ in range(3)]
         for merged_constraint in self._merged_constraints:
             merged_constraint.can_merge.return_value = False
 
@@ -46,7 +46,7 @@ class TestConstraintMerger(unittest.TestCase):
         self._merged_constraints[1].merge.return_value = self._merged_constraints[2]
 
     def _set_up_tree_merge(self, index_one: int, index_two: int, index_three: int, index_four: int, index_five: int):
-        self._merged_constraints = [mock.create_autospec(IConstraint) for _ in range(4)]
+        self._merged_constraints = [create_autospec(IConstraint) for _ in range(4)]
 
         self._mock_constraints[index_one].can_merge.side_effect = (
             lambda constraint: constraint == self._mock_constraints[index_two]
@@ -89,7 +89,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=1000)
-    def test_merge_constraints_single_merge(self, indexes: typing.List[int]):
+    def test_merge_constraints_single_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
 
@@ -108,7 +108,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=1000)
-    def test_merge_new_constraints_single_merge_in_old_set(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_single_merge_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
         constraint_merger = ConstraintMerger()
@@ -128,7 +128,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=1000)
-    def test_merge_new_constraints_single_merge_in_new_value(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_single_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
         constraint_merger = ConstraintMerger()
@@ -151,7 +151,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=2000)
-    def test_merge_constraints_chain_merge(self, indexes: typing.List[int]):
+    def test_merge_constraints_chain_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
             index_one=indexes[0], index_two=indexes[1], index_three=indexes[2], index_four=indexes[3]
@@ -173,7 +173,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=2000)
-    def test_merge_new_constraints_chain_in_old_set(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_chain_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
             index_one=indexes[0], index_two=indexes[1], index_three=indexes[2], index_four=indexes[3]
@@ -195,7 +195,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=2000)
-    def test_merge_new_constraints_chain_merge_in_new_value(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_chain_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
             index_one=indexes[0], index_two=indexes[1], index_three=indexes[2], index_four=indexes[3]
@@ -222,7 +222,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=2000)
-    def test_merge_constraints_tree_merge(self, indexes: typing.List[int]):
+    def test_merge_constraints_tree_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
             index_one=indexes[0],
@@ -249,7 +249,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=2000)
-    def test_merge_new_constraints_tree_in_old_set(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_tree_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
             index_one=indexes[0],
@@ -275,7 +275,7 @@ class TestConstraintMerger(unittest.TestCase):
         )
     )
     @hypothesis.settings(deadline=1000)
-    def test_merge_new_constraints_tree_merge_in_new_value(self, indexes: typing.List[int]):
+    def test_merge_new_constraints_tree_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
             index_one=indexes[0],

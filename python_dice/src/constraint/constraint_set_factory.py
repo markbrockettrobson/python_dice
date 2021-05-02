@@ -1,4 +1,4 @@
-import typing
+from typing import Optional
 
 from python_dice.interface.constraint.i_constraint_factory import IConstraintFactory
 from python_dice.interface.constraint.i_constraint_merger import IConstraintMerger
@@ -12,8 +12,8 @@ from python_dice.src.constraint.constraint_set import ConstraintSet
 class ConstraintSetFactory(IConstraintSetFactory):
     def __init__(
         self,
-        constraint_factory: typing.Optional[IConstraintFactory] = None,
-        constraint_merger: typing.Optional[IConstraintMerger] = None,
+        constraint_factory: Optional[IConstraintFactory] = None,
+        constraint_merger: Optional[IConstraintMerger] = None,
     ):
         if constraint_merger is not None:
             self._constraint_merger = constraint_merger

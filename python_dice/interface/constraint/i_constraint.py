@@ -1,10 +1,10 @@
 from abc import ABC, abstractmethod
-import typing
+from typing import Dict
 
 
 class IConstraint(ABC):
     @abstractmethod
-    def complies(self, var_values: typing.Dict[str, int]) -> bool:
+    def complies(self, var_values: Dict[str, int]) -> bool:
         pass
 
     @abstractmethod

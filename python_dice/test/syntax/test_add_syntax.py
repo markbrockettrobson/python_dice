@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.add_syntax import AddSyntax
 
 
-class TestAddSyntax(unittest.TestCase):
+class TestAddSyntax(TestCase):
     def test_add_get_token_name(self):
         self.assertEqual("ADD", AddSyntax.get_token_name())
 

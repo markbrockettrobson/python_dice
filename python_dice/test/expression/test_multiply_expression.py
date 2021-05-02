@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -8,11 +8,11 @@ from python_dice.src.expression.multiply_expression import MultiplyExpression
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestMultiplyExpression(unittest.TestCase):
+class TestMultiplyExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
 
-        self._mock_syntax = [mock.create_autospec(IDiceExpression) for _ in range(2)]
+        self._mock_syntax = [create_autospec(IDiceExpression) for _ in range(2)]
         self._mock_syntax[0].roll.return_value = 10
         self._mock_syntax[0].max.return_value = 8
         self._mock_syntax[0].min.return_value = 2
@@ -34,7 +34,7 @@ class TestMultiplyExpression(unittest.TestCase):
         self._mock_syntax[1].get_contained_variables.return_value = {"mock two"}
 
         self._test_multiply = MultiplyExpression(self._mock_syntax[0], self._mock_syntax[1])
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_multiply_add_production_function(self):
         MultiplyExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

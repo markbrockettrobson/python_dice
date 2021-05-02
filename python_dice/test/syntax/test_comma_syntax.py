@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.comma_syntax import CommaSyntax
 
 
-class TestCommaSyntax(unittest.TestCase):
+class TestCommaSyntax(TestCase):
     def test_comma_get_token_name(self):
         self.assertEqual("COMMA", CommaSyntax.get_token_name())
 

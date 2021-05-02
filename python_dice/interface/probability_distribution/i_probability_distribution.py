@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-import typing
+from typing import Dict
 
 from PIL import Image  # type: ignore
 
@@ -8,27 +8,27 @@ from python_dice.interface.probability_distribution.i_probability_outcome import
 
 class IProbabilityDistribution(ABC):
     @abstractmethod
-    def get_dict_form(self) -> typing.Dict[int, float]:
+    def get_dict_form(self) -> Dict[int, float]:
         """
 
         :return: a dict mapping an outcome of the program to a probability of that outcome
-                <typing.Dict[int, float]>
+                <Dict[int, float]>
         """
 
     @abstractmethod
-    def get_result_map(self) -> typing.Dict[int, int]:
+    def get_result_map(self) -> Dict[int, int]:
         """
 
         :return: a dict mapping an outcome of the program to the number of ways to achieve that outcome
-                 <typing.Dict[int, int]>
+                 <Dict[int, int]>
         """
 
     @abstractmethod
-    def get_constraint_result_map(self) -> typing.Dict[IProbabilityOutcome, int]:
+    def get_constraint_result_map(self) -> Dict[IProbabilityOutcome, int]:
         """
 
         :return: a dict mapping an outcome of the program to the number of ways to achieve that outcome
-                 <typing.Dict[IProbabilityOutcome, int]>
+                 <Dict[IProbabilityOutcome, int]>
         """
 
     @abstractmethod
@@ -142,11 +142,11 @@ class IProbabilityDistribution(ABC):
         """
 
     @abstractmethod
-    def at_least(self) -> typing.Dict[int, float]:
+    def at_least(self) -> Dict[int, float]:
         pass
 
     @abstractmethod
-    def at_most(self) -> typing.Dict[int, float]:
+    def at_most(self) -> Dict[int, float]:
         pass
 
     @abstractmethod

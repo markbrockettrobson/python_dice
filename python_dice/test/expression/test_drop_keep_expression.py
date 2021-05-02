@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import create_autospec
 
 import rply  # type: ignore
 
@@ -9,12 +9,12 @@ from python_dice.src.expression.drop_keep_expression import DropKeepExpression
 from python_dice.src.probability_distribution.probability_distribution_factory import ProbabilityDistributionFactory
 
 
-class TestDiceExpression(unittest.TestCase):
+class TestDiceExpression(TestCase):
     def setUp(self):
         self._probability_distribution_factory = ProbabilityDistributionFactory()
         self._test_dice_drop = DropKeepExpression("4d6d2", self._probability_distribution_factory)
         self._test_dice_keep = DropKeepExpression("4d6k2", self._probability_distribution_factory)
-        self._mock_parser_gen = mock.create_autospec(rply.ParserGenerator)
+        self._mock_parser_gen = create_autospec(rply.ParserGenerator)
 
     def test_drop_keep_add_production_function(self):
         DropKeepExpression.add_production_function(self._mock_parser_gen, self._probability_distribution_factory)

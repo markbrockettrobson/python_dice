@@ -1,16 +1,16 @@
-from abc import ABC
 import typing
+from abc import abstractmethod
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 
 
 class IVarValueConstraint(IConstraint):
     @property
-    @abc.abstractmethod
+    @abstractmethod
     def name(self) -> str:
         pass
 
     @property
-    @abc.abstractmethod
+    @abstractmethod
     def values(self) -> typing.Set[int]:
         pass

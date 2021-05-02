@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.abs_syntax import AbsSyntax
 
 
-class TestAbsSyntax(unittest.TestCase):
+class TestAbsSyntax(TestCase):
     def test_abs_syntax_get_token_name(self):
         self.assertEqual("ABS", AbsSyntax.get_token_name())
 

@@ -1,10 +1,10 @@
 import re
-import unittest
+from unittest import TestCase
 
 from python_dice.src.syntax.open_parenthesis_syntax import OpenParenthesisSyntax
 
 
-class TestOpenParenthesisSyntax(unittest.TestCase):
+class TestOpenParenthesisSyntax(TestCase):
     def test_open_parenthesis_get_token_name(self):
         self.assertEqual(
             "OPEN_PARENTHESIS",

@@ -1,5 +1,5 @@
-import unittest
-import unittest.mock as mock
+from unittest import TestCase
+from unittest.mock import ANY, create_autospec
 
 from PIL import Image  # type: ignore
 
@@ -15,12 +15,12 @@ from python_dice.test import pil_image_to_byte_array
 from python_dice.test.test_image.test_image_path_finder import get_image_path
 
 
-class TestPythonDiceInterpreter(unittest.TestCase):
+class TestPythonDiceInterpreter(TestCase):
     def test_uses_given_parser(self):
-        mock_expression = mock.create_autospec(IDiceExpression)
+        mock_expression = create_autospec(IDiceExpression)
         mock_expression.max.return_value = 12
 
-        mock_parser = mock.create_autospec(IPythonDiceParser)
+        mock_parser = create_autospec(IPythonDiceParser)
         mock_parser.parse.return_value = (mock_expression, None)
 
         interpreter = PythonDiceInterpreter(mock_parser)
@@ -28,13 +28,13 @@ class TestPythonDiceInterpreter(unittest.TestCase):
 
         self.assertEqual(12, interpreter.max(program)["stdout"])
         mock_expression.max.assert_called_once()
-        mock_parser.parse.assert_called_once_with("d12", mock.ANY)
+        mock_parser.parse.assert_called_once_with("d12", ANY)
 
     def test_uses_starting_state(self):
         test_interpreter_one = PythonDiceInterpreter()
         probability_distribution = test_interpreter_one.get_probability_distributions(["d12"])["stdout"]
 
-        mock_state = mock.create_autospec(IProbabilityDistributionState)
+        mock_state = create_autospec(IProbabilityDistributionState)
         mock_state.get_var.return_value = probability_distribution
         mock_state.get_constant_dict.return_value = {"stored_value": 12}
 
