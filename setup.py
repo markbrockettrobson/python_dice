@@ -1,8 +1,8 @@
 import setuptools  # type: ignore
 
-with open("README.md", "r", encoding="ANSI") as readme_file:
+with open("README.md", "r", encoding="UTF-8") as readme_file:
     LONG_DESCRIPTION = readme_file.read()
-with open("requirements.txt", "r", encoding="ANSI") as requirements_file:
+with open("requirements.txt", "r", encoding="UTF-8") as requirements_file:
     REQUIRED = requirements_file.read().splitlines()
 
 setuptools.setup(
