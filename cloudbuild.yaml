@@ -24,7 +24,7 @@ steps:
          '.',
          '-f',
          'continuous_integration/36_pytest.dockerfile' ]
-  timeout: 20
+  timeout: 20m
   waitFor: ['-']
 - name: 'gcr.io/cloud-builders/docker'
   args: [ 'build',
