@@ -16,7 +16,7 @@ class TestMinMaxSyntax(TestCase):
         for test_case in test_cases:
             self.assertTrue(
                 re.match(MinMaxSyntax.get_token_regex(), test_case),
-                "did not match on case test_case %s" % test_case,
+                f"did not match on case test_case {test_case}",
             )
 
     def test_min_max_regex_will_not_match(self):
@@ -38,5 +38,5 @@ class TestMinMaxSyntax(TestCase):
         for test_case in test_cases:
             self.assertIsNone(
                 re.match(MinMaxSyntax.get_token_regex(), test_case),
-                "matched on case test_case %s" % test_case,
+                f"matched on case test_case {test_case}",
             )

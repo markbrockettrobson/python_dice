@@ -49,8 +49,7 @@ class PythonDiceParser(IPythonDiceParser):
         @parser_generator.error
         def error_handler(_: ProbabilityDistributionState, token: rply.token.Token):
             raise ValueError(
-                "Ran into a %s (%s) where it wasn't expected, at position %s."
-                % (token.gettokentype(), token.getstr(), token.getsourcepos())
+                f"Ran into a {token.gettokentype()} ({token.getstr()}) where it wasn't expected, at position {token.getsourcepos()}."
             )
 
         self._parser = parser_generator.build()

@@ -11,7 +11,6 @@ from python_dice.src.probability_distribution.probability_distribution_state imp
 
 
 class VarAssignmentExpression(IDiceExpression):
-
     TOKEN_RULE = """expression : VAR NAME ASSIGNMENT expression"""
 
     @staticmethod

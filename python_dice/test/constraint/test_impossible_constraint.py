@@ -2,16 +2,18 @@ from typing import Dict
 from unittest import TestCase
 from unittest.mock import create_autospec
 
-import hypothesis
-import hypothesis.strategies as strategies
+from hypothesis import given, settings
+from hypothesis.strategies import dictionaries, integers, sets, text
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.src.constraint.impossible_constraint import ImpossibleConstraint
 
 
 class TestImpossibleConstraint(TestCase):
-    @hypothesis.given(strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())))
-    @hypothesis.settings(deadline=1000)
+    TEST_DEADLINE = 2000
+
+    @given(dictionaries(keys=text(), values=sets(integers())))
+    @settings(deadline=TEST_DEADLINE)
     def test_complies(self, var_values: Dict[str, int]):
         constraint = ImpossibleConstraint()
         self.assertTrue(constraint.complies(var_values=var_values))

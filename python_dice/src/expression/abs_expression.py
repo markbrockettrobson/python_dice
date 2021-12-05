@@ -10,7 +10,6 @@ from python_dice.interface.probability_distribution.i_probability_distribution_f
 
 
 class AbsExpression(IDiceExpression):
-
     TOKEN_RULE = """expression : ABS OPEN_PARENTHESIS expression CLOSE_PARENTHESIS"""
 
     @staticmethod

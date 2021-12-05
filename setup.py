@@ -1,13 +1,13 @@
 import setuptools  # type: ignore
 
-with open("README.md", "r") as fh:
-    LONG_DESCRIPTION = fh.read()
-with open("requirements.txt", "r") as f:
-    required = f.read().splitlines()
+with open("README.md", "r", encoding="UTF-8") as readme_file:
+    LONG_DESCRIPTION = readme_file.read()
+with open("requirements.txt", "r", encoding="UTF-8") as requirements_file:
+    REQUIRED = requirements_file.read().splitlines()
 
 setuptools.setup(
     name="python_dice",
-    version="2.0.1",
+    version="2.0.2",
     author="Mark Brockett Robson",
     author_email="mark.brockett.robson@gmail.com",
     description="a statistical dice library for python",
@@ -32,7 +32,7 @@ setuptools.setup(
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independent",
     ],
-    install_requires=required,
+    install_requires=REQUIRED,
     data_files=["requirements.txt", "requirements_test.txt"],
     python_requires=">=3.6",
 )

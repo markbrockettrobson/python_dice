@@ -1,7 +1,7 @@
 from unittest import TestCase
 
-import hypothesis
-import hypothesis.strategies as strategies
+from hypothesis import given, settings
+from hypothesis.strategies import integers
 
 from python_dice.src.constraint.constraint_factory import ConstraintFactory
 from python_dice.src.constraint.constraint_merger import ConstraintMerger
@@ -11,6 +11,8 @@ from python_dice.src.probability_distribution.probability_outcome import Probabi
 
 # pylint: disable=too-many-public-methods
 class TestProbabilityOutcomeIntegration(TestCase):
+    TEST_DEADLINE = 2000
+
     def setUp(self) -> None:
         self._constraint_merger = ConstraintMerger()
         self._constraint_factory = ConstraintFactory()
@@ -25,9 +27,9 @@ class TestProbabilityOutcomeIntegration(TestCase):
         ]
 
         self._constraint_sets = [
-            ConstraintSet({self._constraints[i] for i in {1, 5}}, self._constraint_merger),
-            ConstraintSet({self._constraints[i] for i in {0, 3}}, self._constraint_merger),
-            ConstraintSet({self._constraints[i] for i in {3}}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in [1, 5]}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in [0, 3]}, self._constraint_merger),
+            ConstraintSet({self._constraints[i] for i in [3]}, self._constraint_merger),
         ]
 
         self._non_probability_outcome = {
@@ -39,14 +41,14 @@ class TestProbabilityOutcomeIntegration(TestCase):
             "set": {1, 3, 4},
         }
 
-    @hypothesis.given(strategies.integers())
-    @hypothesis.settings(deadline=1000)
+    @given(integers())
+    @settings(deadline=TEST_DEADLINE)
     def test_value(self, int_value: int):
         probability_outcome = ProbabilityOutcome(value=int_value, constraint_set=self._constraint_sets[0])
         self.assertEqual(int_value, probability_outcome.value)
 
-    @hypothesis.given(strategies.integers(min_value=0, max_value=2))
-    @hypothesis.settings(deadline=1000)
+    @given(integers(min_value=0, max_value=2))
+    @settings(deadline=TEST_DEADLINE)
     def test_constraint_set(self, index: int):
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[index])
         self.assertEqual(self._constraint_sets[index], probability_outcome.constraint_set)
@@ -231,8 +233,8 @@ class TestProbabilityOutcomeIntegration(TestCase):
                 with self.assertRaises(TypeError):
                     _ = probability_outcome.__or__(value)
 
-    @hypothesis.given(strategies.integers())
-    @hypothesis.settings(deadline=1000)
+    @given(integers())
+    @settings(deadline=TEST_DEADLINE)
     def test_not(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = probability_outcome.not_operator()
@@ -271,8 +273,8 @@ class TestProbabilityOutcomeIntegration(TestCase):
                 with self.assertRaises(TypeError):
                     _ = probability_outcome.min_operator(value)
 
-    @hypothesis.given(strategies.integers())
-    @hypothesis.settings(deadline=1000)
+    @given(integers())
+    @settings(deadline=TEST_DEADLINE)
     def test_abs(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = abs(probability_outcome)
@@ -281,16 +283,16 @@ class TestProbabilityOutcomeIntegration(TestCase):
             abs_probability_outcome.value,
         )
 
-    @hypothesis.given(strategies.integers())
-    @hypothesis.settings(deadline=1000)
+    @given(integers())
+    @settings(deadline=TEST_DEADLINE)
     def test_str(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(
             f"ProbabilityOutcome: value={value}, constraint_set={self._constraint_sets[1]}", str(probability_outcome)
         )
 
-    @hypothesis.given(strategies.integers())
-    @hypothesis.settings(deadline=1000)
+    @given(integers())
+    @settings(deadline=TEST_DEADLINE)
     def test_repr(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(

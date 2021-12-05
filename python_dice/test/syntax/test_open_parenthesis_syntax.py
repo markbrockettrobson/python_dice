@@ -22,7 +22,7 @@ class TestOpenParenthesisSyntax(TestCase):
                     OpenParenthesisSyntax.get_token_regex(),
                     test_case,
                 ),
-                "did not match on case test_case %s" % test_case,
+                f"did not match on case test_case {test_case}",
             )
 
     def testu_open_parenthesis_regex_will_not_match(self):
@@ -33,5 +33,5 @@ class TestOpenParenthesisSyntax(TestCase):
                     OpenParenthesisSyntax.get_token_regex(),
                     test_case,
                 ),
-                "matched on case test_case %s" % test_case,
+                f"matched on case test_case {test_case}",
             )
