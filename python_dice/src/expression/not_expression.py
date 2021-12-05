@@ -11,7 +11,6 @@ from python_dice.interface.probability_distribution.i_probability_distribution_f
 
 
 class NotExpression(IDiceExpression):
-
     TOKEN_RULE = """expression : NOT expression"""
 
     @staticmethod

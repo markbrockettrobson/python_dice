@@ -2,8 +2,8 @@ from typing import Dict, Set
 from unittest import TestCase
 from unittest.mock import Mock, call, create_autospec
 
-import hypothesis
-import hypothesis.strategies as strategies
+from hypothesis import given, settings
+from hypothesis.strategies import dictionaries, integers, sets, text
 
 from python_dice.interface.constraint.i_constraint import IConstraint
 from python_dice.interface.constraint.i_constraint_merger import IConstraintMerger
@@ -66,10 +66,10 @@ class TestConstraintSet(TestCase):
         constraint_set = constraint_set_one.combine_sets(constraint_set_two)
         self.assertEqual(constraint_set.constraints, mock_sets[-1].copy())
 
-    @hypothesis.given(
-        var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
+    @given(
+        var_values=dictionaries(keys=text(), values=sets(integers())),
     )
-    @hypothesis.settings(deadline=1000)
+    @settings(deadline=1000)
     def test_complies_true(self, var_values: Dict[str, int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -82,11 +82,11 @@ class TestConstraintSet(TestCase):
         for constraint in self._mock_constraints:
             constraint.complies.assert_called_once_with(var_values=var_values)
 
-    @hypothesis.given(
-        var_values=strategies.dictionaries(keys=strategies.text(), values=strategies.sets(strategies.integers())),
-        false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
+    @given(
+        var_values=dictionaries(keys=text(), values=sets(integers())),
+        false_indies=sets(integers(min_value=0, max_value=9), min_size=1),
     )
-    @hypothesis.settings(deadline=1000)
+    @settings(deadline=1000)
     def test_complies_false(self, var_values: Dict[str, int], false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -101,10 +101,10 @@ class TestConstraintSet(TestCase):
         constraint_set = ConstraintSet({self._mock_constraints[0]}, self._constraint_merger)
         self.assertTrue(constraint_set.is_possible())
 
-    @hypothesis.given(
-        false_indies=strategies.sets(strategies.integers(min_value=0, max_value=9), min_size=1),
+    @given(
+        false_indies=sets(integers(min_value=0, max_value=9), min_size=1),
     )
-    @hypothesis.settings(deadline=1000)
+    @settings(deadline=1000)
     def test_is_possible_false(self, false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()

@@ -20,6 +20,9 @@ exclude = '''
     | \.mypy_cache
     | \.tox
     | \.venv
+    | \venv
+    | /venv
+    | venv
     | \.hypothesis
     | \.idea
     | _build

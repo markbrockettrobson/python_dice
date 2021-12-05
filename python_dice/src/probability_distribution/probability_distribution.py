@@ -21,10 +21,10 @@ class ProbabilityDistribution(IProbabilityDistribution):
         self._probability_outcome_factory = probability_outcome_factory
         self._result_map: Dict[IProbabilityOutcome, int] = {}
 
-        def safe_add(key, value):
+        def safe_add(key, value_to_add):
             if key not in self._result_map:
                 self._result_map[key] = 0
-            self._result_map[key] += value
+            self._result_map[key] += value_to_add
 
         if result_map is not None:
             for result_value, count in result_map.items():
@@ -148,7 +148,7 @@ class ProbabilityDistribution(IProbabilityDistribution):
                 [0, max_height * 1.1],
                 "-r",
                 lw=2,
-                label="Average = %d" % average,
+                label=f"Average = {average}",
             )
         buffer = io.BytesIO()
         pyplot.savefig(buffer, format="tiff")

@@ -10,7 +10,6 @@ from python_dice.interface.probability_distribution.i_probability_distribution_f
 
 
 class MinMaxExpression(IDiceExpression):
-
     TOKEN_RULE = """expression : MINMAX OPEN_PARENTHESIS expression COMMA expression CLOSE_PARENTHESIS"""
     OPERATOR_MAP = {"MAX": max, "MIN": min}
 

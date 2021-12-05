@@ -38,7 +38,7 @@ class DropKeepExpression(IDiceExpression):
         if self._is_keep():
             if self._number_of_dice <= self._number_to_keep_or_drop:
                 self._simplified_form = DiceExpression(
-                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string()),
+                    f"{self._number_of_dice}d{self._get_number_of_sides_string()}",
                     self._probability_distribution_factory,
                 )
             elif self._number_to_keep_or_drop == 0:
@@ -48,7 +48,7 @@ class DropKeepExpression(IDiceExpression):
                 self._simplified_form = ConstantIntegerExpression("0", self._probability_distribution_factory)
             elif self._number_to_keep_or_drop == 0:
                 self._simplified_form = DiceExpression(
-                    "%dd%s" % (self._number_of_dice, self._get_number_of_sides_string()),
+                    f"{self._number_of_dice}d{self._get_number_of_sides_string()}",
                     self._probability_distribution_factory,
                 )
 
