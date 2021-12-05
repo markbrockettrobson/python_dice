@@ -11,15 +11,6 @@ steps:
 - name: 'gcr.io/cloud-builders/docker'
   args: ['build',
          '-t',
-         'gcr.io/python_dice/38_pypy',
-         '.',
-         '-f',
-         'continuous_integration/38_pypy.dockerfile']
-  timeout: 20m
-  waitFor: ['-']
-- name: 'gcr.io/cloud-builders/docker'
-  args: ['build',
-         '-t',
          'gcr.io/python_dice/37_pytest',
          '.',
          '-f',
