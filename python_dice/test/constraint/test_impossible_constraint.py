@@ -10,8 +10,10 @@ from python_dice.src.constraint.impossible_constraint import ImpossibleConstrain
 
 
 class TestImpossibleConstraint(TestCase):
+    TEST_DEADLINE = 2000
+
     @given(dictionaries(keys=text(), values=sets(integers())))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_complies(self, var_values: Dict[str, int]):
         constraint = ImpossibleConstraint()
         self.assertTrue(constraint.complies(var_values=var_values))

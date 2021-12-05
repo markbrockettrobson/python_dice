@@ -11,6 +11,8 @@ from python_dice.src.probability_distribution.probability_outcome import Probabi
 
 # pylint: disable=too-many-public-methods
 class TestProbabilityOutcomeIntegration(TestCase):
+    TEST_DEADLINE = 2000
+
     def setUp(self) -> None:
         self._constraint_merger = ConstraintMerger()
         self._constraint_factory = ConstraintFactory()
@@ -40,13 +42,13 @@ class TestProbabilityOutcomeIntegration(TestCase):
         }
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_value(self, int_value: int):
         probability_outcome = ProbabilityOutcome(value=int_value, constraint_set=self._constraint_sets[0])
         self.assertEqual(int_value, probability_outcome.value)
 
     @given(integers(min_value=0, max_value=2))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_constraint_set(self, index: int):
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[index])
         self.assertEqual(self._constraint_sets[index], probability_outcome.constraint_set)
@@ -232,7 +234,7 @@ class TestProbabilityOutcomeIntegration(TestCase):
                     _ = probability_outcome.__or__(value)
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_not(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = probability_outcome.not_operator()
@@ -272,7 +274,7 @@ class TestProbabilityOutcomeIntegration(TestCase):
                     _ = probability_outcome.min_operator(value)
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_abs(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = abs(probability_outcome)
@@ -282,7 +284,7 @@ class TestProbabilityOutcomeIntegration(TestCase):
         )
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_str(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(
@@ -290,7 +292,7 @@ class TestProbabilityOutcomeIntegration(TestCase):
         )
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_repr(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(

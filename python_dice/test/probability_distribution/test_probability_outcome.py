@@ -10,6 +10,8 @@ from python_dice.src.probability_distribution.probability_outcome import Probabi
 
 # pylint: disable=too-many-public-methods
 class TestProbabilityOutcome(TestCase):
+    TEST_DEADLINE = 2000
+
     def setUp(self) -> None:
         self._constraint_sets = [create_autospec(IConstraintSet) for _ in range(3)]
         for constraint_set in self._constraint_sets:
@@ -25,7 +27,7 @@ class TestProbabilityOutcome(TestCase):
         }
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_value(self, int_value: int):
         probability_outcome = ProbabilityOutcome(value=int_value, constraint_set=self._constraint_sets[0])
         self.assertEqual(int_value, probability_outcome.value)
@@ -39,20 +41,20 @@ class TestProbabilityOutcome(TestCase):
                     _ = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
 
     @given(integers(min_value=0, max_value=2))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_constraint_set(self, index: int):
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[index])
         self.assertEqual(self._constraint_sets[index], probability_outcome.constraint_set)
 
     @given(booleans())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_is_possible(self, constraint_is_possible: bool):
         self._constraint_sets[0].is_possible.return_value = constraint_is_possible
         probability_outcome = ProbabilityOutcome(value=1, constraint_set=self._constraint_sets[0])
         self.assertEqual(constraint_is_possible, probability_outcome.is_possible())
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_add(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -69,7 +71,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome + value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_sub(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -86,7 +88,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome - value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_mul(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -103,7 +105,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome * value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_floordiv(self, value_one: int, value_two: int):
         assume(value_two != 0)
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
@@ -114,7 +116,7 @@ class TestProbabilityOutcome(TestCase):
         self.assertEqual(str(self._constraint_sets[-1]), str(new_probability_outcome.constraint_set))
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_floordiv_div_zero(self, value_one: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=0, constraint_set=self._constraint_sets[1])
@@ -130,7 +132,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome // value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_equal(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -147,7 +149,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.__equal__(value)
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_not_equal(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -164,7 +166,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.__not_equal__(value)
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_lt(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -181,7 +183,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome < value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_le(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -198,7 +200,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome <= value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_gt(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -215,7 +217,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome > value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_ge(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -232,7 +234,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome >= value
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_and(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -249,7 +251,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.__and__(value)
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_or(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -266,7 +268,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.__or__(value)
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_not(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = probability_outcome.not_operator()
@@ -276,7 +278,7 @@ class TestProbabilityOutcome(TestCase):
         )
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_max_operator(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -293,7 +295,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.max_operator(value)
 
     @given(integers(), integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_min_operator(self, value_one: int, value_two: int):
         probability_outcome_one = ProbabilityOutcome(value=value_one, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value_two, constraint_set=self._constraint_sets[1])
@@ -310,7 +312,7 @@ class TestProbabilityOutcome(TestCase):
                     _ = probability_outcome.min_operator(value)
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_abs(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         abs_probability_outcome = abs(probability_outcome)
@@ -320,7 +322,7 @@ class TestProbabilityOutcome(TestCase):
         )
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_str(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(
@@ -328,7 +330,7 @@ class TestProbabilityOutcome(TestCase):
         )
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_repr(self, value):
         probability_outcome = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertEqual(
@@ -336,28 +338,28 @@ class TestProbabilityOutcome(TestCase):
         )
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_hash_the_same(self, value):
         probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
         self.assertEqual(hash(probability_outcome_one), hash(probability_outcome_two))
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_hash_not_the_same_constraint_set(self, value):
         probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])
         self.assertNotEqual(hash(probability_outcome_one), hash(probability_outcome_two))
 
     @given(lists(integers(), min_size=2, max_size=2, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_hash_not_the_same_value(self, values):
         probability_outcome_one = ProbabilityOutcome(value=values[0], constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=values[1], constraint_set=self._constraint_sets[0])
         self.assertNotEqual(hash(probability_outcome_one), hash(probability_outcome_two))
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_eq_true(self, value):
         probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
@@ -368,14 +370,14 @@ class TestProbabilityOutcome(TestCase):
         self.assertEqual(probability_outcome, probability_outcome)
 
     @given(lists(integers(), min_size=2, max_size=2, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_eq_false_value(self, values):
         probability_outcome_one = ProbabilityOutcome(value=values[0], constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=values[1], constraint_set=self._constraint_sets[0])
         self.assertNotEqual(probability_outcome_one, probability_outcome_two)
 
     @given(integers())
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_eq_false_constraint_set(self, value):
         probability_outcome_one = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[0])
         probability_outcome_two = ProbabilityOutcome(value=value, constraint_set=self._constraint_sets[1])

@@ -10,8 +10,10 @@ from python_dice.src.constraint.null_constraint import NullConstraint
 
 
 class TestNullConstraint(TestCase):
+    TEST_DEADLINE = 2000
+
     @given(dictionaries(keys=text(), values=sets(integers())))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_complies(self, var_values: Dict[str, int]):
         constraint = NullConstraint()
         self.assertTrue(constraint.complies(var_values=var_values))

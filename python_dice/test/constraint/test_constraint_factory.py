@@ -11,6 +11,8 @@ from python_dice.src.constraint.constraint_factory import ConstraintFactory
 
 
 class TestConstraintFactory(TestCase):
+    TEST_DEADLINE = 2000
+
     def test_impossible_constraint(self):
         constraint_factory = ConstraintFactory()
         self.assertIsInstance(constraint_factory.impossible_constraint, IImpossibleConstraint)
@@ -20,7 +22,7 @@ class TestConstraintFactory(TestCase):
         self.assertIsInstance(constraint_factory.null_constraint, INullConstraint)
 
     @given(name=text(), int_set=sets(integers()))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_var_value_constraint(self, name: str, int_set: Set[int]):
         constraint_factory = ConstraintFactory()
         var_value_constraint = constraint_factory.var_value_constraint(name=name, values=int_set)

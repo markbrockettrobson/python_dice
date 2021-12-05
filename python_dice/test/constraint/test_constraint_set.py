@@ -11,6 +11,8 @@ from python_dice.src.constraint.constraint_set import ConstraintSet
 
 
 class TestConstraintSet(TestCase):
+    TEST_DEADLINE = 2000
+
     def setUp(self):
         self._constraint_merger = create_autospec(IConstraintMerger)
         self._mock_constraints = [create_autospec(IConstraint) for _ in range(10)]
@@ -69,7 +71,7 @@ class TestConstraintSet(TestCase):
     @given(
         var_values=dictionaries(keys=text(), values=sets(integers())),
     )
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_complies_true(self, var_values: Dict[str, int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -86,7 +88,7 @@ class TestConstraintSet(TestCase):
         var_values=dictionaries(keys=text(), values=sets(integers())),
         false_indies=sets(integers(min_value=0, max_value=9), min_size=1),
     )
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_complies_false(self, var_values: Dict[str, int], false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()
@@ -104,7 +106,7 @@ class TestConstraintSet(TestCase):
     @given(
         false_indies=sets(integers(min_value=0, max_value=9), min_size=1),
     )
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_is_possible_false(self, false_indies: Set[int]):
         for constraint in self._mock_constraints:
             constraint.reset_mock()

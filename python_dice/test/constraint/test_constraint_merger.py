@@ -11,6 +11,7 @@ from python_dice.src.constraint.constraint_merger import ConstraintMerger
 
 class TestConstraintMerger(TestCase):
     TEST_SIZE = 6
+    TEST_DEADLINE = 2000
 
     def setUp(self):
         self._mock_constraints = [create_autospec(IConstraint) for _ in range(self.TEST_SIZE)]
@@ -72,7 +73,7 @@ class TestConstraintMerger(TestCase):
         self.assertEqual(constraint_merger.merge_constraints(set(self._mock_constraints)), set(self._mock_constraints))
 
     @given(new_constraint_index=integers(min_value=0, max_value=TEST_SIZE - 1))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_constraints_no_merge_new_constraints_add_one(self, new_constraint_index: int):
         constraint_merger = ConstraintMerger()
         self.assertEqual(
@@ -84,7 +85,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=2, max_size=2, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_constraints_single_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
@@ -99,7 +100,7 @@ class TestConstraintMerger(TestCase):
         self.assertEqual(constraint_merger.merge_constraints(set(self._mock_constraints)), expected_set)
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=3, max_size=3, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_single_merge_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
@@ -115,7 +116,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=2, max_size=2, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_single_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_single_merge(index_one=indexes[0], index_two=indexes[1])
@@ -134,7 +135,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=4, max_size=4, unique=True))
-    @settings(deadline=2000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_constraints_chain_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -152,7 +153,7 @@ class TestConstraintMerger(TestCase):
         self.assertEqual(constraint_merger.merge_constraints(set(self._mock_constraints)), expected_set)
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=5, max_size=5, unique=True))
-    @settings(deadline=2000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_chain_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -170,7 +171,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=4, max_size=4, unique=True))
-    @settings(deadline=2000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_chain_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_chain_merge(
@@ -193,7 +194,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=5, max_size=5, unique=True))
-    @settings(deadline=2000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_constraints_tree_merge(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
@@ -216,7 +217,7 @@ class TestConstraintMerger(TestCase):
         self.assertEqual(constraint_merger.merge_constraints(set(self._mock_constraints)), expected_set)
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=6, max_size=6, unique=True))
-    @settings(deadline=2000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_tree_in_old_set(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
@@ -238,7 +239,7 @@ class TestConstraintMerger(TestCase):
         )
 
     @given(indexes=lists(integers(min_value=0, max_value=TEST_SIZE - 1), min_size=5, max_size=5, unique=True))
-    @settings(deadline=1000)
+    @settings(deadline=TEST_DEADLINE)
     def test_merge_new_constraints_tree_merge_in_new_value(self, indexes: List[int]):
         self.setUp()
         self._set_up_tree_merge(
