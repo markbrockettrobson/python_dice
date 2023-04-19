@@ -373,7 +373,6 @@ class TestPythonDiceInterpreter(TestCase):
             "VAR b = a + a",
         ]
         probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
-        print(probability_distribution_b)
         self.assertEqual(
             {
                 4: 1,
@@ -394,7 +393,6 @@ class TestPythonDiceInterpreter(TestCase):
             "VAR b = b + a",
         ]
         probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
-        print(probability_distribution_b)
         self.assertEqual(
             {
                 10: 1,
@@ -402,6 +400,144 @@ class TestPythonDiceInterpreter(TestCase):
                 20: 243,
                 25: 32,
                 30: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_fixed_value_partly_entangled(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=3",
+            "VAR c = a>=4",
+            "VAR d = 1*b",
+            "VAR e = (10-d)*c",
+            "VAR out = d+e"
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["out"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 2,
+                1: 1,
+                10: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_random_value_partly_entangled(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=3",
+            "VAR c = a>=4",
+            "VAR d = 1d2*b",
+            "VAR e = (10-d)*c",
+            "VAR out = d+e"
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["out"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 4,
+                1: 1,
+                2: 1,
+                10: 2,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_many_random_value_partly_entangled(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d2",
+            "VAR c = a>=3*1d[10,20]",
+            "VAR d = a>=4*1d[100,200]",
+            "VAR out = b+c+d"
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["out"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 8,
+                1: 4,
+                2: 4,
+                11: 2,
+                12: 2,
+                21: 2,
+                22: 2,
+                111: 1,
+                112: 1,
+                121: 1,
+                122: 1,
+                211: 1,
+                212: 1,
+                221: 1,
+                222: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_many_random_value_partly_entangled_with_loop(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d2",
+            "VAR c = a>=3*b*10",
+            "VAR d = a>=4*c*10",
+            "VAR out = b+c+d"
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["out"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 8,
+                1: 4,
+                2: 4,
+                11: 4,
+                22: 4,
+                111: 4,
+                222: 4,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_many_random_value_partly_entangled_with_loop_example_two(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d2",
+            "VAR c = a>=3*b*10",
+            "VAR out = b+c"
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["out"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 4,
+                1: 2,
+                2: 2,
+                11: 2,
+                22: 2,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_many_random_value_partly_entangled_with_loop_example_three(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d2",
+            "VAR c = a>=3*b*b*10",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["c"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 4,
+                10: 2,
+                40: 2,
             },
             probability_distribution_b.get_result_map(),
         )
