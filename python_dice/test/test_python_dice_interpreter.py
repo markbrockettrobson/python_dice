@@ -541,3 +541,38 @@ class TestPythonDiceInterpreter(TestCase):
             },
             probability_distribution_b.get_result_map(),
         )
+
+    def test_probability_distribution_many_random_value_partly_entangled_small_example(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d2",
+            "VAR b = a+a*d[10,20]",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                11: 1,
+                21: 1,
+                22: 1,
+                42: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+ 
+    def test_probability_distribution_many_random_value_partly_entangled_small_example_two(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d2",
+            "VAR b = a>=2*a+a",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                1: 1,
+                4: 1,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+ 
