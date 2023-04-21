@@ -575,4 +575,76 @@ class TestPythonDiceInterpreter(TestCase):
             },
             probability_distribution_b.get_result_map(),
         )
- 
+
+    def test_probability_distribution_var_value_combo(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2+a>=3*d[10,20,30]",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 3,
+                1: 3,
+                11: 2,
+                21: 2,
+                31: 2,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_var_value_combo_two(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d3+a>=3*d[10,20,30]",
+        ]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        print(probability_distribution_b)
+        self.assertEqual(
+            {
+                0: 9,
+                1: 3,
+                2: 3,
+                3: 3,
+                11: 2,
+                12: 2,
+                13: 2,
+                21: 2,
+                22: 2,
+                23: 2,
+                31: 2,
+                32: 2,
+                33: 2,
+            },
+            probability_distribution_b.get_result_map(),
+        )
+
+    def test_probability_distribution_many_random_value_partly_entangled_with_loop_example_four(self):
+        interpreter = PythonDiceInterpreter()
+        program = [
+            "VAR a = 1d4",
+            "VAR b = a>=2*1d2",
+            "VAR c = a>=3*b*b*10",
+            "VAR d = b+c",
+        ]
+        probability_distribution_a = interpreter.get_probability_distributions(program)["a"]
+        probability_distribution_b = interpreter.get_probability_distributions(program)["b"]
+        probability_distribution_c = interpreter.get_probability_distributions(program)["c"]
+        probability_distribution_d = interpreter.get_probability_distributions(program)["d"]
+        print(probability_distribution_a)
+        print(probability_distribution_b)
+        print(probability_distribution_c)
+        print(probability_distribution_d)
+        self.assertEqual(
+            {
+                0: 2,
+                1: 1,
+                2: 1,
+                11: 2,
+                42: 2
+            },
+            probability_distribution_d.get_result_map(),
+        )
