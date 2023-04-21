@@ -16,23 +16,47 @@ class TestProbabilityState(TestCase):
 
         _1_n5 = self._probability_outcome_factory.create_empty(-5)
         _1_n5.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {-5}))
+
         _1_1 = self._probability_outcome_factory.create_empty(1)
         _1_1.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {1}))
 
         _1_4 = self._probability_outcome_factory.create_empty(4)
         _1_4.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {4}))
 
+        _nmn_2 = self._probability_outcome_factory.create_empty(2)
+        _nmn_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("not_my_name", {5}))
+
+        _nmn1_2 = self._probability_outcome_factory.create_empty(2)
+        _nmn1_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("not_my_name", {5}))
+        _nmn1_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {2}))
+
+        _nmn2_2 = self._probability_outcome_factory.create_empty(2)
+        _nmn2_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("not_my_name", {5}))
+        _nmn2_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {2}))
+        _nmn2_2.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_2", {2}))
+
         _2_n5 = self._probability_outcome_factory.create_empty(-5)
+        _2_n5.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {-5}))
         _2_n5.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_2", {-5}))
+
         _2_1 = self._probability_outcome_factory.create_empty(1)
+        _2_1.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {1}))
         _2_1.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_2", {1}))
 
         _2_4 = self._probability_outcome_factory.create_empty(4)
+        _2_4.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_1", {4}))
         _2_4.constraint_set.add_constraint(self._constraint_factory.var_value_constraint("test_name_2", {4}))
 
-        self._test_distribution = self._probability_distribution_factory.create({-5: 1, 1: 2, 4: 1})
-        self._return_one_distribution = self._probability_distribution_factory.create({_1_n5: 1, _1_1: 2, _1_4: 1})
-        self._return_two_distribution = self._probability_distribution_factory.create({_2_n5: 1, _2_1: 2, _2_4: 1})
+        self._test_distribution = self._probability_distribution_factory.create(
+            {
+            -5: 1,
+            1: 2,
+            _nmn_2: 1,
+            4: 1
+            }
+        )
+        self._return_one_distribution = self._probability_distribution_factory.create({_1_n5: 1, _1_1: 2, _nmn1_2: 1, _1_4: 1})
+        self._return_two_distribution = self._probability_distribution_factory.create({_2_n5: 1, _2_1: 2, _nmn2_2: 1, _2_4: 1})
 
         self._test_int = 1
         self._test_probability_state = ProbabilityDistributionState(
@@ -76,13 +100,14 @@ class TestProbabilityState(TestCase):
             self._test_name,
             self._test_probability_state.get_var_dict(),
         )
+
         self.assertEqual(
             str(self._return_one_distribution), str(self._test_probability_state.get_var_dict()[self._test_name])
         )
 
     def test_probability_state_get_var_dict_second_time(self):
         self._test_probability_state.set_var(self._test_name, self._test_distribution)
-        self._test_probability_state.set_var(self._test_name, self._test_distribution)
+        self._test_probability_state.set_var(self._test_name, self._test_probability_state.get_var_dict()[self._test_name])
 
         self.assertIn(
             self._test_name,
